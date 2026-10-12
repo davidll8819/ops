@@ -4,6 +4,8 @@
 
 已在 Mac 开发机通过：148 项后端/脚本测试、30 项前端测试、静态检查、网页构建。600 项目录 / 149 个技能归档全部通过大小和 SHA-256 校验。上传候选文件已与本机密钥匹配扫描，并检查常见凭据格式，未发现命中。
 
-仓库附带 Windows x64 / Linux 的自动测试、构建检查，以及 Linux 的全新 PostgreSQL/Redis 启动与登录隔离检查。远端检查结果在首次推送后确认；实体 Windows 电脑的 Docker、浏览器和真实模型业务还未现场验收。
+仓库附带 Windows x64 / Linux 的自动测试、构建检查，以及 Linux 的全新 PostgreSQL/Redis 启动与登录隔离检查。各提交的远端结果见 [GitHub Actions（自动检查）](https://github.com/davidll8819/ops/actions/workflows/verify.yml)。实体 Windows 电脑的 Docker、浏览器和真实模型业务还未现场验收。
 
 验证范围不包括真实付费模型调用、AiToEarn 视频/平台发布、AWS 部署，也不包括用户办公室电脑上的 Docker 与浏览器权限；这些需要在对应环境按 [安装说明](WINDOWS-SETUP.md) 验收。
+
+发布包另验收：压缩归档完整性、600 项目录对应 149 个包的哈希、3 个 Windows 入口的 CRLF 换行、文件名大小写冲突和非法 Windows 路径。私有配置、数据库、日志和本机依赖不进入包。第三方技能原始归档内的公开测试密钥/示例字符串保持原样，未发现本机密钥匹配；这些归档仅存储，不执行。
