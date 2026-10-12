@@ -1,0 +1,601 @@
+﻿序号,整理分类,英文名称,中文释义,发布来源,同名条目数,详情链接,释义依据
+1,开发、代理与工作流程,find-skills,查找与挑选技能,vercel-labs/skills,1,https://skills.sh/vercel-labs/skills/find-skills,名称中文释义；未逐项审计技能正文
+2,开发、代理与工作流程,grill-me,通过深入提问梳理想法,mattpocock/skills,1,https://skills.sh/mattpocock/skills/grill-me,名称中文释义；未逐项审计技能正文
+3,开发、代理与工作流程,grill-with-docs,结合文档深入提问,mattpocock/skills,1,https://skills.sh/mattpocock/skills/grill-with-docs,名称中文释义；未逐项审计技能正文
+4,开发、代理与工作流程,improve-codebase-architecture,改进代码库架构,mattpocock/skills,1,https://skills.sh/mattpocock/skills/improve-codebase-architecture,名称中文释义；未逐项审计技能正文
+5,浏览器与信息获取,agent-browser,代理操作浏览器,vercel-labs/agent-browser,4,https://skills.sh/vercel-labs/agent-browser/agent-browser,名称中文释义；未逐项审计技能正文
+6,开发、代理与工作流程,tdd,TDD（测试驱动开发）,mattpocock/skills,1,https://skills.sh/mattpocock/skills/tdd,名称中文释义；未逐项审计技能正文
+7,开发、代理与工作流程,setup-matt-pocock-skills,配置 Matt Pocock 技能集,mattpocock/skills,1,https://skills.sh/mattpocock/skills/setup-matt-pocock-skills,名称中文释义；未逐项审计技能正文
+8,界面、设计与动画,frontend-design,前端界面设计,anthropics/skills,2,https://skills.sh/anthropics/skills/frontend-design,名称中文释义；未逐项审计技能正文
+9,开发、代理与工作流程,handoff,任务与上下文交接,mattpocock/skills,1,https://skills.sh/mattpocock/skills/handoff,名称中文释义；未逐项审计技能正文
+10,图像、视频与音频,hyperframes-cli,Hyperframes（程序化视频工具）：命令行操作,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/hyperframes-cli,名称中文释义；未逐项审计技能正文
+11,开发、代理与工作流程,triage,问题初步诊断与分流,mattpocock/skills,1,https://skills.sh/mattpocock/skills/triage,名称中文释义；未逐项审计技能正文
+12,开发、代理与工作流程,prototype,制作原型,mattpocock/skills,2,https://skills.sh/mattpocock/skills/prototype,名称中文释义；未逐项审计技能正文
+13,图像、视频与音频,hyperframes,Hyperframes（程序化视频制作）,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/hyperframes,名称中文释义；未逐项审计技能正文
+14,营销与运营,reddit-automation,Reddit（社区平台）操作自动化,flowkit-labs/skills,1,https://skills.sh/flowkit-labs/skills/reddit-automation,名称中文释义；未逐项审计技能正文
+15,开发、代理与工作流程,grilling,深入追问与需求澄清,mattpocock/skills,1,https://skills.sh/mattpocock/skills/grilling,名称中文释义；未逐项审计技能正文
+16,图像、视频与音频,media-use,媒体素材使用,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/media-use,名称中文释义；未逐项审计技能正文
+17,开发、代理与工作流程,domain-modeling,业务领域建模,mattpocock/skills,1,https://skills.sh/mattpocock/skills/domain-modeling,名称中文释义；未逐项审计技能正文
+18,图像、视频与音频,hyperframes-registry,Hyperframes（程序化视频工具）：资源与模板登记,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/hyperframes-registry,名称中文释义；未逐项审计技能正文
+19,开发、代理与工作流程,teach,讲解与教学,mattpocock/skills,1,https://skills.sh/mattpocock/skills/teach,名称中文释义；未逐项审计技能正文
+20,界面、设计与动画,vercel-react-best-practices,Vercel 的 React 开发最佳实践,vercel-labs/agent-skills,1,https://skills.sh/vercel-labs/agent-skills/vercel-react-best-practices,名称中文释义；未逐项审计技能正文
+21,图像、视频与音频,hyperframes-animation,Hyperframes（程序化视频工具）：动画,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/hyperframes-animation,名称中文释义；未逐项审计技能正文
+22,开发、代理与工作流程,codebase-design,代码库结构设计,mattpocock/skills,1,https://skills.sh/mattpocock/skills/codebase-design,名称中文释义；未逐项审计技能正文
+23,办公与文档,lark-doc,Lark/飞书：文档,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-doc,名称中文释义；未逐项审计技能正文
+24,办公与文档,lark-base,Lark/飞书：多维表格,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-base,名称中文释义；未逐项审计技能正文
+25,开发、代理与工作流程,diagnosing-bugs,诊断程序错误,mattpocock/skills,1,https://skills.sh/mattpocock/skills/diagnosing-bugs,名称中文释义；未逐项审计技能正文
+26,办公与文档,lark-drive,Lark/飞书：云盘文件,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-drive,名称中文释义；未逐项审计技能正文
+27,办公与文档,lark-shared,Lark/飞书：公共操作与工具,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-shared,名称中文释义；未逐项审计技能正文
+28,办公与文档,lark-im,Lark/飞书：即时消息,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-im,名称中文释义；未逐项审计技能正文
+29,办公与文档,lark-calendar,Lark/飞书：日历,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-calendar,名称中文释义；未逐项审计技能正文
+30,办公与文档,lark-approval,Lark/飞书：审批,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-approval,名称中文释义；未逐项审计技能正文
+31,办公与文档,lark-sheets,Lark/飞书：电子表格,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-sheets,名称中文释义；未逐项审计技能正文
+32,办公与文档,lark-wiki,Lark/飞书：知识库,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-wiki,名称中文释义；未逐项审计技能正文
+33,办公与文档,lark-contact,Lark/飞书：通讯录,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-contact,名称中文释义；未逐项审计技能正文
+34,办公与文档,lark-task,Lark/飞书：任务管理,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-task,名称中文释义；未逐项审计技能正文
+35,办公与文档,lark-slides,Lark/飞书：演示文稿,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-slides,名称中文释义；未逐项审计技能正文
+36,办公与文档,lark-mail,Lark/飞书：邮件,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-mail,名称中文释义；未逐项审计技能正文
+37,办公与文档,lark-whiteboard,Lark/飞书：白板,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-whiteboard,名称中文释义；未逐项审计技能正文
+38,办公与文档,lark-event,Lark/飞书：事件订阅,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-event,名称中文释义；未逐项审计技能正文
+39,办公与文档,lark-openapi-explorer,Lark/飞书：开放接口探索,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-openapi-explorer,名称中文释义；未逐项审计技能正文
+40,办公与文档,lark-attendance,Lark/飞书：考勤,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-attendance,名称中文释义；未逐项审计技能正文
+41,办公与文档,lark-minutes,Lark/飞书：妙记与会议记录,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-minutes,名称中文释义；未逐项审计技能正文
+42,办公与文档,lark-skill-maker,Lark/飞书：技能生成,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-skill-maker,名称中文释义；未逐项审计技能正文
+43,办公与文档,lark-workflow-meeting-summary,Lark/飞书：会议总结工作流,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-workflow-meeting-summary,名称中文释义；未逐项审计技能正文
+44,办公与文档,lark-workflow-standup-report,Lark/飞书：每日站会报告工作流,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-workflow-standup-report,名称中文释义；未逐项审计技能正文
+45,图像、视频与音频,hyperframes-core,Hyperframes（程序化视频工具）：核心开发,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/hyperframes-core,名称中文释义；未逐项审计技能正文
+46,办公与文档,lark-vc,Lark/飞书：视频会议,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-vc,名称中文释义；未逐项审计技能正文
+47,界面、设计与动画,design-mobile-apps,设计手机应用,designed-by-ai/skills,1,https://skills.sh/designed-by-ai/skills/design-mobile-apps,名称中文释义；未逐项审计技能正文
+48,办公与文档,lark-okr,Lark/飞书：OKR（目标与关键结果）,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-okr,名称中文释义；未逐项审计技能正文
+49,图像、视频与音频,ai-video-generation,AI（人工智能）视频生成,101-skills/superpowers,8,https://skills.sh/101-skills/superpowers/ai-video-generation,名称中文释义；未逐项审计技能正文
+50,图像、视频与音频,ai-image-generation,AI（人工智能）图像生成,101-skills/superpowers,8,https://skills.sh/101-skills/superpowers/ai-image-generation,名称中文释义；未逐项审计技能正文
+51,营销与运营,twitter-automation,Twitter（社交平台）操作自动化,101-skills/superpowers,6,https://skills.sh/101-skills/superpowers/twitter-automation,名称中文释义；未逐项审计技能正文
+52,图像、视频与音频,ai-avatar-video,AI（人工智能）数字人视频,101-skills/superpowers,7,https://skills.sh/101-skills/superpowers/ai-avatar-video,名称中文释义；未逐项审计技能正文
+53,图像、视频与音频,hyperframes-creative,Hyperframes（程序化视频工具）：创意制作,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/hyperframes-creative,名称中文释义；未逐项审计技能正文
+54,办公与文档,lark-markdown,Lark/飞书：Markdown 文档,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-markdown,名称中文释义；未逐项审计技能正文
+55,界面、设计与动画,web-design-guidelines,网页设计规范,vercel-labs/agent-skills,1,https://skills.sh/vercel-labs/agent-skills/web-design-guidelines,名称中文释义；未逐项审计技能正文
+56,开发、代理与工作流程,code-review,代码审查,mattpocock/skills,1,https://skills.sh/mattpocock/skills/code-review,名称中文释义；未逐项审计技能正文
+57,开发、代理与工作流程,implement,按方案实施功能,mattpocock/skills,1,https://skills.sh/mattpocock/skills/implement,名称中文释义；未逐项审计技能正文
+58,办公与文档,lark-vc-agent,Lark/飞书：视频会议代理,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-vc-agent,名称中文释义；未逐项审计技能正文
+59,开发、代理与工作流程,ask-matt,向 Matt 风格助手咨询,mattpocock/skills,1,https://skills.sh/mattpocock/skills/ask-matt,名称中文释义；未逐项审计技能正文
+60,办公与文档,lark-apps,Lark/飞书：应用管理,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-apps,名称中文释义；未逐项审计技能正文
+61,开发、代理与工作流程,wayfinder,梳理模糊需求，以决策任务明确实现路线,mattpocock/skills,1,https://skills.sh/mattpocock/skills/wayfinder,已核对公开简介
+62,开发、代理与工作流程,to-spec,把想法整理为规格说明,mattpocock/skills,1,https://skills.sh/mattpocock/skills/to-spec,名称中文释义；未逐项审计技能正文
+63,开发、代理与工作流程,research,调查研究,mattpocock/skills,1,https://skills.sh/mattpocock/skills/research,名称中文释义；未逐项审计技能正文
+64,开发、代理与工作流程,to-tickets,拆解为工作任务,mattpocock/skills,1,https://skills.sh/mattpocock/skills/to-tickets,名称中文释义；未逐项审计技能正文
+65,图像、视频与音频,hyperframes-keyframes,Hyperframes（程序化视频工具）：关键帧,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/hyperframes-keyframes,名称中文释义；未逐项审计技能正文
+66,图像、视频与音频,remotion-best-practices,Remotion（程序化视频工具）最佳实践,remotion-dev/skills,1,https://skills.sh/remotion-dev/skills/remotion-best-practices,名称中文释义；未逐项审计技能正文
+67,界面、设计与动画,design-taste-frontend,前端设计审美指导,leonxlnx/taste-skill,1,https://skills.sh/leonxlnx/taste-skill/design-taste-frontend,名称中文释义；未逐项审计技能正文
+68,开发、代理与工作流程,caveman,Caveman（简洁表达与代理工作流）,juliusbrussee/caveman,2,https://skills.sh/juliusbrussee/caveman/caveman,名称中文释义；未逐项审计技能正文
+69,后端、数据库与云服务,microsoft-foundry,Microsoft Foundry（微软 AI 开发平台）,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/microsoft-foundry,名称中文释义；未逐项审计技能正文
+70,后端、数据库与云服务,azure-diagnostics,Azure（微软云平台）：故障诊断,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-diagnostics,名称中文释义；未逐项审计技能正文
+71,开发、代理与工作流程,resolving-merge-conflicts,解决代码合并冲突,mattpocock/skills,1,https://skills.sh/mattpocock/skills/resolving-merge-conflicts,名称中文释义；未逐项审计技能正文
+72,后端、数据库与云服务,azure-prepare,Azure（微软云平台）：部署准备,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-prepare,名称中文释义；未逐项审计技能正文
+73,后端、数据库与云服务,azure-ai,Azure（微软云平台）：AI 服务,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-ai,名称中文释义；未逐项审计技能正文
+74,后端、数据库与云服务,azure-deploy,Azure（微软云平台）：应用部署,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-deploy,名称中文释义；未逐项审计技能正文
+75,后端、数据库与云服务,azure-validate,Azure（微软云平台）：部署前验证,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-validate,名称中文释义；未逐项审计技能正文
+76,后端、数据库与云服务,azure-storage,Azure（微软云平台）：存储,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-storage,名称中文释义；未逐项审计技能正文
+77,后端、数据库与云服务,entra-app-registration,Entra（微软身份平台）应用注册,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/entra-app-registration,名称中文释义；未逐项审计技能正文
+78,后端、数据库与云服务,azure-compliance,Azure（微软云平台）：合规检查,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-compliance,名称中文释义；未逐项审计技能正文
+79,后端、数据库与云服务,azure-resource-lookup,Azure（微软云平台）：资源查询,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-resource-lookup,名称中文释义；未逐项审计技能正文
+80,后端、数据库与云服务,appinsights-instrumentation,Application Insights（应用监控）埋点,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/appinsights-instrumentation,名称中文释义；未逐项审计技能正文
+81,后端、数据库与云服务,azure-resource-visualizer,Azure（微软云平台）：资源关系可视化,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-resource-visualizer,名称中文释义；未逐项审计技能正文
+82,后端、数据库与云服务,azure-aigateway,Azure（微软云平台）：AI 网关,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-aigateway,名称中文释义；未逐项审计技能正文
+83,后端、数据库与云服务,azure-kusto,Azure（微软云平台）：Kusto 数据查询,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-kusto,名称中文释义；未逐项审计技能正文
+84,后端、数据库与云服务,azure-messaging,Azure（微软云平台）：消息服务,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-messaging,名称中文释义；未逐项审计技能正文
+85,办公与文档,lark-note,Lark/飞书：笔记,open.feishu.cn,2,https://skills.sh/open.feishu.cn/lark-note,名称中文释义；未逐项审计技能正文
+86,界面、设计与动画,ui-taste,界面设计审美,uizze.sh,1,https://skills.sh/uizze.sh/ui-taste,名称中文释义；未逐项审计技能正文
+87,图像、视频与音频,general-video,通用视频制作,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/general-video,名称中文释义；未逐项审计技能正文
+88,后端、数据库与云服务,azure-compute,Azure（微软云平台）：计算资源,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-compute,名称中文释义；未逐项审计技能正文
+89,后端、数据库与云服务,azure-cloud-migrate,Azure（微软云平台）：云端迁移,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-cloud-migrate,名称中文释义；未逐项审计技能正文
+90,开发、代理与工作流程,google-agents-cli-adk-code,Google Agents CLI（谷歌代理命令行工具）：ADK 代理代码开发,google/agents-cli,1,https://skills.sh/google/agents-cli/google-agents-cli-adk-code,名称中文释义；未逐项审计技能正文
+91,开发、代理与工作流程,google-agents-cli-deploy,Google Agents CLI（谷歌代理命令行工具）：部署,google/agents-cli,1,https://skills.sh/google/agents-cli/google-agents-cli-deploy,名称中文释义；未逐项审计技能正文
+92,开发、代理与工作流程,wizard,引导式工作流程,mattpocock/skills,1,https://skills.sh/mattpocock/skills/wizard,名称中文释义；未逐项审计技能正文
+93,开发、代理与工作流程,google-agents-cli-publish,Google Agents CLI（谷歌代理命令行工具）：发布,google/agents-cli,1,https://skills.sh/google/agents-cli/google-agents-cli-publish,名称中文释义；未逐项审计技能正文
+94,开发、代理与工作流程,google-agents-cli-workflow,Google Agents CLI（谷歌代理命令行工具）：工作流程,google/agents-cli,1,https://skills.sh/google/agents-cli/google-agents-cli-workflow,名称中文释义；未逐项审计技能正文
+95,开发、代理与工作流程,google-agents-cli-eval,Google Agents CLI（谷歌代理命令行工具）：评估,google/agents-cli,1,https://skills.sh/google/agents-cli/google-agents-cli-eval,名称中文释义；未逐项审计技能正文
+96,开发、代理与工作流程,google-agents-cli-scaffold,Google Agents CLI（谷歌代理命令行工具）：搭建项目骨架,google/agents-cli,1,https://skills.sh/google/agents-cli/google-agents-cli-scaffold,名称中文释义；未逐项审计技能正文
+97,开发、代理与工作流程,google-agents-cli-observability,Google Agents CLI（谷歌代理命令行工具）：运行监控,google/agents-cli,1,https://skills.sh/google/agents-cli/google-agents-cli-observability,名称中文释义；未逐项审计技能正文
+98,图像、视频与音频,hyperframes-audio,Hyperframes（程序化视频工具）：音频,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/hyperframes-audio,名称中文释义；未逐项审计技能正文
+99,办公与文档,lark-doc,Lark/飞书：文档,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-doc,名称中文释义；未逐项审计技能正文
+100,办公与文档,lark-base,Lark/飞书：多维表格,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-base,名称中文释义；未逐项审计技能正文
+101,办公与文档,lark-shared,Lark/飞书：公共操作与工具,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-shared,名称中文释义；未逐项审计技能正文
+102,办公与文档,lark-im,Lark/飞书：即时消息,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-im,名称中文释义；未逐项审计技能正文
+103,办公与文档,lark-drive,Lark/飞书：云盘文件,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-drive,名称中文释义；未逐项审计技能正文
+104,办公与文档,lark-sheets,Lark/飞书：电子表格,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-sheets,名称中文释义；未逐项审计技能正文
+105,办公与文档,lark-wiki,Lark/飞书：知识库,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-wiki,名称中文释义；未逐项审计技能正文
+106,办公与文档,lark-whiteboard,Lark/飞书：白板,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-whiteboard,名称中文释义；未逐项审计技能正文
+107,办公与文档,lark-task,Lark/飞书：任务管理,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-task,名称中文释义；未逐项审计技能正文
+108,办公与文档,lark-calendar,Lark/飞书：日历,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-calendar,名称中文释义；未逐项审计技能正文
+109,办公与文档,lark-mail,Lark/飞书：邮件,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-mail,名称中文释义；未逐项审计技能正文
+110,办公与文档,lark-minutes,Lark/飞书：妙记与会议记录,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-minutes,名称中文释义；未逐项审计技能正文
+111,办公与文档,lark-vc,Lark/飞书：视频会议,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-vc,名称中文释义；未逐项审计技能正文
+112,办公与文档,lark-event,Lark/飞书：事件订阅,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-event,名称中文释义；未逐项审计技能正文
+113,办公与文档,lark-contact,Lark/飞书：通讯录,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-contact,名称中文释义；未逐项审计技能正文
+114,办公与文档,lark-workflow-meeting-summary,Lark/飞书：会议总结工作流,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-workflow-meeting-summary,名称中文释义；未逐项审计技能正文
+115,开发、代理与工作流程,paper-context-resolver,解析论文背景与上下文,lllllllama/rigorpilot-skills,1,https://skills.sh/lllllllama/rigorpilot-skills/paper-context-resolver,名称中文释义；未逐项审计技能正文
+116,办公与文档,lark-workflow-standup-report,Lark/飞书：每日站会报告工作流,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-workflow-standup-report,名称中文释义；未逐项审计技能正文
+117,办公与文档,lark-openapi-explorer,Lark/飞书：开放接口探索,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-openapi-explorer,名称中文释义；未逐项审计技能正文
+118,办公与文档,lark-skill-maker,Lark/飞书：技能生成,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-skill-maker,名称中文释义；未逐项审计技能正文
+119,开发、代理与工作流程,repo-intake-and-plan,接收代码仓库并制定计划,lllllllama/rigorpilot-skills,1,https://skills.sh/lllllllama/rigorpilot-skills/repo-intake-and-plan,名称中文释义；未逐项审计技能正文
+120,开发、代理与工作流程,minimal-run-and-audit,最小运行验证与审计,lllllllama/rigorpilot-skills,1,https://skills.sh/lllllllama/rigorpilot-skills/minimal-run-and-audit,名称中文释义；未逐项审计技能正文
+121,开发、代理与工作流程,env-and-assets-bootstrap,准备环境与项目资产,lllllllama/rigorpilot-skills,1,https://skills.sh/lllllllama/rigorpilot-skills/env-and-assets-bootstrap,名称中文释义；未逐项审计技能正文
+122,后端、数据库与云服务,azure-quotas,Azure（微软云平台）：配额管理,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-quotas,名称中文释义；未逐项审计技能正文
+123,开发、代理与工作流程,git-guardrails-claude-code,Claude Code 的 Git（版本管理）操作防护,mattpocock/skills,1,https://skills.sh/mattpocock/skills/git-guardrails-claude-code,名称中文释义；未逐项审计技能正文
+124,后端、数据库与云服务,azure-upgrade,Azure（微软云平台）：升级,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-upgrade,名称中文释义；未逐项审计技能正文
+125,开发、代理与工作流程,setup-pre-commit,配置提交前检查,mattpocock/skills,1,https://skills.sh/mattpocock/skills/setup-pre-commit,名称中文释义；未逐项审计技能正文
+126,后端、数据库与云服务,supabase-postgres-best-practices,Supabase 的 PostgreSQL（关系数据库）最佳实践,supabase/agent-skills,1,https://skills.sh/supabase/agent-skills/supabase-postgres-best-practices,名称中文释义；未逐项审计技能正文
+127,开发、代理与工作流程,writing-beats,组织写作节拍与情节节点,mattpocock/skills,1,https://skills.sh/mattpocock/skills/writing-beats,名称中文释义；未逐项审计技能正文
+128,开发、代理与工作流程,writing-shape,规划文章结构,mattpocock/skills,1,https://skills.sh/mattpocock/skills/writing-shape,名称中文释义；未逐项审计技能正文
+129,开发、代理与工作流程,writing-fragments,整理写作片段,mattpocock/skills,1,https://skills.sh/mattpocock/skills/writing-fragments,名称中文释义；未逐项审计技能正文
+130,开发、代理与工作流程,to-questionnaire,生成需求问卷,mattpocock/skills,1,https://skills.sh/mattpocock/skills/to-questionnaire,名称中文释义；未逐项审计技能正文
+131,开发、代理与工作流程,scaffold-exercises,搭建练习题与练习项目,mattpocock/skills,1,https://skills.sh/mattpocock/skills/scaffold-exercises,名称中文释义；未逐项审计技能正文
+132,图像、视频与音频,video-edit,视频编辑,prime-skills/runcomfy-agent-skills,2,https://skills.sh/prime-skills/runcomfy-agent-skills/video-edit,名称中文释义；未逐项审计技能正文
+133,图像、视频与音频,image-to-video,图像生成视频,prime-skills/runcomfy-agent-skills,2,https://skills.sh/prime-skills/runcomfy-agent-skills/image-to-video,名称中文释义；未逐项审计技能正文
+134,图像、视频与音频,nano-banana-2,Nano Banana 2 图像工具,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/nano-banana-2,名称中文释义；未逐项审计技能正文
+135,图像、视频与音频,image-edit,图像编辑,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/image-edit,名称中文释义；未逐项审计技能正文
+136,开发、代理与工作流程,migrate-to-shoehorn,迁移到 Shoehorn 工具,mattpocock/skills,1,https://skills.sh/mattpocock/skills/migrate-to-shoehorn,名称中文释义；未逐项审计技能正文
+137,图像、视频与音频,nano-banana-edit,Nano Banana 图像编辑,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/nano-banana-edit,名称中文释义；未逐项审计技能正文
+138,图像、视频与音频,flux-kontext,FLUX Kontext 图像编辑,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/flux-kontext,名称中文释义；未逐项审计技能正文
+139,图像、视频与音频,wan-2-7,Wan 2.7 视频生成,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/wan-2-7,名称中文释义；未逐项审计技能正文
+140,图像、视频与音频,gpt-image-edit,GPT Image 图像编辑,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/gpt-image-edit,名称中文释义；未逐项审计技能正文
+141,图像、视频与音频,seedance-v2,Seedance 2 视频生成,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/seedance-v2,名称中文释义；未逐项审计技能正文
+142,图像、视频与音频,happyhorse-1-0,HappyHorse 1.0 视频工具,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/happyhorse-1-0,名称中文释义；未逐项审计技能正文
+143,办公与文档,lark-approval,Lark/飞书：审批,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-approval,名称中文释义；未逐项审计技能正文
+144,图像、视频与音频,flux-2-klein,FLUX 2 Klein 图像生成,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/flux-2-klein,名称中文释义；未逐项审计技能正文
+145,界面、设计与动画,high-end-visual-design,高品质视觉设计,leonxlnx/taste-skill,1,https://skills.sh/leonxlnx/taste-skill/high-end-visual-design,名称中文释义；未逐项审计技能正文
+146,图像、视频与音频,product-launch-video,产品发布视频制作,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/product-launch-video,名称中文释义；未逐项审计技能正文
+147,界面、设计与动画,redesign-existing-projects,重新设计现有项目界面,leonxlnx/taste-skill,1,https://skills.sh/leonxlnx/taste-skill/redesign-existing-projects,名称中文释义；未逐项审计技能正文
+148,图像、视频与音频,remotion-to-hyperframes,从 Remotion 迁移到 Hyperframes,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/remotion-to-hyperframes,名称中文释义；未逐项审计技能正文
+149,后端、数据库与云服务,azure-enterprise-infra-planner,Azure（微软云平台）：企业基础设施规划,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-enterprise-infra-planner,名称中文释义；未逐项审计技能正文
+150,图像、视频与音频,ai-image-generation,AI（人工智能）图像生成,magentosh/superpowers,8,https://skills.sh/magentosh/superpowers/ai-image-generation,名称中文释义；未逐项审计技能正文
+151,图像、视频与音频,ai-video-generation,AI（人工智能）视频生成,magentosh/superpowers,8,https://skills.sh/magentosh/superpowers/ai-video-generation,名称中文释义；未逐项审计技能正文
+152,图像、视频与音频,ai-avatar-video,AI（人工智能）数字人视频,magentosh/superpowers,7,https://skills.sh/magentosh/superpowers/ai-avatar-video,名称中文释义；未逐项审计技能正文
+153,营销与运营,twitter-automation,Twitter（社交平台）操作自动化,magentosh/superpowers,6,https://skills.sh/magentosh/superpowers/twitter-automation,名称中文释义；未逐项审计技能正文
+154,后端、数据库与云服务,azure-kubernetes,Azure（微软云平台）：Kubernetes 容器集群,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-kubernetes,名称中文释义；未逐项审计技能正文
+155,图像、视频与音频,faceless-explainer,无真人出镜的解说视频,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/faceless-explainer,名称中文释义；未逐项审计技能正文
+156,图像、视频与音频,ai-avatar-video,AI（人工智能）数字人视频,qu-skills/superpowers,7,https://skills.sh/qu-skills/superpowers/ai-avatar-video,名称中文释义；未逐项审计技能正文
+157,营销与运营,twitter-automation,Twitter（社交平台）操作自动化,qu-skills/superpowers,6,https://skills.sh/qu-skills/superpowers/twitter-automation,名称中文释义；未逐项审计技能正文
+158,图像、视频与音频,ai-video-generation,AI（人工智能）视频生成,qu-skills/superpowers,8,https://skills.sh/qu-skills/superpowers/ai-video-generation,名称中文释义；未逐项审计技能正文
+159,图像、视频与音频,ai-image-generation,AI（人工智能）图像生成,qu-skills/superpowers,8,https://skills.sh/qu-skills/superpowers/ai-image-generation,名称中文释义；未逐项审计技能正文
+160,办公与文档,lark-slides,Lark/飞书：演示文稿,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-slides,名称中文释义；未逐项审计技能正文
+161,图像、视频与音频,motion-graphics,动态图形制作,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/motion-graphics,名称中文释义；未逐项审计技能正文
+162,办公与文档,lark-attendance,Lark/飞书：考勤,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-attendance,名称中文释义；未逐项审计技能正文
+163,图像、视频与音频,kling-3-0,Kling（可灵）3.0 视频生成,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/kling-3-0,名称中文释义；未逐项审计技能正文
+164,开发、代理与工作流程,skill-creator,创建与改进技能,anthropics/skills,1,https://skills.sh/anthropics/skills/skill-creator,名称中文释义；未逐项审计技能正文
+165,开发、代理与工作流程,caveman-commit,Caveman（简洁代理工作流）：提交代码,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/caveman-commit,名称中文释义；未逐项审计技能正文
+166,开发、代理与工作流程,writing-for-agents,为代理编写可执行说明,mattpocock/skills,1,https://skills.sh/mattpocock/skills/writing-for-agents,名称中文释义；未逐项审计技能正文
+167,后端、数据库与云服务,azure-rbac,Azure（微软云平台）：RBAC（基于角色的访问控制）,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-rbac,名称中文释义；未逐项审计技能正文
+168,界面、设计与动画,minimalist-ui,极简 UI（用户界面）设计,leonxlnx/taste-skill,1,https://skills.sh/leonxlnx/taste-skill/minimalist-ui,名称中文释义；未逐项审计技能正文
+169,开发、代理与工作流程,caveman-review,Caveman（简洁代理工作流）：代码审查,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/caveman-review,名称中文释义；未逐项审计技能正文
+170,图像、视频与音频,codex-pet,Codex（编程代理）宠物制作,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/codex-pet,名称中文释义；未逐项审计技能正文
+171,开发、代理与工作流程,caveman-compress,Caveman（简洁代理工作流）：压缩上下文,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/caveman-compress,名称中文释义；未逐项审计技能正文
+172,办公与文档,lark-okr,Lark/飞书：OKR（目标与关键结果）,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-okr,名称中文释义；未逐项审计技能正文
+173,开发、代理与工作流程,loop-me,循环执行与迭代改进,mattpocock/skills,1,https://skills.sh/mattpocock/skills/loop-me,名称中文释义；未逐项审计技能正文
+174,界面、设计与动画,ui-ux-pro-max,UI/UX（界面与用户体验）设计工具集,nextlevelbuilder/ui-ux-pro-max-skill,1,https://skills.sh/nextlevelbuilder/ui-ux-pro-max-skill/ui-ux-pro-max,名称中文释义；未逐项审计技能正文
+175,开发、代理与工作流程,brainstorming,头脑风暴,obra/superpowers,1,https://skills.sh/obra/superpowers/brainstorming,名称中文释义；未逐项审计技能正文
+176,开发、代理与工作流程,caveman-help,Caveman（简洁代理工作流）：使用帮助,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/caveman-help,名称中文释义；未逐项审计技能正文
+177,开发、代理与工作流程,vercel-composition-patterns,React 组件组合设计模式,vercel-labs/agent-skills,1,https://skills.sh/vercel-labs/agent-skills/vercel-composition-patterns,名称中文释义；未逐项审计技能正文
+178,开发、代理与工作流程,wait-what,检查疑点与重新理解问题,mattpocock/skills,1,https://skills.sh/mattpocock/skills/wait-what,名称中文释义；未逐项审计技能正文
+179,界面、设计与动画,full-output-enforcement,要求完整输出代码或内容,leonxlnx/taste-skill,1,https://skills.sh/leonxlnx/taste-skill/full-output-enforcement,名称中文释义；未逐项审计技能正文
+180,图像、视频与音频,ai-video-generation,AI（人工智能）视频生成,prime-skills/runcomfy-agent-skills,8,https://skills.sh/prime-skills/runcomfy-agent-skills/ai-video-generation,名称中文释义；未逐项审计技能正文
+181,图像、视频与音频,ai-image-generation,AI（人工智能）图像生成,prime-skills/runcomfy-agent-skills,8,https://skills.sh/prime-skills/runcomfy-agent-skills/ai-image-generation,名称中文释义；未逐项审计技能正文
+182,办公与文档,lark-markdown,Lark/飞书：Markdown 文档,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-markdown,名称中文释义；未逐项审计技能正文
+183,图像、视频与音频,runcomfy-cli,RunComfy（图像视频工作流平台）命令行操作,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/runcomfy-cli,名称中文释义；未逐项审计技能正文
+184,图像、视频与音频,ai-avatar-video,AI（人工智能）数字人视频,prime-skills/runcomfy-agent-skills,7,https://skills.sh/prime-skills/runcomfy-agent-skills/ai-avatar-video,名称中文释义；未逐项审计技能正文
+185,图像、视频与音频,face-swap,换脸处理,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/face-swap,名称中文释义；未逐项审计技能正文
+186,开发、代理与工作流程,claude-handoff,Claude（AI 代理）任务交接,mattpocock/skills,1,https://skills.sh/mattpocock/skills/claude-handoff,名称中文释义；未逐项审计技能正文
+187,图像、视频与音频,video-inpainting,视频局部修补,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/video-inpainting,名称中文释义；未逐项审计技能正文
+188,界面、设计与动画,gpt-taste,GPT 前端视觉设计与动效,leonxlnx/taste-skill,1,https://skills.sh/leonxlnx/taste-skill/gpt-taste,名称中文释义；未逐项审计技能正文
+189,图像、视频与音频,image-inpainting,图像局部修补,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/image-inpainting,名称中文释义；未逐项审计技能正文
+190,图像、视频与音频,controlnet-pose,ControlNet（生成控制工具）姿势控制,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/controlnet-pose,名称中文释义；未逐项审计技能正文
+191,图像、视频与音频,lipsync,口型同步,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/lipsync,名称中文释义；未逐项审计技能正文
+192,图像、视频与音频,video-extend,延长视频,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/video-extend,名称中文释义；未逐项审计技能正文
+193,图像、视频与音频,elevenlabs-music-generation,ElevenLabs（音频平台）音乐生成,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/elevenlabs-music-generation,名称中文释义；未逐项审计技能正文
+194,图像、视频与音频,image-outpainting,图像扩展画面,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/image-outpainting,名称中文释义；未逐项审计技能正文
+195,界面、设计与动画,industrial-brutalist-ui,工业粗野风格界面设计,leonxlnx/taste-skill,1,https://skills.sh/leonxlnx/taste-skill/industrial-brutalist-ui,名称中文释义；未逐项审计技能正文
+196,图像、视频与音频,relight,调整图像或视频光照,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/relight,名称中文释义；未逐项审计技能正文
+197,图像、视频与音频,video-outpainting,视频扩展画面,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/video-outpainting,名称中文释义；未逐项审计技能正文
+198,界面、设计与动画,stitch-design-taste,Stitch（界面生成工具）设计审美指导,leonxlnx/taste-skill,1,https://skills.sh/leonxlnx/taste-skill/stitch-design-taste,名称中文释义；未逐项审计技能正文
+199,图像、视频与音频,embedded-captions,嵌入视频字幕,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/embedded-captions,名称中文释义；未逐项审计技能正文
+200,后端、数据库与云服务,azure-cost,Azure（微软云平台）：成本管理,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-cost,名称中文释义；未逐项审计技能正文
+201,图像、视频与音频,ai-music,AI（人工智能）音乐制作,prime-skills/runcomfy-agent-skills,2,https://skills.sh/prime-skills/runcomfy-agent-skills/ai-music,名称中文释义；未逐项审计技能正文
+202,界面、设计与动画,brandkit,品牌视觉素材套件,leonxlnx/taste-skill,1,https://skills.sh/leonxlnx/taste-skill/brandkit,名称中文释义；未逐项审计技能正文
+203,图像、视频与音频,ace-step,ACE-Step 音乐生成,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/ace-step,名称中文释义；未逐项审计技能正文
+204,图像、视频与音频,pr-to-video,把 PR（代码合并请求）制作成视频,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/pr-to-video,名称中文释义；未逐项审计技能正文
+205,界面、设计与动画,image-to-code,根据图像生成界面代码,leonxlnx/taste-skill,1,https://skills.sh/leonxlnx/taste-skill/image-to-code,名称中文释义；未逐项审计技能正文
+206,后端、数据库与云服务,azure-hosted-copilot-sdk,Azure（微软云平台）：托管 Copilot 开发工具包,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-hosted-copilot-sdk,名称中文释义；未逐项审计技能正文
+207,后端、数据库与云服务,prisma-client-api,Prisma（数据库开发工具）：客户端接口,prisma/skills,1,https://skills.sh/prisma/skills/prisma-client-api,名称中文释义；未逐项审计技能正文
+208,界面、设计与动画,imagegen-frontend-web,网页前端配图生成,leonxlnx/taste-skill,1,https://skills.sh/leonxlnx/taste-skill/imagegen-frontend-web,名称中文释义；未逐项审计技能正文
+209,后端、数据库与云服务,prisma-database-setup,Prisma（数据库开发工具）：数据库配置,prisma/skills,1,https://skills.sh/prisma/skills/prisma-database-setup,名称中文释义；未逐项审计技能正文
+210,开发、代理与工作流程,to-prd,生成 PRD（产品需求文档）,mattpocock/skills,1,https://skills.sh/mattpocock/skills/to-prd,名称中文释义；未逐项审计技能正文
+211,后端、数据库与云服务,prisma-cli,Prisma（数据库开发工具）：命令行工具,prisma/skills,1,https://skills.sh/prisma/skills/prisma-cli,名称中文释义；未逐项审计技能正文
+212,界面、设计与动画,imagegen-frontend-mobile,手机应用前端配图生成,leonxlnx/taste-skill,1,https://skills.sh/leonxlnx/taste-skill/imagegen-frontend-mobile,名称中文释义；未逐项审计技能正文
+213,后端、数据库与云服务,prisma-postgres,Prisma（数据库开发工具）：PostgreSQL 数据库,prisma/skills,1,https://skills.sh/prisma/skills/prisma-postgres,名称中文释义；未逐项审计技能正文
+214,办公与文档,lark-vc-agent,Lark/飞书：视频会议代理,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-vc-agent,名称中文释义；未逐项审计技能正文
+215,开发、代理与工作流程,cavecrew,Caveman 代理团队协作,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/cavecrew,名称中文释义；未逐项审计技能正文
+216,后端、数据库与云服务,airunway-aks-setup,在 AKS（Azure 容器集群）配置 AI Runway,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/airunway-aks-setup,名称中文释义；未逐项审计技能正文
+217,图像、视频与音频,music-to-video,根据音乐制作视频,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/music-to-video,名称中文释义；未逐项审计技能正文
+218,开发、代理与工作流程,caveman-stats,Caveman（简洁代理工作流）：统计信息,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/caveman-stats,名称中文释义；未逐项审计技能正文
+219,界面、设计与动画,emil-design-eng,Emil 风格的设计工程指导,emilkowalski/skills,1,https://skills.sh/emilkowalski/skills/emil-design-eng,名称中文释义；未逐项审计技能正文
+220,后端、数据库与云服务,prisma-driver-adapter-implementation,Prisma（数据库开发工具）：驱动适配器实现,prisma/skills,1,https://skills.sh/prisma/skills/prisma-driver-adapter-implementation,名称中文释义；未逐项审计技能正文
+221,后端、数据库与云服务,prisma-upgrade-v7,Prisma（数据库开发工具）：升级到第七版,prisma/skills,1,https://skills.sh/prisma/skills/prisma-upgrade-v7,名称中文释义；未逐项审计技能正文
+222,后端、数据库与云服务,prisma-postgres-setup,Prisma（数据库开发工具）：PostgreSQL 配置,prisma/skills,1,https://skills.sh/prisma/skills/prisma-postgres-setup,名称中文释义；未逐项审计技能正文
+223,开发、代理与工作流程,to-issues,生成 Issue（项目问题或任务）,mattpocock/skills,1,https://skills.sh/mattpocock/skills/to-issues,名称中文释义；未逐项审计技能正文
+224,后端、数据库与云服务,prisma-compute,Prisma（数据库开发工具）：计算资源,prisma/skills,1,https://skills.sh/prisma/skills/prisma-compute,名称中文释义；未逐项审计技能正文
+225,后端、数据库与云服务,prisma-mongodb-upgrade,Prisma（数据库开发工具）：MongoDB 数据库升级,prisma/skills,1,https://skills.sh/prisma/skills/prisma-mongodb-upgrade,名称中文释义；未逐项审计技能正文
+226,界面、设计与动画,impeccable,Impeccable（界面设计改进工具集）,pbakaus/impeccable,1,https://skills.sh/pbakaus/impeccable/impeccable,名称中文释义；未逐项审计技能正文
+227,图像、视频与音频,slideshow,幻灯片与图文轮播制作,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/slideshow,名称中文释义；未逐项审计技能正文
+228,图像、视频与音频,talking-head-recut,重新剪辑人物讲述视频,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/talking-head-recut,名称中文释义；未逐项审计技能正文
+229,开发、代理与工作流程,setup-ts-deep-modules,配置 TypeScript 深模块结构,mattpocock/skills,1,https://skills.sh/mattpocock/skills/setup-ts-deep-modules,名称中文释义；未逐项审计技能正文
+230,后端、数据库与云服务,supabase,Supabase（数据库与后端服务）开发,supabase/agent-skills,1,https://skills.sh/supabase/agent-skills/supabase,名称中文释义；未逐项审计技能正文
+231,后端、数据库与云服务,entra-agent-id,Entra（微软身份平台）代理身份,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/entra-agent-id,名称中文释义；未逐项审计技能正文
+232,开发、代理与工作流程,ai-research-explore,探索 AI 研究项目,lllllllama/rigorpilot-skills,1,https://skills.sh/lllllllama/rigorpilot-skills/ai-research-explore,名称中文释义；未逐项审计技能正文
+233,开发、代理与工作流程,analyze-project,分析项目结构与实现,lllllllama/rigorpilot-skills,1,https://skills.sh/lllllllama/rigorpilot-skills/analyze-project,名称中文释义；未逐项审计技能正文
+234,开发、代理与工作流程,ai-research-reproduction,复现 AI 研究,lllllllama/rigorpilot-skills,1,https://skills.sh/lllllllama/rigorpilot-skills/ai-research-reproduction,名称中文释义；未逐项审计技能正文
+235,开发、代理与工作流程,explore-code,探索代码,lllllllama/rigorpilot-skills,1,https://skills.sh/lllllllama/rigorpilot-skills/explore-code,名称中文释义；未逐项审计技能正文
+236,开发、代理与工作流程,safe-debug,稳妥地排查错误,lllllllama/rigorpilot-skills,1,https://skills.sh/lllllllama/rigorpilot-skills/safe-debug,名称中文释义；未逐项审计技能正文
+237,开发、代理与工作流程,run-train,运行模型训练流程,lllllllama/rigorpilot-skills,1,https://skills.sh/lllllllama/rigorpilot-skills/run-train,名称中文释义；未逐项审计技能正文
+238,开发、代理与工作流程,explore-run,探索运行方式,lllllllama/rigorpilot-skills,1,https://skills.sh/lllllllama/rigorpilot-skills/explore-run,名称中文释义；未逐项审计技能正文
+239,开发、代理与工作流程,writing-great-skills,编写高质量技能,mattpocock/skills,1,https://skills.sh/mattpocock/skills/writing-great-skills,名称中文释义；未逐项审计技能正文
+240,办公与文档,lark-apps,Lark/飞书：应用管理,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-apps,名称中文释义；未逐项审计技能正文
+241,界面、设计与动画,design-taste-frontend-v1,前端设计审美指导第一版,leonxlnx/taste-skill,1,https://skills.sh/leonxlnx/taste-skill/design-taste-frontend-v1,名称中文释义；未逐项审计技能正文
+242,开发、代理与工作流程,orca-cli,Orca 命令行工具,stablyai/orca,1,https://skills.sh/stablyai/orca/orca-cli,名称中文释义；未逐项审计技能正文
+243,开发、代理与工作流程,systematic-debugging,系统化调试,obra/superpowers,1,https://skills.sh/obra/superpowers/systematic-debugging,名称中文释义；未逐项审计技能正文
+244,后端、数据库与云服务,azure-reliability,Azure（微软云平台）：可靠性,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-reliability,名称中文释义；未逐项审计技能正文
+245,开发、代理与工作流程,orchestration,协调任务与代理执行,stablyai/orca,1,https://skills.sh/stablyai/orca/orchestration,名称中文释义；未逐项审计技能正文
+246,界面、设计与动画,ios-design,iOS（苹果手机系统）界面设计,uizze.sh,1,https://skills.sh/uizze.sh/ios-design,名称中文释义；未逐项审计技能正文
+247,界面、设计与动画,shadcn,shadcn（界面组件库）开发,shadcn/ui,2,https://skills.sh/shadcn/ui/shadcn,名称中文释义；未逐项审计技能正文
+248,图像、视频与音频,hyperframes-studio,Hyperframes（程序化视频工具）：编辑工作室,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/hyperframes-studio,名称中文释义；未逐项审计技能正文
+249,开发、代理与工作流程,writing-plans,编写实施计划,obra/superpowers,1,https://skills.sh/obra/superpowers/writing-plans,名称中文释义；未逐项审计技能正文
+250,图像、视频与音频,ai-video-generation,AI（人工智能）视频生成,skills-shell/superpowers,8,https://skills.sh/skills-shell/superpowers/ai-video-generation,名称中文释义；未逐项审计技能正文
+251,营销与运营,twitter-automation,Twitter（社交平台）操作自动化,skills-shell/superpowers,6,https://skills.sh/skills-shell/superpowers/twitter-automation,名称中文释义；未逐项审计技能正文
+252,图像、视频与音频,ai-image-generation,AI（人工智能）图像生成,skills-shell/superpowers,8,https://skills.sh/skills-shell/superpowers/ai-image-generation,名称中文释义；未逐项审计技能正文
+253,图像、视频与音频,ai-avatar-video,AI（人工智能）数字人视频,skills-shell/superpowers,7,https://skills.sh/skills-shell/superpowers/ai-avatar-video,名称中文释义；未逐项审计技能正文
+254,开发、代理与工作流程,using-superpowers,使用 Superpowers（代理工作流技能集）,obra/superpowers,1,https://skills.sh/obra/superpowers/using-superpowers,名称中文释义；未逐项审计技能正文
+255,图像、视频与音频,ai-image-generation,AI（人工智能）图像生成,its-a-skill-issue/superpowers,8,https://skills.sh/its-a-skill-issue/superpowers/ai-image-generation,名称中文释义；未逐项审计技能正文
+256,营销与运营,twitter-automation,Twitter（社交平台）操作自动化,its-a-skill-issue/superpowers,6,https://skills.sh/its-a-skill-issue/superpowers/twitter-automation,名称中文释义；未逐项审计技能正文
+257,图像、视频与音频,ai-avatar-video,AI（人工智能）数字人视频,its-a-skill-issue/superpowers,7,https://skills.sh/its-a-skill-issue/superpowers/ai-avatar-video,名称中文释义；未逐项审计技能正文
+258,图像、视频与音频,ai-video-generation,AI（人工智能）视频生成,its-a-skill-issue/superpowers,8,https://skills.sh/its-a-skill-issue/superpowers/ai-video-generation,名称中文释义；未逐项审计技能正文
+259,图像、视频与音频,figma,Figma（设计协作工具）操作,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/figma,名称中文释义；未逐项审计技能正文
+260,开发、代理与工作流程,requesting-code-review,请求代码审查,obra/superpowers,1,https://skills.sh/obra/superpowers/requesting-code-review,名称中文释义；未逐项审计技能正文
+261,开发、代理与工作流程,test-driven-development,测试驱动开发,obra/superpowers,1,https://skills.sh/obra/superpowers/test-driven-development,名称中文释义；未逐项审计技能正文
+262,浏览器与信息获取,just-scrape,网页抓取,scrapegraphai/just-scrape,1,https://skills.sh/scrapegraphai/just-scrape/just-scrape,名称中文释义；未逐项审计技能正文
+263,图像、视频与音频,ai-image-generation,AI（人工智能）图像生成,bankai-skills/superpowers,8,https://skills.sh/bankai-skills/superpowers/ai-image-generation,名称中文释义；未逐项审计技能正文
+264,图像、视频与音频,ai-avatar-video,AI（人工智能）数字人视频,bankai-skills/superpowers,7,https://skills.sh/bankai-skills/superpowers/ai-avatar-video,名称中文释义；未逐项审计技能正文
+265,营销与运营,twitter-automation,Twitter（社交平台）操作自动化,bankai-skills/superpowers,6,https://skills.sh/bankai-skills/superpowers/twitter-automation,名称中文释义；未逐项审计技能正文
+266,图像、视频与音频,ai-video-generation,AI（人工智能）视频生成,bankai-skills/superpowers,8,https://skills.sh/bankai-skills/superpowers/ai-video-generation,名称中文释义；未逐项审计技能正文
+267,界面、设计与动画,vercel-react-native-skills,React Native（跨平台手机开发）技能,vercel-labs/agent-skills,1,https://skills.sh/vercel-labs/agent-skills/vercel-react-native-skills,名称中文释义；未逐项审计技能正文
+268,后端、数据库与云服务,neon-postgres,Neon 的 PostgreSQL 数据库,neondatabase/agent-skills,1,https://skills.sh/neondatabase/agent-skills/neon-postgres,名称中文释义；未逐项审计技能正文
+269,开发、代理与工作流程,verification-before-completion,完成前验证,obra/superpowers,1,https://skills.sh/obra/superpowers/verification-before-completion,名称中文释义；未逐项审计技能正文
+270,办公与文档,pptx,PPTX（演示文稿文件）处理,anthropics/skills,1,https://skills.sh/anthropics/skills/pptx,名称中文释义；未逐项审计技能正文
+271,办公与文档,lark-note,Lark/飞书：笔记,larksuite/cli,2,https://skills.sh/larksuite/cli/lark-note,名称中文释义；未逐项审计技能正文
+272,开发、代理与工作流程,executing-plans,执行实施计划,obra/superpowers,1,https://skills.sh/obra/superpowers/executing-plans,名称中文释义；未逐项审计技能正文
+273,开发、代理与工作流程,diagnose,诊断问题,mattpocock/skills,1,https://skills.sh/mattpocock/skills/diagnose,名称中文释义；未逐项审计技能正文
+274,营销与运营,seo-audit,SEO（搜索引擎优化）审计,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/seo-audit,名称中文释义；未逐项审计技能正文
+275,开发、代理与工作流程,subagent-driven-development,子代理协作开发,obra/superpowers,1,https://skills.sh/obra/superpowers/subagent-driven-development,名称中文释义；未逐项审计技能正文
+276,营销与运营,copywriting,营销文案写作,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/copywriting,名称中文释义；未逐项审计技能正文
+277,开发、代理与工作流程,write-a-skill,编写技能,mattpocock/skills,1,https://skills.sh/mattpocock/skills/write-a-skill,名称中文释义；未逐项审计技能正文
+278,开发、代理与工作流程,zoom-out,从全局重新审视问题,mattpocock/skills,1,https://skills.sh/mattpocock/skills/zoom-out,名称中文释义；未逐项审计技能正文
+279,开发、代理与工作流程,implement-spec,按规格实现功能,mattpocock/skills,1,https://skills.sh/mattpocock/skills/implement-spec,名称中文释义；未逐项审计技能正文
+280,界面、设计与动画,review-animations,审查动画效果,emilkowalski/skills,1,https://skills.sh/emilkowalski/skills/review-animations,名称中文释义；未逐项审计技能正文
+281,开发、代理与工作流程,caveman,Caveman（简洁表达与代理工作流）,mattpocock/skills,2,https://skills.sh/mattpocock/skills/caveman,名称中文释义；未逐项审计技能正文
+282,后端、数据库与云服务,python-appservice-deploy,把 Python 应用部署到 App Service,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/python-appservice-deploy,名称中文释义；未逐项审计技能正文
+283,开发、代理与工作流程,receiving-code-review,理解并处理代码审查意见,obra/superpowers,1,https://skills.sh/obra/superpowers/receiving-code-review,名称中文释义；未逐项审计技能正文
+284,开发、代理与工作流程,design-an-interface,设计接口：提出多套方案并比较,mattpocock/skills,1,https://skills.sh/mattpocock/skills/design-an-interface,已核对公开简介
+285,办公与文档,pdf,PDF（便携文档格式）处理,anthropics/skills,1,https://skills.sh/anthropics/skills/pdf,名称中文释义；未逐项审计技能正文
+286,开发、代理与工作流程,retro,项目复盘,mattpocock/skills,1,https://skills.sh/mattpocock/skills/retro,名称中文释义；未逐项审计技能正文
+287,开发、代理与工作流程,dispatching-parallel-agents,分派并行代理任务,obra/superpowers,1,https://skills.sh/obra/superpowers/dispatching-parallel-agents,名称中文释义；未逐项审计技能正文
+288,开发、代理与工作流程,writing-skills,技能编写,obra/superpowers,1,https://skills.sh/obra/superpowers/writing-skills,名称中文释义；未逐项审计技能正文
+289,开发、代理与工作流程,using-git-worktrees,使用 Git Worktree（独立代码工作区）,obra/superpowers,1,https://skills.sh/obra/superpowers/using-git-worktrees,名称中文释义；未逐项审计技能正文
+290,开发、代理与工作流程,finishing-a-development-branch,完成开发分支交付,obra/superpowers,1,https://skills.sh/obra/superpowers/finishing-a-development-branch,名称中文释义；未逐项审计技能正文
+291,开发、代理与工作流程,request-refactor-plan,请求代码重构计划,mattpocock/skills,1,https://skills.sh/mattpocock/skills/request-refactor-plan,名称中文释义；未逐项审计技能正文
+292,界面、设计与动画,animation-vocabulary,动画术语与表达,emilkowalski/skills,1,https://skills.sh/emilkowalski/skills/animation-vocabulary,名称中文释义；未逐项审计技能正文
+293,界面、设计与动画,apple-design,Apple（苹果）风格设计,emilkowalski/skills,1,https://skills.sh/emilkowalski/skills/apple-design,名称中文释义；未逐项审计技能正文
+294,办公与文档,docx,DOCX（Word 文档格式）处理,anthropics/skills,1,https://skills.sh/anthropics/skills/docx,名称中文释义；未逐项审计技能正文
+295,开发、代理与工作流程,qa,QA（质量保证与测试）,mattpocock/skills,1,https://skills.sh/mattpocock/skills/qa,名称中文释义；未逐项审计技能正文
+296,图像、视频与音频,higgsfield-generate,Higgsfield（视觉生成平台）内容生成,higgsfield-ai/skills,1,https://skills.sh/higgsfield-ai/skills/higgsfield-generate,名称中文释义；未逐项审计技能正文
+297,浏览器与信息获取,computer-use,操作电脑界面,stablyai/orca,1,https://skills.sh/stablyai/orca/computer-use,名称中文释义；未逐项审计技能正文
+298,开发、代理与工作流程,ubiquitous-language,统一业务术语,mattpocock/skills,1,https://skills.sh/mattpocock/skills/ubiquitous-language,名称中文释义；未逐项审计技能正文
+299,开发、代理与工作流程,wind-mcp-skill,Wind 的 MCP（模型上下文协议）技能,wind-alice/alicemarket,1,https://skills.sh/wind-alice/alicemarket/wind-mcp-skill,名称中文释义；未逐项审计技能正文
+300,办公与文档,obsidian-vault,Obsidian（笔记工具）知识库管理,mattpocock/skills,1,https://skills.sh/mattpocock/skills/obsidian-vault,名称中文释义；未逐项审计技能正文
+301,开发、代理与工作流程,edit-article,编辑文章,mattpocock/skills,1,https://skills.sh/mattpocock/skills/edit-article,名称中文释义；未逐项审计技能正文
+302,后端、数据库与云服务,neon,Neon（云数据库平台）开发,neondatabase/agent-skills,1,https://skills.sh/neondatabase/agent-skills/neon,名称中文释义；未逐项审计技能正文
+303,界面、设计与动画,improve-animations,改进动画效果,emilkowalski/skills,1,https://skills.sh/emilkowalski/skills/improve-animations,名称中文释义；未逐项审计技能正文
+304,浏览器与信息获取,playwright-cli,Playwright（浏览器自动化工具）命令行操作,microsoft/playwright-cli,1,https://skills.sh/microsoft/playwright-cli/playwright-cli,名称中文释义；未逐项审计技能正文
+305,办公与文档,xlsx,XLSX（Excel 表格格式）处理,anthropics/skills,1,https://skills.sh/anthropics/skills/xlsx,名称中文释义；未逐项审计技能正文
+306,图像、视频与音频,higgsfield-product-photoshoot,Higgsfield 产品摄影生成,higgsfield-ai/skills,1,https://skills.sh/higgsfield-ai/skills/higgsfield-product-photoshoot,名称中文释义；未逐项审计技能正文
+307,图像、视频与音频,higgsfield-soul-id,Higgsfield Soul ID 角色一致性,higgsfield-ai/skills,1,https://skills.sh/higgsfield-ai/skills/higgsfield-soul-id,名称中文释义；未逐项审计技能正文
+308,开发、代理与工作流程,webapp-testing,网页应用测试,anthropics/skills,1,https://skills.sh/anthropics/skills/webapp-testing,名称中文释义；未逐项审计技能正文
+309,图像、视频与音频,higgsfield-marketplace-cards,Higgsfield 商品展示卡片,higgsfield-ai/skills,1,https://skills.sh/higgsfield-ai/skills/higgsfield-marketplace-cards,名称中文释义；未逐项审计技能正文
+310,界面、设计与动画,find-animation-opportunities,寻找适合添加动画的位置,emilkowalski/skills,1,https://skills.sh/emilkowalski/skills/find-animation-opportunities,名称中文释义；未逐项审计技能正文
+311,后端、数据库与云服务,firebase-basics,Firebase（谷歌后端平台）：基础使用,firebase/agent-skills,1,https://skills.sh/firebase/agent-skills/firebase-basics,名称中文释义；未逐项审计技能正文
+312,后端、数据库与云服务,firebase-auth-basics,Firebase（谷歌后端平台）：身份认证基础,firebase/agent-skills,1,https://skills.sh/firebase/agent-skills/firebase-auth-basics,名称中文释义；未逐项审计技能正文
+313,后端、数据库与云服务,firebase-hosting-basics,Firebase（谷歌后端平台）：网站托管基础,firebase/agent-skills,1,https://skills.sh/firebase/agent-skills/firebase-hosting-basics,名称中文释义；未逐项审计技能正文
+314,后端、数据库与云服务,firebase-app-hosting-basics,Firebase（谷歌后端平台）：应用托管基础,firebase/agent-skills,1,https://skills.sh/firebase/agent-skills/firebase-app-hosting-basics,名称中文释义；未逐项审计技能正文
+315,后端、数据库与云服务,firebase-data-connect,Firebase（谷歌后端平台）：数据库连接,firebase/agent-skills,1,https://skills.sh/firebase/agent-skills/firebase-data-connect,名称中文释义；未逐项审计技能正文
+316,开发、代理与工作流程,sentry-cli,Sentry（错误监控平台）命令行操作,sentry/dev,1,https://skills.sh/sentry/dev/sentry-cli,名称中文释义；未逐项审计技能正文
+317,办公与文档,lark-meeting,Lark/飞书：会议管理,open.feishu.cn,1,https://skills.sh/open.feishu.cn/lark-meeting,名称中文释义；未逐项审计技能正文
+318,营销与运营,marketing-psychology,营销心理学,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/marketing-psychology,名称中文释义；未逐项审计技能正文
+319,后端、数据库与云服务,azure-cost-optimization,Azure（微软云平台）：成本优化,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-cost-optimization,名称中文释义；未逐项审计技能正文
+320,营销与运营,content-strategy,内容策略,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/content-strategy,名称中文释义；未逐项审计技能正文
+321,后端、数据库与云服务,deploy-to-vercel,部署到 Vercel（网站托管平台）,vercel-labs/agent-skills,1,https://skills.sh/vercel-labs/agent-skills/deploy-to-vercel,名称中文释义；未逐项审计技能正文
+322,界面、设计与动画,pick-ui-library,选择界面组件库,emilkowalski/skills,1,https://skills.sh/emilkowalski/skills/pick-ui-library,名称中文释义；未逐项审计技能正文
+323,界面、设计与动画,vercel-react-view-transitions,React 页面视图切换动画,vercel-labs/agent-skills,1,https://skills.sh/vercel-labs/agent-skills/vercel-react-view-transitions,名称中文释义；未逐项审计技能正文
+324,图像、视频与音频,remotion-render,Remotion（程序化视频工具）：视频渲染,remotion-dev/skills,2,https://skills.sh/remotion-dev/skills/remotion-render,名称中文释义；未逐项审计技能正文
+325,开发、代理与工作流程,archify,整理或改进架构,tt-a1i/archify,1,https://skills.sh/tt-a1i/archify/archify,名称中文释义；未逐项审计技能正文
+326,图像、视频与音频,remotion-create,Remotion（程序化视频工具）：创建视频,remotion-dev/skills,1,https://skills.sh/remotion-dev/skills/remotion-create,名称中文释义；未逐项审计技能正文
+327,图像、视频与音频,remotion-captions,Remotion（程序化视频工具）：字幕,remotion-dev/skills,1,https://skills.sh/remotion-dev/skills/remotion-captions,名称中文释义；未逐项审计技能正文
+328,营销与运营,programmatic-seo,批量程序化 SEO（搜索引擎优化）,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/programmatic-seo,名称中文释义；未逐项审计技能正文
+329,图像、视频与音频,hyperframes-media,Hyperframes（程序化视频工具）：媒体处理,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/hyperframes-media,名称中文释义；未逐项审计技能正文
+330,营销与运营,ai-seo,面向 AI 搜索的内容优化,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/ai-seo,名称中文释义；未逐项审计技能正文
+331,图像、视频与音频,remotion-markup,Remotion（程序化视频工具）：视频结构标记,remotion-dev/skills,1,https://skills.sh/remotion-dev/skills/remotion-markup,名称中文释义；未逐项审计技能正文
+332,营销与运营,copy-editing,文案校对与润色,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/copy-editing,名称中文释义；未逐项审计技能正文
+333,营销与运营,marketing-ideas,营销创意,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/marketing-ideas,名称中文释义；未逐项审计技能正文
+334,开发、代理与工作流程,prototype,制作原型,emilkowalski/skills,2,https://skills.sh/emilkowalski/skills/prototype,名称中文释义；未逐项审计技能正文
+335,浏览器与信息获取,agent-browser,代理操作浏览器,101-skills/superpowers,4,https://skills.sh/101-skills/superpowers/agent-browser,名称中文释义；未逐项审计技能正文
+336,图像、视频与音频,remotion-interactivity,Remotion（程序化视频工具）：交互效果,remotion-dev/skills,1,https://skills.sh/remotion-dev/skills/remotion-interactivity,名称中文释义；未逐项审计技能正文
+337,后端、数据库与云服务,azure-app-onboard,Azure（微软云平台）：应用接入,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-app-onboard,名称中文释义；未逐项审计技能正文
+338,后端、数据库与云服务,azure-app-onboard-prereq,Azure（微软云平台）：应用接入前提检查,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-app-onboard-prereq,名称中文释义；未逐项审计技能正文
+339,图像、视频与音频,remotion-saas,Remotion（程序化视频工具）：SaaS（软件服务）视频应用,remotion-dev/skills,1,https://skills.sh/remotion-dev/skills/remotion-saas,名称中文释义；未逐项审计技能正文
+340,图像、视频与音频,remotion-docs,Remotion（程序化视频工具）：文档查询,remotion-dev/skills,1,https://skills.sh/remotion-dev/skills/remotion-docs,名称中文释义；未逐项审计技能正文
+341,界面、设计与动画,animate,添加动画,emilkowalski/skills,2,https://skills.sh/emilkowalski/skills/animate,名称中文释义；未逐项审计技能正文
+342,后端、数据库与云服务,firebase-security-rules-auditor,Firebase（谷歌后端平台）：安全规则审计,firebase/agent-skills,1,https://skills.sh/firebase/agent-skills/firebase-security-rules-auditor,名称中文释义；未逐项审计技能正文
+343,界面、设计与动画,extract-design-system,提取设计系统,arvindrk/extract-design-system,1,https://skills.sh/arvindrk/extract-design-system/extract-design-system,名称中文释义；未逐项审计技能正文
+344,后端、数据库与云服务,firebase-ai-logic-basics,Firebase（谷歌后端平台）：AI Logic 基础,firebase/agent-skills,1,https://skills.sh/firebase/agent-skills/firebase-ai-logic-basics,名称中文释义；未逐项审计技能正文
+345,后端、数据库与云服务,firebase-firestore,Firebase（谷歌后端平台）：Firestore 文档数据库,firebase/agent-skills,1,https://skills.sh/firebase/agent-skills/firebase-firestore,名称中文释义；未逐项审计技能正文
+346,后端、数据库与云服务,convex-quickstart,Convex（实时后端平台）：快速入门,get-convex/agent-skills,1,https://skills.sh/get-convex/agent-skills/convex-quickstart,名称中文释义；未逐项审计技能正文
+347,图像、视频与音频,remotion-upgrade,Remotion（程序化视频工具）：升级,remotion-dev/skills,1,https://skills.sh/remotion-dev/skills/remotion-upgrade,名称中文释义；未逐项审计技能正文
+348,后端、数据库与云服务,convex-create-component,Convex（实时后端平台）：创建组件,get-convex/agent-skills,1,https://skills.sh/get-convex/agent-skills/convex-create-component,名称中文释义；未逐项审计技能正文
+349,营销与运营,ad-creative,广告创意制作,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/ad-creative,名称中文释义；未逐项审计技能正文
+350,开发、代理与工作流程,mcp-builder,构建 MCP（模型上下文协议）服务,anthropics/skills,1,https://skills.sh/anthropics/skills/mcp-builder,名称中文释义；未逐项审计技能正文
+351,后端、数据库与云服务,firebase-crashlytics,Firebase（谷歌后端平台）：崩溃监控,firebase/agent-skills,1,https://skills.sh/firebase/agent-skills/firebase-crashlytics,名称中文释义；未逐项审计技能正文
+352,开发、代理与工作流程,xcode-project-setup,配置 Xcode（苹果开发工具）项目,firebase/agent-skills,1,https://skills.sh/firebase/agent-skills/xcode-project-setup,名称中文释义；未逐项审计技能正文
+353,开发、代理与工作流程,better-auth-best-practices,Better Auth（身份认证库）最佳实践,better-auth/skills,1,https://skills.sh/better-auth/skills/better-auth-best-practices,名称中文释义；未逐项审计技能正文
+354,后端、数据库与云服务,vercel-cli-with-tokens,使用令牌操作 Vercel 命令行工具,vercel-labs/agent-skills,1,https://skills.sh/vercel-labs/agent-skills/vercel-cli-with-tokens,名称中文释义；未逐项审计技能正文
+355,营销与运营,cold-email,陌生客户开发邮件,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/cold-email,名称中文释义；未逐项审计技能正文
+356,图像、视频与音频,remotion-multimedia,Remotion（程序化视频工具）：多媒体,remotion-dev/skills,1,https://skills.sh/remotion-dev/skills/remotion-multimedia,名称中文释义；未逐项审计技能正文
+357,图像、视频与音频,remotion-maps,Remotion（程序化视频工具）：地图视频,remotion-dev/skills,1,https://skills.sh/remotion-dev/skills/remotion-maps,名称中文释义；未逐项审计技能正文
+358,安全与隐私,anti-detect-browser,反检测浏览器操作,antibrow/anti-detect-browser-skills,1,https://skills.sh/antibrow/anti-detect-browser-skills/anti-detect-browser,名称中文释义；未逐项审计技能正文
+359,后端、数据库与云服务,cloudflare,Cloudflare（网络与云平台）开发,cloudflare/skills,1,https://skills.sh/cloudflare/skills/cloudflare,名称中文释义；未逐项审计技能正文
+360,图像、视频与音频,higgsfield-websites,Higgsfield 网站视觉制作,higgsfield-ai/skills,1,https://skills.sh/higgsfield-ai/skills/higgsfield-websites,名称中文释义；未逐项审计技能正文
+361,界面、设计与动画,canvas-design,画布与平面视觉设计,anthropics/skills,1,https://skills.sh/anthropics/skills/canvas-design,名称中文释义；未逐项审计技能正文
+362,营销与运营,site-architecture,网站结构规划,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/site-architecture,名称中文释义；未逐项审计技能正文
+363,营销与运营,churn-prevention,降低客户流失,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/churn-prevention,名称中文释义；未逐项审计技能正文
+364,后端、数据库与云服务,firebase-remote-config-basics,Firebase（谷歌后端平台）：远程配置基础,firebase/agent-skills,1,https://skills.sh/firebase/agent-skills/firebase-remote-config-basics,名称中文释义；未逐项审计技能正文
+365,后端、数据库与云服务,wrangler,Wrangler（Cloudflare 命令行工具）,cloudflare/skills,1,https://skills.sh/cloudflare/skills/wrangler,名称中文释义；未逐项审计技能正文
+366,营销与运营,sales-enablement,销售支持材料与流程,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/sales-enablement,名称中文释义；未逐项审计技能正文
+367,图像、视频与音频,remotion-studio,Remotion（程序化视频工具）：编辑工作室,remotion-dev/skills,1,https://skills.sh/remotion-dev/skills/remotion-studio,名称中文释义；未逐项审计技能正文
+368,后端、数据库与云服务,workers-best-practices,Cloudflare Workers（云端函数）最佳实践,cloudflare/skills,1,https://skills.sh/cloudflare/skills/workers-best-practices,名称中文释义；未逐项审计技能正文
+369,浏览器与信息获取,browser-act,浏览器操作自动化,browser-act/skills,1,https://skills.sh/browser-act/skills/browser-act,名称中文释义；未逐项审计技能正文
+370,开发、代理与工作流程,web-artifacts-builder,创建网页交互作品,anthropics/skills,1,https://skills.sh/anthropics/skills/web-artifacts-builder,名称中文释义；未逐项审计技能正文
+371,营销与运营,customer-research,客户研究,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/customer-research,名称中文释义；未逐项审计技能正文
+372,营销与运营,revops,RevOps（营收运营）,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/revops,名称中文释义；未逐项审计技能正文
+373,界面、设计与动画,ask-sonner,Sonner（通知组件）使用咨询,emilkowalski/skills,1,https://skills.sh/emilkowalski/skills/ask-sonner,名称中文释义；未逐项审计技能正文
+374,营销与运营,lead-magnets,获客资料与留资诱因,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/lead-magnets,名称中文释义；未逐项审计技能正文
+375,图像、视频与音频,higgsfield-video-explainer,Higgsfield 视频讲解制作,higgsfield-ai/skills,1,https://skills.sh/higgsfield-ai/skills/higgsfield-video-explainer,名称中文释义；未逐项审计技能正文
+376,开发、代理与工作流程,pr,PR（代码合并请求）工作流,mattpocock/skills,1,https://skills.sh/mattpocock/skills/pr,名称中文释义；未逐项审计技能正文
+377,后端、数据库与云服务,convex,Convex（实时后端平台）开发,get-convex/agent-skills,1,https://skills.sh/get-convex/agent-skills/convex,名称中文释义；未逐项审计技能正文
+378,界面、设计与动画,brand-guidelines,品牌规范,anthropics/skills,1,https://skills.sh/anthropics/skills/brand-guidelines,名称中文释义；未逐项审计技能正文
+379,浏览器与信息获取,firecrawl,Firecrawl（网页抓取平台）操作,firecrawl/cli,1,https://skills.sh/firecrawl/cli/firecrawl,名称中文释义；未逐项审计技能正文
+380,界面、设计与动画,shadcn,shadcn（界面组件库）开发,shadcn-ui/ui,2,https://skills.sh/shadcn-ui/ui/shadcn,名称中文释义；未逐项审计技能正文
+381,界面、设计与动画,animate-expo,Expo（手机应用开发工具）动画,emilkowalski/skills,1,https://skills.sh/emilkowalski/skills/animate-expo,名称中文释义；未逐项审计技能正文
+382,图像、视频与音频,website-to-video,把网站制作成视频,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/website-to-video,名称中文释义；未逐项审计技能正文
+383,浏览器与信息获取,browser-use,浏览器自动操作,browser-use/browser-use,1,https://skills.sh/browser-use/browser-use/browser-use,名称中文释义；未逐项审计技能正文
+384,后端、数据库与云服务,durable-objects,Durable Objects（有状态云端对象）,cloudflare/skills,1,https://skills.sh/cloudflare/skills/durable-objects,名称中文释义；未逐项审计技能正文
+385,界面、设计与动画,web-perf,网页性能优化,cloudflare/skills,1,https://skills.sh/cloudflare/skills/web-perf,名称中文释义；未逐项审计技能正文
+386,开发、代理与工作流程,review-loop,循环审查与改进,2dmurali/review-loop-skill,1,https://skills.sh/2dmurali/review-loop-skill/review-loop,名称中文释义；未逐项审计技能正文
+387,后端、数据库与云服务,vercel-optimize,Vercel 项目优化,vercel-labs/agent-skills,1,https://skills.sh/vercel-labs/agent-skills/vercel-optimize,名称中文释义；未逐项审计技能正文
+388,后端、数据库与云服务,convex-performance-audit,Convex（实时后端平台）：性能审计,get-convex/agent-skills,1,https://skills.sh/get-convex/agent-skills/convex-performance-audit,名称中文释义；未逐项审计技能正文
+389,后端、数据库与云服务,convex-setup-auth,Convex（实时后端平台）：身份认证配置,get-convex/agent-skills,1,https://skills.sh/get-convex/agent-skills/convex-setup-auth,名称中文释义；未逐项审计技能正文
+390,后端、数据库与云服务,convex-migration-helper,Convex（实时后端平台）：迁移助手,get-convex/agent-skills,1,https://skills.sh/get-convex/agent-skills/convex-migration-helper,名称中文释义；未逐项审计技能正文
+391,后端、数据库与云服务,stripe-best-practices,Stripe（支付平台）最佳实践,stripe/ai,1,https://skills.sh/stripe/ai/stripe-best-practices,名称中文释义；未逐项审计技能正文
+392,后端、数据库与云服务,agents-sdk,Agents SDK（代理开发工具包）,cloudflare/skills,1,https://skills.sh/cloudflare/skills/agents-sdk,名称中文释义；未逐项审计技能正文
+393,浏览器与信息获取,playwright-best-practices,Playwright 浏览器自动化最佳实践,currents-dev/playwright-best-practices-skill,1,https://skills.sh/currents-dev/playwright-best-practices-skill/playwright-best-practices,名称中文释义；未逐项审计技能正文
+394,图像、视频与音频,gsap,GSAP（网页动画库）开发,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/gsap,名称中文释义；未逐项审计技能正文
+395,开发、代理与工作流程,caveman-explore,Caveman（简洁代理工作流）：探索代码,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/caveman-explore,名称中文释义；未逐项审计技能正文
+396,浏览器与信息获取,web-search,网页搜索,101-skills/superpowers,1,https://skills.sh/101-skills/superpowers/web-search,名称中文释义；未逐项审计技能正文
+397,图像、视频与音频,remotion-render,Remotion（程序化视频工具）：视频渲染,101-skills/superpowers,2,https://skills.sh/101-skills/superpowers/remotion-render,名称中文释义；未逐项审计技能正文
+398,开发、代理与工作流程,infsh-cli,Inference.sh（AI 工具平台）命令行操作,101-skills/superpowers,1,https://skills.sh/101-skills/superpowers/infsh-cli,名称中文释义；未逐项审计技能正文
+399,开发、代理与工作流程,agent-tools,代理工具调用,101-skills/superpowers,1,https://skills.sh/101-skills/superpowers/agent-tools,名称中文释义；未逐项审计技能正文
+400,开发、代理与工作流程,python-executor,执行 Python 程序,101-skills/superpowers,1,https://skills.sh/101-skills/superpowers/python-executor,名称中文释义；未逐项审计技能正文
+401,开发、代理与工作流程,safe-refactor,稳妥地重构代码,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/safe-refactor,名称中文释义；未逐项审计技能正文
+402,界面、设计与动画,theme-factory,生成视觉主题,anthropics/skills,1,https://skills.sh/anthropics/skills/theme-factory,名称中文释义；未逐项审计技能正文
+403,开发、代理与工作流程,caveman-learn,Caveman（简洁代理工作流）：学习项目,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/caveman-learn,名称中文释义；未逐项审计技能正文
+404,开发、代理与工作流程,caveman-optimize,Caveman（简洁代理工作流）：优化,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/caveman-optimize,名称中文释义；未逐项审计技能正文
+405,开发、代理与工作流程,writing-guidelines,写作规范,vercel-labs/agent-skills,1,https://skills.sh/vercel-labs/agent-skills/writing-guidelines,名称中文释义；未逐项审计技能正文
+406,开发、代理与工作流程,review,审查与评估,mattpocock/skills,1,https://skills.sh/mattpocock/skills/review,名称中文释义；未逐项审计技能正文
+407,开发、代理与工作流程,investigate-first,先调查再修改,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/investigate-first,名称中文释义；未逐项审计技能正文
+408,办公与文档,doc-coauthoring,协作撰写文档,anthropics/skills,1,https://skills.sh/anthropics/skills/doc-coauthoring,名称中文释义；未逐项审计技能正文
+409,办公与文档,obsidian-markdown,Obsidian 的 Markdown（轻量标记格式）,kepano/obsidian-skills,1,https://skills.sh/kepano/obsidian-skills/obsidian-markdown,名称中文释义；未逐项审计技能正文
+410,开发、代理与工作流程,typesafe-ai,TypeSafe（类型化 AI 判断平台）集成,typesafe-ai/skills,1,https://skills.sh/typesafe-ai/skills/typesafe-ai,已核对公开简介
+411,开发、代理与工作流程,verify-and-stop,完成验证后停止扩展工作,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/verify-and-stop,名称中文释义；未逐项审计技能正文
+412,图像、视频与音频,website-to-hyperframes,把网站转换为 Hyperframes 视频,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/website-to-hyperframes,名称中文释义；未逐项审计技能正文
+413,开发、代理与工作流程,surgical-patch,精准局部修补,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/surgical-patch,名称中文释义；未逐项审计技能正文
+414,开发、代理与工作流程,caveman-evidence-review,Caveman（简洁代理工作流）：根据证据审查,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/caveman-evidence-review,名称中文释义；未逐项审计技能正文
+415,开发、代理与工作流程,lean-build,精简构建与交付,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/lean-build,名称中文释义；未逐项审计技能正文
+416,开发、代理与工作流程,caveman-discover,Caveman（简洁代理工作流）：发现能力,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/caveman-discover,名称中文释义；未逐项审计技能正文
+417,开发、代理与工作流程,caveman-manage,Caveman（简洁代理工作流）：管理,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/caveman-manage,名称中文释义；未逐项审计技能正文
+418,浏览器与信息获取,browser-mcp-agent,通过 MCP 控制浏览器的代理,antibrow/anti-detect-browser-skills,1,https://skills.sh/antibrow/anti-detect-browser-skills/browser-mcp-agent,名称中文释义；未逐项审计技能正文
+419,安全与隐私,multi-account-isolation,多账户环境隔离,antibrow/anti-detect-browser-skills,1,https://skills.sh/antibrow/anti-detect-browser-skills/multi-account-isolation,名称中文释义；未逐项审计技能正文
+420,后端、数据库与云服务,cloudflare-email-service,Cloudflare 邮件服务,cloudflare/skills,1,https://skills.sh/cloudflare/skills/cloudflare-email-service,名称中文释义；未逐项审计技能正文
+421,开发、代理与工作流程,migration,项目或数据迁移,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/migration,名称中文释义；未逐项审计技能正文
+422,开发、代理与工作流程,caveman-setup,Caveman（简洁代理工作流）：初始化配置,juliusbrussee/caveman,1,https://skills.sh/juliusbrussee/caveman/caveman-setup,名称中文释义；未逐项审计技能正文
+423,后端、数据库与云服务,solana-dev,Solana（区块链平台）开发,solana-foundation/solana-dev-skill,1,https://skills.sh/solana-foundation/solana-dev-skill/solana-dev,名称中文释义；未逐项审计技能正文
+424,营销与运营,competitor-profiling,竞争对手画像,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/competitor-profiling,名称中文释义；未逐项审计技能正文
+425,营销与运营,landing-page-conversion-audit,落地页转化率审计,autonnel/autonnel-skills,1,https://skills.sh/autonnel/autonnel-skills/landing-page-conversion-audit,名称中文释义；未逐项审计技能正文
+426,后端、数据库与云服务,azure-observability,Azure（微软云平台）：运行监控与可观测性,microsoft/azure-skills,1,https://skills.sh/microsoft/azure-skills/azure-observability,名称中文释义；未逐项审计技能正文
+427,界面、设计与动画,write-swift,编写 Swift（苹果平台编程语言）代码,emilkowalski/skills,1,https://skills.sh/emilkowalski/skills/write-swift,名称中文释义；未逐项审计技能正文
+428,开发、代理与工作流程,typescript-advanced-types,TypeScript（编程语言）高级类型,wshobson/agents,1,https://skills.sh/wshobson/agents/typescript-advanced-types,名称中文释义；未逐项审计技能正文
+429,办公与文档,notion-api,Notion（知识管理工具）API（应用程序接口）,intellectronica/agent-skills,1,https://skills.sh/intellectronica/agent-skills/notion-api,名称中文释义；未逐项审计技能正文
+430,界面、设计与动画,algorithmic-art,算法艺术创作,anthropics/skills,1,https://skills.sh/anthropics/skills/algorithmic-art,名称中文释义；未逐项审计技能正文
+431,营销与运营,sales-funnel-blueprint,销售漏斗规划,autonnel/autonnel-skills,1,https://skills.sh/autonnel/autonnel-skills/sales-funnel-blueprint,名称中文释义；未逐项审计技能正文
+432,界面、设计与动画,polish,打磨界面细节,pbakaus/impeccable,1,https://skills.sh/pbakaus/impeccable/polish,名称中文释义；未逐项审计技能正文
+433,营销与运营,server-side-conversion-tracking,服务端转化追踪,autonnel/autonnel-skills,1,https://skills.sh/autonnel/autonnel-skills/server-side-conversion-tracking,名称中文释义；未逐项审计技能正文
+434,浏览器与信息获取,browser-act-skill-forge,创建浏览器操作技能,browser-act/skills,1,https://skills.sh/browser-act/skills/browser-act-skill-forge,名称中文释义；未逐项审计技能正文
+435,营销与运营,post-purchase-upsell-flow,购买后的追加销售流程,autonnel/autonnel-skills,1,https://skills.sh/autonnel/autonnel-skills/post-purchase-upsell-flow,名称中文释义；未逐项审计技能正文
+436,安全与隐私,browser-fingerprint-audit,浏览器指纹审计,liarjsdev/liarjs-skills,1,https://skills.sh/liarjsdev/liarjs-skills/browser-fingerprint-audit,名称中文释义；未逐项审计技能正文
+437,营销与运营,funnel-platform-picker,选择销售漏斗平台,autonnel/autonnel-skills,1,https://skills.sh/autonnel/autonnel-skills/funnel-platform-picker,名称中文释义；未逐项审计技能正文
+438,安全与隐私,fingerprint-ci-gate,浏览器指纹持续集成检查,liarjsdev/liarjs-skills,1,https://skills.sh/liarjsdev/liarjs-skills/fingerprint-ci-gate,名称中文释义；未逐项审计技能正文
+439,营销与运营,self-hosted-funnel-launch,部署自托管销售漏斗,autonnel/autonnel-skills,1,https://skills.sh/autonnel/autonnel-skills/self-hosted-funnel-launch,名称中文释义；未逐项审计技能正文
+440,安全与隐私,playwright-stealth-verify,验证 Playwright 隐蔽浏览配置,liarjsdev/liarjs-skills,1,https://skills.sh/liarjsdev/liarjs-skills/playwright-stealth-verify,名称中文释义；未逐项审计技能正文
+441,安全与隐私,fingerprint-failure-triage,浏览器指纹异常诊断,liarjsdev/liarjs-skills,1,https://skills.sh/liarjsdev/liarjs-skills/fingerprint-failure-triage,名称中文释义；未逐项审计技能正文
+442,浏览器与信息获取,firecrawl-search,Firecrawl（网页抓取平台）：搜索,firecrawl/cli,1,https://skills.sh/firecrawl/cli/firecrawl-search,名称中文释义；未逐项审计技能正文
+443,营销与运营,community-marketing,社区营销,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/community-marketing,名称中文释义；未逐项审计技能正文
+444,浏览器与信息获取,firecrawl-scrape,Firecrawl（网页抓取平台）：抓取单页,firecrawl/cli,1,https://skills.sh/firecrawl/cli/firecrawl-scrape,名称中文释义；未逐项审计技能正文
+445,界面、设计与动画,critique,设计点评,pbakaus/impeccable,1,https://skills.sh/pbakaus/impeccable/critique,名称中文释义；未逐项审计技能正文
+446,图像、视频与音频,higgsfield-brandkit,Higgsfield 品牌素材套件,higgsfield-ai/skills,1,https://skills.sh/higgsfield-ai/skills/higgsfield-brandkit,名称中文释义；未逐项审计技能正文
+447,图像、视频与音频,higgsfield-youtube-thumbnail,Higgsfield 的 YouTube（视频平台）封面制作,higgsfield-ai/skills,1,https://skills.sh/higgsfield-ai/skills/higgsfield-youtube-thumbnail,名称中文释义；未逐项审计技能正文
+448,界面、设计与动画,audit,质量与设计审计,pbakaus/impeccable,1,https://skills.sh/pbakaus/impeccable/audit,名称中文释义；未逐项审计技能正文
+449,界面、设计与动画,animate,添加动画,pbakaus/impeccable,2,https://skills.sh/pbakaus/impeccable/animate,名称中文释义；未逐项审计技能正文
+450,界面、设计与动画,adapt,适配界面与场景,pbakaus/impeccable,1,https://skills.sh/pbakaus/impeccable/adapt,名称中文释义；未逐项审计技能正文
+451,界面、设计与动画,clarify,澄清界面信息与表达,pbakaus/impeccable,1,https://skills.sh/pbakaus/impeccable/clarify,名称中文释义；未逐项审计技能正文
+452,营销与运营,cro,CRO（转化率优化）,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/cro,名称中文释义；未逐项审计技能正文
+453,界面、设计与动画,optimize,优化体验与性能,pbakaus/impeccable,1,https://skills.sh/pbakaus/impeccable/optimize,名称中文释义；未逐项审计技能正文
+454,界面、设计与动画,colorize,调整配色,pbakaus/impeccable,1,https://skills.sh/pbakaus/impeccable/colorize,名称中文释义；未逐项审计技能正文
+455,营销与运营,image,图像工具,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/image,名称中文释义；未逐项审计技能正文
+456,浏览器与信息获取,firecrawl-agent,Firecrawl（网页抓取平台）：代理抓取,firecrawl/cli,1,https://skills.sh/firecrawl/cli/firecrawl-agent,名称中文释义；未逐项审计技能正文
+457,开发、代理与工作流程,ponytail,Ponytail：用最少新增代码解决完整问题,dietrichgebert/ponytail,1,https://skills.sh/dietrichgebert/ponytail/ponytail,已核对公开简介
+458,开发、代理与工作流程,turborepo,Turborepo（多项目构建工具）,vercel/turborepo,1,https://skills.sh/vercel/turborepo/turborepo,名称中文释义；未逐项审计技能正文
+459,浏览器与信息获取,firecrawl-crawl,Firecrawl（网页抓取平台）：抓取网站,firecrawl/cli,1,https://skills.sh/firecrawl/cli/firecrawl-crawl,名称中文释义；未逐项审计技能正文
+460,界面、设计与动画,bolder,加强视觉表现,pbakaus/impeccable,1,https://skills.sh/pbakaus/impeccable/bolder,名称中文释义；未逐项审计技能正文
+461,界面、设计与动画,delight,增加愉悦的交互细节,pbakaus/impeccable,1,https://skills.sh/pbakaus/impeccable/delight,名称中文释义；未逐项审计技能正文
+462,浏览器与信息获取,firecrawl-map,Firecrawl（网页抓取平台）：网站页面映射,firecrawl/cli,1,https://skills.sh/firecrawl/cli/firecrawl-map,名称中文释义；未逐项审计技能正文
+463,办公与文档,gws-gmail,Google Workspace（谷歌办公套件）：Gmail 邮件管理,googleworkspace/cli,1,https://skills.sh/googleworkspace/cli/gws-gmail,名称中文释义；未逐项审计技能正文
+464,界面、设计与动画,distill,精简设计与内容,pbakaus/impeccable,1,https://skills.sh/pbakaus/impeccable/distill,名称中文释义；未逐项审计技能正文
+465,安全与隐私,turnstile-spin,Turnstile：接入人机验证并完成端到端验证,cloudflare/skills,1,https://skills.sh/cloudflare/skills/turnstile-spin,已核对公开简介
+466,浏览器与信息获取,firecrawl-download,Firecrawl（网页抓取平台）：下载抓取结果,firecrawl/cli,1,https://skills.sh/firecrawl/cli/firecrawl-download,名称中文释义；未逐项审计技能正文
+467,浏览器与信息获取,agent-browser,代理操作浏览器,magentosh/superpowers,4,https://skills.sh/magentosh/superpowers/agent-browser,名称中文释义；未逐项审计技能正文
+468,营销与运营,directory-submissions,向目录网站提交产品,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/directory-submissions,名称中文释义；未逐项审计技能正文
+469,营销与运营,video,视频工具,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/video,名称中文释义；未逐项审计技能正文
+470,界面、设计与动画,quieter,降低视觉干扰,pbakaus/impeccable,1,https://skills.sh/pbakaus/impeccable/quieter,名称中文释义；未逐项审计技能正文
+471,后端、数据库与云服务,cloudflare-one,Cloudflare One（网络与访问管理）,cloudflare/skills,1,https://skills.sh/cloudflare/skills/cloudflare-one,名称中文释义；未逐项审计技能正文
+472,办公与文档,obsidian-cli,Obsidian 命令行操作,kepano/obsidian-skills,1,https://skills.sh/kepano/obsidian-skills/obsidian-cli,名称中文释义；未逐项审计技能正文
+473,营销与运营,amazon-product-research,Amazon（亚马逊）商品研究,nexscope-ai/amazon-skills,1,https://skills.sh/nexscope-ai/amazon-skills/amazon-product-research,名称中文释义；未逐项审计技能正文
+474,浏览器与信息获取,agent-browser,代理操作浏览器,qu-skills/superpowers,4,https://skills.sh/qu-skills/superpowers/agent-browser,名称中文释义；未逐项审计技能正文
+475,办公与文档,obsidian-bases,Obsidian Bases（结构化笔记视图）,kepano/obsidian-skills,1,https://skills.sh/kepano/obsidian-skills/obsidian-bases,名称中文释义；未逐项审计技能正文
+476,图像、视频与音频,gpt-image-2,GPT Image 2 图像工具,prime-skills/runcomfy-agent-skills,1,https://skills.sh/prime-skills/runcomfy-agent-skills/gpt-image-2,名称中文释义；未逐项审计技能正文
+477,办公与文档,internal-comms,内部沟通材料,anthropics/skills,1,https://skills.sh/anthropics/skills/internal-comms,名称中文释义；未逐项审计技能正文
+478,后端、数据库与云服务,cloudflare-one-migrations,迁移到 Cloudflare One,cloudflare/skills,1,https://skills.sh/cloudflare/skills/cloudflare-one-migrations,名称中文释义；未逐项审计技能正文
+479,营销与运营,analytics,数据分析,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/analytics,名称中文释义；未逐项审计技能正文
+480,营销与运营,product-marketing,产品营销,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/product-marketing,名称中文释义；未逐项审计技能正文
+481,营销与运营,social,社交媒体运营,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/social,名称中文释义；未逐项审计技能正文
+482,营销与运营,ads,广告投放,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/ads,名称中文释义；未逐项审计技能正文
+483,开发、代理与工作流程,wonda-cli,Wonda 命令行工具,degausai/wonda,1,https://skills.sh/degausai/wonda/wonda-cli,名称中文释义；未逐项审计技能正文
+484,营销与运营,co-marketing,联合营销,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/co-marketing,名称中文释义；未逐项审计技能正文
+485,办公与文档,gws-gmail-send,Google Workspace（谷歌办公套件）：发送 Gmail 邮件,googleworkspace/cli,1,https://skills.sh/googleworkspace/cli/gws-gmail-send,名称中文释义；未逐项审计技能正文
+486,办公与文档,gws-drive,Google Workspace（谷歌办公套件）：云盘,googleworkspace/cli,1,https://skills.sh/googleworkspace/cli/gws-drive,名称中文释义；未逐项审计技能正文
+487,图像、视频与音频,css-animations,CSS（网页样式语言）动画,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/css-animations,名称中文释义；未逐项审计技能正文
+488,开发、代理与工作流程,audit-website,网站审计,squirrelscan/skills,1,https://skills.sh/squirrelscan/skills/audit-website,名称中文释义；未逐项审计技能正文
+489,图像、视频与音频,slack-gif-creator,为 Slack（团队聊天工具）制作 GIF 动图,anthropics/skills,1,https://skills.sh/anthropics/skills/slack-gif-creator,名称中文释义；未逐项审计技能正文
+490,办公与文档,json-canvas,JSON Canvas（画布数据格式）,kepano/obsidian-skills,1,https://skills.sh/kepano/obsidian-skills/json-canvas,名称中文释义；未逐项审计技能正文
+491,营销与运营,competitors,竞争对手分析,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/competitors,名称中文释义；未逐项审计技能正文
+492,浏览器与信息获取,defuddle,提取网页正文,kepano/obsidian-skills,1,https://skills.sh/kepano/obsidian-skills/defuddle,名称中文释义；未逐项审计技能正文
+493,营销与运营,pricing,定价规划,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/pricing,名称中文释义；未逐项审计技能正文
+494,营销与运营,emails,邮件运营,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/emails,名称中文释义；未逐项审计技能正文
+495,营销与运营,launch,产品发布,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/launch,名称中文释义；未逐项审计技能正文
+496,后端、数据库与云服务,upgrade-stripe,升级 Stripe 支付集成,stripe/ai,1,https://skills.sh/stripe/ai/upgrade-stripe,名称中文释义；未逐项审计技能正文
+497,图像、视频与音频,tailwind,Tailwind CSS（样式工具）开发,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/tailwind,名称中文释义；未逐项审计技能正文
+498,开发、代理与工作流程,claude-api,Claude 的 API（应用程序接口）集成,anthropics/skills,1,https://skills.sh/anthropics/skills/claude-api,名称中文释义；未逐项审计技能正文
+499,营销与运营,schema,Schema.org（结构化数据标准）网页标记,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/schema,已核对公开简介
+500,开发、代理与工作流程,mastra,Mastra（AI 代理开发框架）,mastra-ai/skills,1,https://skills.sh/mastra-ai/skills/mastra,名称中文释义；未逐项审计技能正文
+501,营销与运营,ab-testing,A/B Testing（对照实验）,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/ab-testing,名称中文释义；未逐项审计技能正文
+502,图像、视频与音频,animejs,Anime.js（网页动画库）,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/animejs,名称中文释义；未逐项审计技能正文
+503,开发、代理与工作流程,fastify-best-practices,Fastify（后端框架）最佳实践,mcollina/skills,1,https://skills.sh/mcollina/skills/fastify-best-practices,名称中文释义；未逐项审计技能正文
+504,图像、视频与音频,three,Three.js（网页三维图形库）,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/three,名称中文释义；未逐项审计技能正文
+505,图像、视频与音频,lottie,Lottie（矢量动画格式）,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/lottie,名称中文释义；未逐项审计技能正文
+506,开发、代理与工作流程,design-doc-mermaid,用 Mermaid（文本绘图工具）编写设计文档,spillwavesolutions/design-doc-mermaid,1,https://skills.sh/spillwavesolutions/design-doc-mermaid/design-doc-mermaid,名称中文释义；未逐项审计技能正文
+507,图像、视频与音频,waapi,WAAPI（网页动画接口）,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/waapi,名称中文释义；未逐项审计技能正文
+508,营销与运营,aso,ASO（应用商店优化）,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/aso,名称中文释义；未逐项审计技能正文
+509,开发、代理与工作流程,template-skill,技能模板,anthropics/skills,1,https://skills.sh/anthropics/skills/template-skill,名称中文释义；未逐项审计技能正文
+510,界面、设计与动画,tailwind-design-system,Tailwind 设计系统,wshobson/agents,1,https://skills.sh/wshobson/agents/tailwind-design-system,名称中文释义；未逐项审计技能正文
+511,后端、数据库与云服务,stripe-projects,Stripe 支付项目,stripe/ai,1,https://skills.sh/stripe/ai/stripe-projects,名称中文释义；未逐项审计技能正文
+512,营销与运营,free-tools,免费工具获客策略,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/free-tools,名称中文释义；未逐项审计技能正文
+513,营销与运营,social-content,社交媒体内容制作,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/social-content,名称中文释义；未逐项审计技能正文
+514,营销与运营,onboarding,用户入门引导,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/onboarding,名称中文释义；未逐项审计技能正文
+515,开发、代理与工作流程,agentix-ceo,Agentix CEO（代理管理与决策工具）,agentix-cloud/skills,1,https://skills.sh/agentix-cloud/skills/agentix-ceo,名称中文释义；未逐项审计技能正文
+516,界面、设计与动画,expo-dev-client,Expo 开发客户端,expo/skills,1,https://skills.sh/expo/skills/expo-dev-client,名称中文释义；未逐项审计技能正文
+517,界面、设计与动画,gsap-core,GSAP 动画核心能力,greensock/gsap-skills,1,https://skills.sh/greensock/gsap-skills/gsap-core,名称中文释义；未逐项审计技能正文
+518,营销与运营,referrals,推荐与转介绍,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/referrals,名称中文释义；未逐项审计技能正文
+519,营销与运营,signup,注册流程优化,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/signup,名称中文释义；未逐项审计技能正文
+520,办公与文档,agently-mail,Agently 邮件工具,agent.qq.com,1,https://skills.sh/agent.qq.com/agently-mail,名称中文释义；未逐项审计技能正文
+521,办公与文档,herdr,Herdr：终端工作区与编程代理会话管理,herdrdev/herdr,1,https://skills.sh/herdrdev/herdr/herdr,已核对公开简介
+522,界面、设计与动画,typeset,文字排版,pbakaus/impeccable,1,https://skills.sh/pbakaus/impeccable/typeset,名称中文释义；未逐项审计技能正文
+523,界面、设计与动画,make-interfaces-feel-better,改善界面交互手感,jakubkrehel/make-interfaces-feel-better,1,https://skills.sh/jakubkrehel/make-interfaces-feel-better/make-interfaces-feel-better,名称中文释义；未逐项审计技能正文
+524,浏览器与信息获取,firecrawl-interact,Firecrawl（网页抓取平台）：网页交互,firecrawl/cli,1,https://skills.sh/firecrawl/cli/firecrawl-interact,名称中文释义；未逐项审计技能正文
+525,开发、代理与工作流程,nx-workspace,Nx（多项目工程工具）工作区,nrwl/nx-ai-agents-config,1,https://skills.sh/nrwl/nx-ai-agents-config/nx-workspace,名称中文释义；未逐项审计技能正文
+526,营销与运营,popups,弹窗策略与设计,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/popups,名称中文释义；未逐项审计技能正文
+527,营销与运营,paywalls,付费墙设计,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/paywalls,名称中文释义；未逐项审计技能正文
+528,办公与文档,gws-shared,Google Workspace（谷歌办公套件）：公共操作与工具,googleworkspace/cli,1,https://skills.sh/googleworkspace/cli/gws-shared,名称中文释义；未逐项审计技能正文
+529,营销与运营,gsap-scrolltrigger,GSAP（网页动画库）：滚动触发动画,greensock/gsap-skills,1,https://skills.sh/greensock/gsap-skills/gsap-scrolltrigger,名称中文释义；未逐项审计技能正文
+530,界面、设计与动画,design-md,生成设计说明文档,google-labs-code/stitch-skills,1,https://skills.sh/google-labs-code/stitch-skills/design-md,名称中文释义；未逐项审计技能正文
+531,界面、设计与动画,overdrive,Overdrive：强化界面创意与技术表现,pbakaus/impeccable,1,https://skills.sh/pbakaus/impeccable/overdrive,已核对公开简介
+532,开发、代理与工作流程,ai-sdk,AI SDK（人工智能开发工具包）,vercel/ai,1,https://skills.sh/vercel/ai/ai-sdk,名称中文释义；未逐项审计技能正文
+533,营销与运营,cross-border-ecommerce,跨境电商,nexscope-ai/ecommerce-skills,1,https://skills.sh/nexscope-ai/ecommerce-skills/cross-border-ecommerce,名称中文释义；未逐项审计技能正文
+534,开发、代理与工作流程,developing-genkit-js,用 JavaScript 开发 Genkit（AI 应用框架）,firebase/agent-skills,2,https://skills.sh/firebase/agent-skills/developing-genkit-js,名称中文释义；未逐项审计技能正文
+535,图像、视频与音频,ai-music,AI（人工智能）音乐制作,gencraft-labs/skills,2,https://skills.sh/gencraft-labs/skills/ai-music,名称中文释义；未逐项审计技能正文
+536,图像、视频与音频,video-edit,视频编辑,gencraft-labs/skills,2,https://skills.sh/gencraft-labs/skills/video-edit,名称中文释义；未逐项审计技能正文
+537,开发、代理与工作流程,developing-genkit-dart,用 Dart 开发 Genkit（AI 应用框架）,firebase/agent-skills,1,https://skills.sh/firebase/agent-skills/developing-genkit-dart,名称中文释义；未逐项审计技能正文
+538,图像、视频与音频,ai-image-generation,AI（人工智能）图像生成,gencraft-labs/skills,8,https://skills.sh/gencraft-labs/skills/ai-image-generation,名称中文释义；未逐项审计技能正文
+539,界面、设计与动画,frontend-design,前端界面设计,anthropics/claude-code,2,https://skills.sh/anthropics/claude-code/frontend-design,名称中文释义；未逐项审计技能正文
+540,图像、视频与音频,image-to-video,图像生成视频,gencraft-labs/skills,2,https://skills.sh/gencraft-labs/skills/image-to-video,名称中文释义；未逐项审计技能正文
+541,图像、视频与音频,ai-video-generation,AI（人工智能）视频生成,gencraft-labs/skills,8,https://skills.sh/gencraft-labs/skills/ai-video-generation,名称中文释义；未逐项审计技能正文
+542,开发、代理与工作流程,batch-grill-me,批量深入提问与需求澄清,mattpocock/skills,1,https://skills.sh/mattpocock/skills/batch-grill-me,名称中文释义；未逐项审计技能正文
+543,营销与运营,product-marketing-context,产品营销背景资料,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/product-marketing-context,名称中文释义；未逐项审计技能正文
+544,界面、设计与动画,hallmark,Hallmark：让生成界面具有精心设计的质感,nutlope/hallmark,1,https://skills.sh/nutlope/hallmark/hallmark,已核对公开简介
+545,营销与运营,pricing-strategy,定价策略,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/pricing-strategy,名称中文释义；未逐项审计技能正文
+546,开发、代理与工作流程,momentic-test,Momentic（测试工具）测试执行,momentic-ai/skills,1,https://skills.sh/momentic-ai/skills/momentic-test,名称中文释义；未逐项审计技能正文
+547,开发、代理与工作流程,momentic-result-classification,分类 Momentic 测试结果,momentic-ai/skills,1,https://skills.sh/momentic-ai/skills/momentic-result-classification,名称中文释义；未逐项审计技能正文
+548,界面、设计与动画,gsap-performance,GSAP（网页动画库）：性能优化,greensock/gsap-skills,1,https://skills.sh/greensock/gsap-skills/gsap-performance,名称中文释义；未逐项审计技能正文
+549,营销与运营,marketing-plan,营销计划,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/marketing-plan,名称中文释义；未逐项审计技能正文
+550,界面、设计与动画,gsap-timeline,GSAP（网页动画库）：时间轴,greensock/gsap-skills,1,https://skills.sh/greensock/gsap-skills/gsap-timeline,名称中文释义；未逐项审计技能正文
+551,浏览器与信息获取,firecrawl-build-scrape,Firecrawl（网页抓取平台）：构建单页抓取,firecrawl/skills,1,https://skills.sh/firecrawl/skills/firecrawl-build-scrape,名称中文释义；未逐项审计技能正文
+552,浏览器与信息获取,firecrawl-build-search,Firecrawl（网页抓取平台）：构建搜索,firecrawl/skills,1,https://skills.sh/firecrawl/skills/firecrawl-build-search,名称中文释义；未逐项审计技能正文
+553,浏览器与信息获取,firecrawl-build-interact,Firecrawl（网页抓取平台）：构建网页交互,firecrawl/skills,1,https://skills.sh/firecrawl/skills/firecrawl-build-interact,名称中文释义；未逐项审计技能正文
+554,浏览器与信息获取,firecrawl-build-onboarding,Firecrawl（网页抓取平台）：构建接入引导,firecrawl/skills,1,https://skills.sh/firecrawl/skills/firecrawl-build-onboarding,名称中文释义；未逐项审计技能正文
+555,界面、设计与动画,accessibility,无障碍访问,addyosmani/web-quality-skills,1,https://skills.sh/addyosmani/web-quality-skills/accessibility,名称中文释义；未逐项审计技能正文
+556,开发、代理与工作流程,code-review-and-quality,代码审查与质量检查,addyosmani/agent-skills,1,https://skills.sh/addyosmani/agent-skills/code-review-and-quality,名称中文释义；未逐项审计技能正文
+557,图像、视频与音频,motion-doctrine,动效设计原则,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/motion-doctrine,名称中文释义；未逐项审计技能正文
+558,图像、视频与音频,captions-overlay,字幕叠加,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/captions-overlay,名称中文释义；未逐项审计技能正文
+559,图像、视频与音频,cut-the-curve,Cut the Curve（具体用途待查看详情）,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/cut-the-curve,待查看原文确定具体用途
+560,界面、设计与动画,gsap-plugins,GSAP（网页动画库）：插件,greensock/gsap-skills,1,https://skills.sh/greensock/gsap-skills/gsap-plugins,名称中文释义；未逐项审计技能正文
+561,办公与文档,gws-calendar,Google Workspace（谷歌办公套件）：日历,googleworkspace/cli,1,https://skills.sh/googleworkspace/cli/gws-calendar,名称中文释义；未逐项审计技能正文
+562,开发、代理与工作流程,developing-genkit-js,用 JavaScript 开发 Genkit（AI 应用框架）,genkit-ai/skills,2,https://skills.sh/genkit-ai/skills/developing-genkit-js,名称中文释义；未逐项审计技能正文
+563,图像、视频与音频,seam-craft,Seam Craft（具体用途待查看详情）,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/seam-craft,待查看原文确定具体用途
+564,图像、视频与音频,changelog-video,更新日志视频制作,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/changelog-video,名称中文释义；未逐项审计技能正文
+565,图像、视频与音频,oversized-cursor,大尺寸光标效果,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/oversized-cursor,名称中文释义；未逐项审计技能正文
+566,营销与运营,prospecting,寻找潜在客户,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/prospecting,名称中文释义；未逐项审计技能正文
+567,界面、设计与动画,gsap-react,GSAP（网页动画库）：React 集成,greensock/gsap-skills,1,https://skills.sh/greensock/gsap-skills/gsap-react,名称中文释义；未逐项审计技能正文
+568,开发、代理与工作流程,is-this-photo-real,判断照片真实性,useosint/skills,1,https://skills.sh/useosint/skills/is-this-photo-real,名称中文释义；未逐项审计技能正文
+569,安全与隐私,investigate-without-getting-made,调查时管理身份暴露与平台访问痕迹,useosint/skills,1,https://skills.sh/useosint/skills/investigate-without-getting-made,已核对公开简介
+570,开发、代理与工作流程,opentui,OpenTUI（终端界面工具）,msmps/opentui-skill,1,https://skills.sh/msmps/opentui-skill/opentui,名称中文释义；未逐项审计技能正文
+571,界面、设计与动画,building-native-ui,构建原生应用界面,expo/skills,1,https://skills.sh/expo/skills/building-native-ui,名称中文释义；未逐项审计技能正文
+572,营销与运营,sms,SMS（短信）工具,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/sms,名称中文释义；未逐项审计技能正文
+573,营销与运营,analytics-tracking,分析埋点与追踪,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/analytics-tracking,名称中文释义；未逐项审计技能正文
+574,安全与隐私,what-leaked-about-you,检查个人信息泄露线索,useosint/skills,1,https://skills.sh/useosint/skills/what-leaked-about-you,名称中文释义；未逐项审计技能正文
+575,界面、设计与动画,gsap-utils,GSAP（网页动画库）：辅助工具,greensock/gsap-skills,1,https://skills.sh/greensock/gsap-skills/gsap-utils,名称中文释义；未逐项审计技能正文
+576,营销与运营,page-cro,页面转化率优化,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/page-cro,名称中文释义；未逐项审计技能正文
+577,开发、代理与工作流程,enhance-prompt,改进提示词,google-labs-code/stitch-skills,1,https://skills.sh/google-labs-code/stitch-skills/enhance-prompt,名称中文释义；未逐项审计技能正文
+578,办公与文档,gws-sheets,Google Workspace（谷歌办公套件）：电子表格,googleworkspace/cli,1,https://skills.sh/googleworkspace/cli/gws-sheets,名称中文释义；未逐项审计技能正文
+579,图像、视频与音频,find-the-original-image,寻找图像原始来源,useosint/skills,1,https://skills.sh/useosint/skills/find-the-original-image,名称中文释义；未逐项审计技能正文
+580,安全与隐私,security-and-hardening,安全检查与加固,addyosmani/agent-skills,1,https://skills.sh/addyosmani/agent-skills/security-and-hardening,名称中文释义；未逐项审计技能正文
+581,办公与文档,gws-docs,Google Workspace（谷歌办公套件）：文档,googleworkspace/cli,1,https://skills.sh/googleworkspace/cli/gws-docs,名称中文释义；未逐项审计技能正文
+582,营销与运营,launch-strategy,产品发布策略,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/launch-strategy,名称中文释义；未逐项审计技能正文
+583,浏览器与信息获取,nia,Nia（知识搜索工具）,nozomio-labs/nia-skill,1,https://skills.sh/nozomio-labs/nia-skill/nia,名称中文释义；未逐项审计技能正文
+584,图像、视频与音频,contribute-catalog,向技能目录贡献条目,heygen-com/hyperframes,1,https://skills.sh/heygen-com/hyperframes/contribute-catalog,名称中文释义；未逐项审计技能正文
+585,营销与运营,schema-markup,网页结构化数据标记,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/schema-markup,名称中文释义；未逐项审计技能正文
+586,开发、代理与工作流程,sandbox-stable,稳定版沙盒环境,cloudflare/skills,1,https://skills.sh/cloudflare/skills/sandbox-stable,名称中文释义；未逐项审计技能正文
+587,界面、设计与动画,gsap-frameworks,GSAP 与开发框架集成,greensock/gsap-skills,1,https://skills.sh/greensock/gsap-skills/gsap-frameworks,名称中文释义；未逐项审计技能正文
+588,界面、设计与动画,stitch-loop,Stitch 界面迭代流程,google-labs-code/stitch-skills,1,https://skills.sh/google-labs-code/stitch-skills/stitch-loop,名称中文释义；未逐项审计技能正文
+589,营销与运营,email-sequence,连续邮件营销流程,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/email-sequence,名称中文释义；未逐项审计技能正文
+590,开发、代理与工作流程,sandbox-next,下一版本沙盒环境,cloudflare/skills,1,https://skills.sh/cloudflare/skills/sandbox-next,名称中文释义；未逐项审计技能正文
+591,开发、代理与工作流程,sandbox-migrate-to-next,迁移到下一版本沙盒,cloudflare/skills,1,https://skills.sh/cloudflare/skills/sandbox-migrate-to-next,名称中文释义；未逐项审计技能正文
+592,营销与运营,paid-ads,付费广告,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/paid-ads,名称中文释义；未逐项审计技能正文
+593,界面、设计与动画,frontend-ui-engineering,前端界面工程,addyosmani/agent-skills,1,https://skills.sh/addyosmani/agent-skills/frontend-ui-engineering,名称中文释义；未逐项审计技能正文
+594,界面、设计与动画,normalize,统一界面与设计规范,pbakaus/impeccable,1,https://skills.sh/pbakaus/impeccable/normalize,名称中文释义；未逐项审计技能正文
+595,营销与运营,competitor-alternatives,竞争产品与替代方案内容,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/competitor-alternatives,名称中文释义；未逐项审计技能正文
+596,营销与运营,onboarding-cro,新用户引导转化优化,coreyhaines31/marketingskills,1,https://skills.sh/coreyhaines31/marketingskills/onboarding-cro,名称中文释义；未逐项审计技能正文
+597,后端、数据库与云服务,insforge,InsForge（后端开发平台）,insforge/insforge-skills,1,https://skills.sh/insforge/insforge-skills/insforge,名称中文释义；未逐项审计技能正文
+598,界面、设计与动画,expo-tailwind-setup,在 Expo 项目配置 Tailwind 样式,expo/skills,1,https://skills.sh/expo/skills/expo-tailwind-setup,名称中文释义；未逐项审计技能正文
+599,后端、数据库与云服务,insforge-cli,InsForge 命令行工具,insforge/insforge-skills,1,https://skills.sh/insforge/insforge-skills/insforge-cli,名称中文释义；未逐项审计技能正文
+600,界面、设计与动画,extract,提取可复用组件与规范,pbakaus/impeccable,1,https://skills.sh/pbakaus/impeccable/extract,名称中文释义；未逐项审计技能正文

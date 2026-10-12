@@ -1,0 +1,23 @@
+{
+  "11111111-1111-4111-8111-111111111111": {
+    "serverUrl": "http://127.0.0.1:3302",
+    "aiUrl": "http://127.0.0.1:3310",
+    "privateServerUrl": "http://server:3002",
+    "privateAiUrl": "http://ai:3010",
+    "officeOrigin": "http://host.docker.internal:3000",
+    "jwtSecret": "REPLACE_WITH_INDEPENDENT_RANDOM_SECRET",
+    "internalToken": "REPLACE_WITH_ANOTHER_RANDOM_SECRET",
+    "bridgeSecret": "REPLACE_WITH_APPROVAL_SIGNING_SECRET",
+    "infrastructure": {
+      "mongodb": { "uri": "mongodb://mongodb:27017/?replicaSet=rs0", "dbName": "office_11111111111141118111111111111111" },
+      "channelDb": { "uri": "mongodb://mongodb:27017/?replicaSet=rs0", "dbName": "office_channels_11111111111141118111111111111111" },
+      "redis": { "host": "redis", "port": 6379 },
+      "redlock": { "redis": { "host": "redis", "port": 6379 }, "ttl": 300, "retryDelay": 1000, "retryCount": 3 },
+      "assets": {
+        "provider": "s3", "region": "ap-east-1", "bucketName": "REPLACE_WITH_TENANT_BUCKET",
+        "endpoint": "https://s3.ap-east-1.amazonaws.com", "cdnEndpoint": "https://REPLACE_WITH_ASSET_DOMAIN",
+        "forcePathStyle": false, "signExpires": 300
+      }
+    }
+  }
+}

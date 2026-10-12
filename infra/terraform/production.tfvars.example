@@ -1,0 +1,15 @@
+aws_profile = "0511"
+agent_region = "us-west-2"
+domain = "wishtaday.com"
+zone_id = "REPLACE_WITH_EXISTING_HOSTED_ZONE_ID"
+# Company-provided model API keys work independently of AWS AgentCore.
+enable_agentcore = false
+# Set these only after enabling and verifying the separate AWS assistant runtime.
+model_id = ""
+model_resource_arns = []
+image_digest = ""
+desired_count = 0
+publish_dns = false
+license_reviewed = false
+# Selling prices, not an estimate of the AWS invoice. Keep empty until approved.
+model_rates = {}

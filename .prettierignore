@@ -1,0 +1,7 @@
+node_modules
+.local
+infra
+apps/web/src/scene
+apps/web/public
+certs
+package-lock.json

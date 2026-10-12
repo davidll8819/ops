@@ -1,0 +1,58 @@
+.ops-settings fieldset { border:1px solid #e9e1f3; border-radius:16px; margin:20px 0; padding:20px; min-width:0 }
+.ops-settings legend { font-weight:700; color:#7b4b94; padding:0 8px }
+.ops-settings label,.ops-workspace form label { display:grid; gap:8px; margin-bottom:16px; font-size:14px; font-weight:600 }
+.ops-settings input,.ops-settings select,.ops-workspace textarea { width:100%; box-sizing:border-box; padding:12px; border:1px solid #d8d1e0; border-radius:12px; min-height:44px; background:white; color:#2b2733; font:inherit }
+.ops-workspace textarea { resize:vertical; margin:8px 0 14px }
+.ops-settings button,.ops-workspace button { min-height:44px; border-radius:12px; padding:10px 16px; cursor:pointer }
+.ops-settings button:disabled,.ops-workspace button:disabled { cursor:not-allowed; opacity:.55 }
+.ops-notice { padding:14px; background:#d9efe0; border-radius:12px; color:#1f6f6a }
+.ops-workspace .builder-card { margin:20px 0 }
+.ops-readiness { display:flex; align-items:center; flex-wrap:wrap; gap:12px; border:1px solid #e9e1f3; padding:18px; background:white; border-radius:20px }
+.ops-readiness>div { flex:1; min-width:160px }
+.ops-readiness p { color:#5f5a6e; margin:6px 0 0; font-size:13px }
+.ops-dot { width:10px; height:10px; border-radius:50%; background:#a38952 }
+.ops-dot.ready { background:#1f6f6a }
+.ops-pipeline { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; padding:0; list-style:none; margin:20px 0 }
+.ops-pipeline li { background:#e9e1f3; border-radius:14px; padding:14px; font-size:13px; display:flex; align-items:center; gap:9px }
+.ops-pipeline li span { color:#7b4b94; font-weight:800 }
+.ops-output { background:#f5f2f8; padding:16px; margin-bottom:20px; min-height:140px; max-height:450px; overflow:auto; border-radius:16px; white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.7 }
+.ops-approval { border:1px solid #ead7ac; background:#fff9ed; padding:16px; border-radius:16px; margin:14px 0; overflow-wrap:anywhere }
+.ops-approval .plan-tag { margin-left:10px }
+.ops-approval a { display:inline-block; margin:8px 16px 8px 0 }
+.ops-actions { display:flex; gap:12px; margin-top:12px }
+.ops-workspace .primary,.ops-settings .primary { background:#7b4b94; color:white; border:1px solid #7b4b94 }
+@media(max-width:700px) { .ops-pipeline { grid-template-columns:repeat(2,minmax(0,1fr)) } }
+
+.ops-assets a { display:inline-block; padding:12px; margin:0 8px 16px 0; background:#e9e1f3; border-radius:12px; min-height:44px; box-sizing:border-box }
+.ops-receipt { max-height:250px; overflow:auto; white-space:pre-wrap; font-size:12px }
+.ops-tier-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px }
+.ops-department { padding:16px; border:1px solid #e9e1f3; border-radius:16px; margin-bottom:12px }
+.ops-settings .ops-toggle { display:flex; align-items:center; gap:8px; margin:0; min-height:44px; font-weight:400 }
+.ops-settings .ops-toggle input { width:18px; min-height:18px; height:18px; accent-color:#7b4b94 }
+.ops-department .heading-row { margin-bottom:12px }
+.ops-approval-rule { color:#76581c; background:#fbe9c6; padding:12px; border-radius:12px; margin:0 }
+.ops-secret-name { display:block; overflow-wrap:anywhere; padding:12px; background:#f5f2f8; border-radius:10px; margin-bottom:16px; font-size:12px }
+.ops-settings details { margin:16px 0 }
+.ops-settings summary { cursor:pointer; min-height:44px; display:flex; align-items:center }
+.ops-budget-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px }
+.ops-budget-stats span { padding:14px; border-radius:14px; background:#f5f2f8; font-size:13px }
+.ops-budget-stats strong { display:block; font-size:22px; color:#7b4b94; margin-top:8px }
+@media(max-width:850px) { .ops-tier-grid { grid-template-columns:1fr } .ops-budget-stats { grid-template-columns:1fr } }
+.skill-package-heading { margin:24px 0 12px; font-size:17px }
+.skill-workflow-section { margin-top:24px }
+.ops-skill-card { display:flex; align-items:center; gap:14px; width:100%; max-width:620px; text-align:left; padding:16px; border:1px solid #dce3d5; border-radius:14px; background:white; color:#314333; cursor:pointer; min-height:76px }
+.ops-skill-card:hover { border-color:#7b4b94; background:#faf8fc }
+.ops-skill-card:focus-visible { outline:3px solid #7b4b94; outline-offset:3px }
+.ops-skill-icon { width:42px; height:42px; border-radius:12px; padding:10px; box-sizing:border-box; color:#7b4b94; background:#e9e1f3; flex-shrink:0 }
+.ops-skill-icon svg { width:100%; height:100% }
+.ops-skill-copy { display:grid; gap:6px; flex:1 }
+.ops-skill-copy strong { font-size:15px }
+.ops-skill-copy>span { font-size:13px; line-height:1.6; color:#5f5a6e }
+.ops-dialog { width:min(1020px,calc(100vw - 40px)); max-height:90dvh; padding:0; border:1px solid #e9e1f3; border-radius:24px; background:#f5f2f8; color:#2b2733; box-shadow:0 16px 64px #2b273330; overflow:auto }
+.ops-dialog::backdrop { background:#201a2c80 }
+.ops-dialog-header { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:20px 24px; background:white; border-bottom:1px solid #e9e1f3; position:sticky; top:0; z-index:2 }
+.ops-dialog-header h1 { margin:4px 0 0; font-size:24px }
+.ops-dialog-header p { margin:0; font-size:12px; color:#5f5a6e }
+.ops-dialog-header button { min-width:44px; height:44px; border-radius:12px; font-size:25px; background:#f5f2f8; border:0; cursor:pointer; color:#5f5a6e }
+.ops-dialog-body { padding:4px 24px 24px }
+@media(max-width:600px) { .ops-dialog { width:calc(100vw - 20px) } .ops-dialog-header,.ops-dialog-body { padding:16px } }

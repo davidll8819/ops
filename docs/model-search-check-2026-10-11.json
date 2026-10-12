@@ -1,0 +1,351 @@
+{
+  "checkedAt": "2026-10-11T13:56:03.050401+00:00",
+  "scope": "现有企业的 4YI 模型入口；未修改已保存档位；没有额外搜索密钥",
+  "catalogCounts": {
+    "total": 53,
+    "chat": 25,
+    "image": 14,
+    "video": 14
+  },
+  "recommendation": "gemini-3.5-flash",
+  "limitations": [
+    "单次小样不能证明稳定性或所有搜索结果正确。",
+    "前两种 Claude 的拒绝来自本日先前实测，其余 23 种聊天模型在本轮调用。",
+    "搜索通道验证完成，但本轮只修改图片功能；市场调研和拓客的搜索执行适配及档位仍待接入。",
+    "Gemini 2.5 Pro 和 Grok 4.3 引用了真实网页，但本次未找出最新公告。"
+  ],
+  "workingRequest": {
+    "path": "/api/v1/chat/completions",
+    "tools": [
+      {
+        "type": "openrouter:web_search",
+        "parameters": {
+          "engine": "native",
+          "max_total_results": 1,
+          "search_context_size": "low"
+        }
+      }
+    ],
+    "max_tool_calls": 1
+  },
+  "models": [
+    {
+      "model": "qwen3.8-max",
+      "initialResult": "no_search_evidence",
+      "initialStatus": 200,
+      "additionalTests": [
+        {
+          "path": "/api/v1/chat/completions",
+          "status": 200,
+          "result": "no_search_evidence",
+          "elapsedMs": 29204,
+          "error": "",
+          "searchUsage": null,
+          "sources": []
+        }
+      ]
+    },
+    {
+      "model": "claude-opus-4-7",
+      "initialResult": "rejected",
+      "initialStatus": 400,
+      "additionalTests": []
+    },
+    {
+      "model": "minimax.minimax-m2.5",
+      "initialResult": "no_search_evidence",
+      "initialStatus": 200,
+      "additionalTests": []
+    },
+    {
+      "model": "gemini-2.5-pro",
+      "initialResult": "no_search_evidence",
+      "initialStatus": 200,
+      "additionalTests": [
+        {
+          "path": "/api/v1/chat/completions",
+          "status": 200,
+          "result": "search_evidence",
+          "elapsedMs": 12317,
+          "error": "",
+          "searchUsage": {
+            "web_search_requests": 1,
+            "tool_calls_requested": 1,
+            "tool_calls_executed": 1
+          },
+          "sources": [
+            "https://www.postgresql.org/about/news/postgresql-186-1711-1615-1519-1424-and-19-beta-3-released-3365/"
+          ]
+        }
+      ]
+    },
+    {
+      "model": "deepseek-v4-pro",
+      "initialResult": "no_search_evidence",
+      "initialStatus": 200,
+      "additionalTests": []
+    },
+    {
+      "model": "claude-haiku-4.5",
+      "initialResult": "previous_native_search_rejected",
+      "initialStatus": 400,
+      "additionalTests": []
+    },
+    {
+      "model": "minimax-m3",
+      "initialResult": "no_search_evidence",
+      "initialStatus": 200,
+      "additionalTests": []
+    },
+    {
+      "model": "glm-5.2",
+      "initialResult": "no_search_evidence",
+      "initialStatus": 200,
+      "additionalTests": []
+    },
+    {
+      "model": "claude-opus-4-6",
+      "initialResult": "previous_native_search_rejected",
+      "initialStatus": 400,
+      "additionalTests": []
+    },
+    {
+      "model": "gemini-3.5-flash",
+      "initialResult": "no_search_evidence",
+      "initialStatus": 200,
+      "additionalTests": [
+        {
+          "path": "/api/v1/chat/completions",
+          "status": 200,
+          "result": "search_evidence",
+          "elapsedMs": 8558,
+          "error": "",
+          "searchUsage": {
+            "web_search_requests": 1
+          },
+          "sources": [
+            "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFpeebxp0A5NCA8s7dFrio9bhuJF2qBp-j7jq2JAfvNfDb1glNVl7MYPVMB7KfvcLrJAyxU6yh6ygbl53PnPa5vnFDS-P2npvp-25cN0cQzjJB5VQYHRA=="
+          ]
+        }
+      ]
+    },
+    {
+      "model": "qwen3.7-plus",
+      "initialResult": "no_search_evidence",
+      "initialStatus": 200,
+      "additionalTests": []
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "initialResult": "no_search_evidence",
+      "initialStatus": 200,
+      "additionalTests": [
+        {
+          "path": "/api/v1/responses",
+          "status": 400,
+          "result": "rejected",
+          "elapsedMs": 4660,
+          "error": "Responses request is not allowed",
+          "searchUsage": null,
+          "sources": []
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.5",
+      "initialResult": "no_search_evidence",
+      "initialStatus": 200,
+      "additionalTests": [
+        {
+          "path": "/api/v1/responses",
+          "status": 400,
+          "result": "rejected",
+          "elapsedMs": 575,
+          "error": "Responses request is not allowed",
+          "searchUsage": null,
+          "sources": []
+        }
+      ]
+    },
+    {
+      "model": "claude-opus-4-8",
+      "initialResult": "rejected",
+      "initialStatus": 400,
+      "additionalTests": []
+    },
+    {
+      "model": "moonshotai.kimi-k2.5",
+      "initialResult": "no_search_evidence",
+      "initialStatus": 200,
+      "additionalTests": []
+    },
+    {
+      "model": "claude-opus-5",
+      "initialResult": "rejected",
+      "initialStatus": 400,
+      "additionalTests": []
+    },
+    {
+      "model": "claude-sonnet-5",
+      "initialResult": "rejected",
+      "initialStatus": 400,
+      "additionalTests": []
+    },
+    {
+      "model": "gpt-5.6-luna",
+      "initialResult": "no_search_evidence",
+      "initialStatus": 200,
+      "additionalTests": [
+        {
+          "path": "/api/v1/responses",
+          "status": 400,
+          "result": "rejected",
+          "elapsedMs": 618,
+          "error": "Responses request is not allowed",
+          "searchUsage": null,
+          "sources": []
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "initialResult": "no_search_evidence",
+      "initialStatus": 200,
+      "additionalTests": [
+        {
+          "path": "/api/v1/responses",
+          "status": 400,
+          "result": "rejected",
+          "elapsedMs": 481,
+          "error": "Responses request is not allowed",
+          "searchUsage": null,
+          "sources": []
+        }
+      ]
+    },
+    {
+      "model": "grok-4.3",
+      "initialResult": "no_search_evidence",
+      "initialStatus": 200,
+      "additionalTests": [
+        {
+          "path": "/api/v1/chat/completions",
+          "status": 200,
+          "result": "search_evidence",
+          "elapsedMs": 7649,
+          "error": "",
+          "searchUsage": {
+            "web_search_requests": 1
+          },
+          "sources": [
+            "https://www.postgresql.org/about/news/postgresql-18-released-3142/"
+          ]
+        },
+        {
+          "path": "/api/v1/responses",
+          "status": 400,
+          "result": "rejected",
+          "elapsedMs": 444,
+          "error": "Responses request is not allowed",
+          "searchUsage": null,
+          "sources": []
+        }
+      ]
+    },
+    {
+      "model": "gpt-6.1-sol",
+      "initialResult": "rejected",
+      "initialStatus": 400,
+      "additionalTests": [
+        {
+          "path": "/api/v1/responses",
+          "status": 400,
+          "result": "rejected",
+          "elapsedMs": 491,
+          "error": "Responses request is not allowed",
+          "searchUsage": null,
+          "sources": []
+        }
+      ]
+    },
+    {
+      "model": "gpt-6-sol",
+      "initialResult": "rejected",
+      "initialStatus": 400,
+      "additionalTests": [
+        {
+          "path": "/api/v1/responses",
+          "status": 400,
+          "result": "rejected",
+          "elapsedMs": 428,
+          "error": "Responses request is not allowed",
+          "searchUsage": null,
+          "sources": []
+        }
+      ]
+    },
+    {
+      "model": "gpt-6-astra",
+      "initialResult": "rejected",
+      "initialStatus": 400,
+      "additionalTests": [
+        {
+          "path": "/api/v1/responses",
+          "status": 400,
+          "result": "rejected",
+          "elapsedMs": 447,
+          "error": "Responses request is not allowed",
+          "searchUsage": null,
+          "sources": []
+        }
+      ]
+    },
+    {
+      "model": "gpt-6-luna",
+      "initialResult": "rejected",
+      "initialStatus": 400,
+      "additionalTests": [
+        {
+          "path": "/api/v1/responses",
+          "status": 400,
+          "result": "rejected",
+          "elapsedMs": 453,
+          "error": "Responses request is not allowed",
+          "searchUsage": null,
+          "sources": []
+        }
+      ]
+    },
+    {
+      "model": "claude-sonnet-4.5",
+      "initialResult": "rejected",
+      "initialStatus": 400,
+      "additionalTests": []
+    }
+  ],
+  "sourceChecks": [
+    {
+      "model": "gemini-2.5-pro",
+      "ok": true,
+      "finalUrl": "https://www.postgresql.org/about/news/postgresql-186-1711-1615-1519-1424-and-19-beta-3-released-3365/",
+      "textStart": "PostgreSQL: PostgreSQL 18.6, 17.11, 16.15, 15.19, 14.24 and 19 Beta 3 Released! Home About Download Documentation Community Developers Support Donate Your account September 24, 2026: PostgreSQL 19 Beta 4 Released! Quick Links About Governance Policies Feature Matrix Donate History Sponsors Contributing Financial Servers Latest News Upcoming Events Past events Press Licence PostgreSQL 18.6, 17.11, 16.15, 15.19, 14.24 and 19 Beta 3 Released! Posted on 2026-08-13 by PostgreSQL Global Development Group PostgreSQL Project Security The PostgreSQL Global Development Group has released an update to all supported versions of PostgreSQL, including 18.6"
+    },
+    {
+      "model": "gemini-3.5-flash",
+      "ok": true,
+      "finalUrl": "https://www.postgresql.org/",
+      "textStart": "PostgreSQL: The world's most advanced open source database Home About Download Documentation Community Developers Support Donate Your account September 24, 2026: PostgreSQL 19 Beta 4 Released! PostgreSQL: The World's Most Advanced Open Source Relational Database Download New to PostgreSQL? New to PostgreSQL? PostgreSQL is a powerful, open source object-relational database system with over 35 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance. There is a wealth of information to be found describing how to install and use PostgreSQL through the official documentation . The ope"
+    },
+    {
+      "model": "grok-4.3",
+      "ok": true,
+      "finalUrl": "https://www.postgresql.org/about/news/postgresql-18-released-3142/",
+      "textStart": "PostgreSQL: PostgreSQL 18 Released! Home About Download Documentation Community Developers Support Donate Your account September 24, 2026: PostgreSQL 19 Beta 4 Released! Quick Links About Governance Policies Feature Matrix Donate History Sponsors Contributing Financial Servers Latest News Upcoming Events Past events Press Licence PostgreSQL 18 Released! Posted on 2025-09-25 by PostgreSQL Global Development Group PostgreSQL Project The PostgreSQL Global Development Group today announced the release of PostgreSQL 18 , the latest version of the world's most advanced open source database. Translations of this press release are available in the Po"
+    }
+  ],
+  "testUsage": {
+    "requestsThisTurn": 36,
+    "totalTokensReported": 19434,
+    "providerCostFieldSum": 0.07856085
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "ai-office-saas",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/web",
+    "apps/api",
+    "apps/runtime",
+    "packages/contracts"
+  ],
+  "scripts": {
+    "dev": "node --env-file=.env apps/api/src/server.mjs",
+    "dev:web": "npm run dev --workspace=@office/web",
+    "build": "npm run build --workspace=@office/web",
+    "test": "node --test tests/*.test.mjs && npm test --workspace=@office/web",
+    "lint": "npm run lint --workspace=@office/web",
+    "db:migrate": "node --env-file=.env database/migrate.mjs",
+    "db:enterprise": "node --env-file=.env scripts/enterprise.mjs"
+  },
+  "engines": {
+    "node": "24.x"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.3.14",
+    "playwright": "^1.56.0",
+    "prettier": "^3.9.10"
+  }
+}

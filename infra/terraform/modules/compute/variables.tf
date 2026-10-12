@@ -1,0 +1,24 @@
+variable "name" { type = string }
+variable "domain" { type = string }
+variable "zone_id" { type = string }
+variable "vpc_id" { type = string }
+variable "public_subnets" { type = list(string) }
+variable "private_subnets" { type = list(string) }
+variable "app_security_group" { type = string }
+variable "alb_security_group" { type = string }
+variable "image_digest" { type = string }
+variable "desired_count" { type = number }
+variable "pg_host" { type = string }
+variable "app_secret_arn" { type = string }
+variable "admin_secret_arn" { type = string }
+variable "redis_secret_arn" { type = string }
+variable "enable_agentcore" { type = bool }
+variable "harness_arns" { type = map(string) }
+variable "runtime_arns" { type = list(string) }
+variable "agent_region" { type = string }
+variable "model_id" { type = string }
+variable "model_resource_arns" { type = list(string) }
+variable "model_rates" { type = any }
+variable "cognito" { type = object({ issuer = string, client_id = string, domain = string }) }
+variable "license_reviewed" { type = bool }
+variable "data_import_object_arn" { type = string }

@@ -1,0 +1,79 @@
+.task-dependencies {
+  margin: 16px 0;
+  padding: 16px;
+  border: 1px solid #e9e1f3;
+  border-radius: 14px;
+  background: #faf8fc;
+  font-size: 13px;
+  min-width: 0;
+}
+.task-dependencies h3 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: #5f5a6e;
+}
+.task-dependency-list {
+  display: grid;
+  gap: 8px;
+}
+.task-dependency-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.task-dependency-item > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.task-dependency-item > strong {
+  flex-shrink: 0;
+  font-size: 11px;
+}
+.task-dependency-item .is-complete {
+  color: #1f6f6a;
+}
+.task-dependency-item .is-waiting {
+  color: #796125;
+}
+.task-dependency-note {
+  margin: 10px 0 0;
+  color: #5f5a6e;
+  line-height: 1.5;
+}
+.task-received-inputs {
+  display: grid;
+  gap: 8px;
+}
+.task-dependency-list ~ .task-received-inputs,
+.task-dependency-note + .task-received-inputs {
+  margin-top: 14px;
+}
+.task-received-item {
+  padding: 10px;
+  border-radius: 10px;
+  background: white;
+  display: grid;
+  gap: 5px;
+  overflow-wrap: anywhere;
+}
+.task-received-item > strong {
+  font-size: 13px;
+}
+.task-received-item > small {
+  color: #5f5a6e;
+}
+.task-received-item > a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: #6b4883;
+}
+.task-dependencies.is-compact {
+  padding: 10px;
+  margin: 10px 0 0;
+  font-size: 12px;
+}
+.task-dependencies.is-compact .task-received-item > strong {
+  font-size: 12px;
+}

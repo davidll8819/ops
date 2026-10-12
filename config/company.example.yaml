@@ -1,0 +1,74 @@
+# Reference policy. API keys are saved separately using Settings; no real credentials in this file.
+gateway:
+  base_url: https://app.4yi.ai/api/v1
+  api_key: ${RELAY_API_KEY}
+tiers:
+  strong: ""
+  fast: ""
+  cheap: ""
+  image: ""
+  video: ""
+departments:
+  secretary:
+    enabled: true
+    tier: fast
+    fallback: cheap
+    skills:
+      - task_split
+      - remind
+      - report
+    need_confirm: false
+  content_ops:
+    enabled: true
+    tier: fast
+    fallback: cheap
+    skills:
+      - make_video
+      - aitoearn_publish
+    need_confirm: true
+  market_research:
+    enabled: true
+    tier: strong
+    fallback: fast
+    skills:
+      - competitor_analysis
+    need_confirm: false
+  design:
+    enabled: true
+    tier: fast
+    skills:
+      - taste
+    need_confirm: false
+  dev:
+    enabled: true
+    tier: strong
+    fallback: fast
+    skills:
+      - code_review
+    need_confirm: false
+  archive:
+    enabled: true
+    tier: cheap
+    skills:
+      - auto_archive
+      - tidy_tables
+    need_confirm: false
+  compliance:
+    enabled: false
+    skills: []
+    need_confirm: false
+  outreach:
+    enabled: false
+    skills: []
+    need_confirm: false
+  intern:
+    enabled: false
+    skills: []
+    need_confirm: false
+aitoearn:
+  server_url: http://localhost:3002
+  relay_key: ${AITOEARN_RELAY_KEY}
+  region: china
+  accounts: {}
+budget:
+  daily_token_limit: 2000000

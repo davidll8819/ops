@@ -1,0 +1,6 @@
+bucket       = "REPLACE_WITH_UNIQUE_STATE_BUCKET"
+key          = "wishtaday/production.tfstate"
+region       = "ap-east-1"
+profile      = "0511"
+encrypt      = true
+use_lockfile = true

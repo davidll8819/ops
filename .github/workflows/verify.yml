@@ -1,0 +1,38 @@
+name: Verify Windows and Linux
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --include=optional
+      - run: node scripts/windows-local.mjs check
+      - run: npm test
+      - run: npm run lint
+      - run: npm run build
+      - name: Fresh PostgreSQL and Redis startup (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          node scripts/setup-local.mjs
+          docker compose -p wishtaday-local up -d --wait
+          node --env-file=.env scripts/bootstrap-local.mjs
+          node scripts/local-process.mjs start
+          node scripts/local-smoke.mjs
+          node scripts/local-process.mjs stop
+      - name: Stop isolated CI containers
+        if: always() && runner.os == 'Linux'
+        run: docker compose -p wishtaday-local stop
