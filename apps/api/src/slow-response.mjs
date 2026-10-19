@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const SLOW_RESPONSE_TYPE = 'application/x-office-response+ndjson'
-// Only JSON-returning model routes use this transport. Existing upstream SSE stays untouched.
+// JSON-returning long operations use this transport. Existing upstream SSE stays untouched.
 export const slowResponseRoutes = new Set([
   '/api/tenants/:tenantId/secretary/chat',
   '/api/tenants/:tenantId/secretary/brief',
@@ -10,6 +10,8 @@ export const slowResponseRoutes = new Set([
   '/api/tenants/:tenantId/departments/:department/messages',
   '/api/tenants/:tenantId/agent-builder',
   '/api/tenants/:tenantId/agents/:agentId/messages',
+  '/api/tenants/:tenantId/archive/documents/:fileId/parse',
+  '/api/tenants/:tenantId/archive/documents/:fileId/filing',
 ])
 
 export function responseError(err, req, app) {

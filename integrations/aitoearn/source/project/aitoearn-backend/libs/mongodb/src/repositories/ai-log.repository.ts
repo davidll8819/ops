@@ -34,6 +34,10 @@ export class AiLogRepository extends BaseRepository<AiLog> {
     super(aiLogModel)
   }
 
+  async listByUserIdAndRequestOfficeTaskId(userId: string, officeTaskId: string) {
+    return this.find({ userId, type: AiLogType.Video, 'request.officeTaskId': officeTaskId }, { sort: { createdAt: 1 }, limit: 30 })
+  }
+
   async listWithPagination(params: ListAiLogParams) {
     const { page, pageSize, userId, userType, type, status, model, channel, channels, createdAt } = params
 

@@ -105,7 +105,7 @@ export function applyFourYiModels(config: AppConfig, models: FourYiModel[]): voi
   }))
   config.ai.models.image = {
     generation: images.map(model => ({ name: model.id, description: model.description ?? model.name ?? model.id, tags: [], sizes: ['1024x1024'], qualities: [], styles: [] })),
-    edit: images.filter(model => /^(?:gemini-|(?:openai\/)?gpt-)/.test(model.id) || model.modes?.includes('image_to_image')).map(model => ({ name: model.id, description: model.description ?? model.name ?? model.id, tags: [], sizes: ['1024x1024'], maxInputImages: model.max_input_images ?? 1 })),
+    edit: images.filter(model => /^(?:gemini-|(?:openai\/)?gpt-)/.test(model.id) || model.id === 'alibaba/wan2.6-image' || model.modes?.includes('image_to_image')).map(model => ({ name: model.id, description: model.description ?? model.name ?? model.id, tags: [], sizes: ['1024x1024'], maxInputImages: model.max_input_images ?? 1 })),
   }
   config.ai.models.video.generation = models.filter(model => getFourYiModelKind(model) === FourYiModelKind.Video).map(toFourYiVideoModel)
   config.ai.draftGeneration.imageModels = images.map(model => ({
@@ -119,7 +119,7 @@ export function applyFourYiModels(config: AppConfig, models: FourYiModel[]): voi
   if (!chat.some(model => model.id === config.ai.draftGeneration.planner.defaultModel) && chat[0])
     config.ai.draftGeneration.planner.defaultModel = chat[0].id
 
-  const agentModels = chat.filter(model => model.id.startsWith('claude-')).map(model => model.id)
+  const agentModels = chat.filter(model => model.id.startsWith('claude-') || (config.officeBridge && model.id === 'office-content-ops')).map(model => model.id)
   config.agent.models = agentModels
   if (agentModels.length) {
     if (!agentModels.includes(config.agent.defaultModel))

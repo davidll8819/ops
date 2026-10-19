@@ -30,6 +30,11 @@ export function runtimeOutput(value) {
     if (depth > 15 || !v) return
     if (typeof v === 'string') {
       texts.push(v)
+      for (const match of v.matchAll(/\[Resource link: (?:Generated image|Image \d+)\]\s+(https?:\/\/[^\s<>]+)/g))
+        media.push({ type: 'IMAGE', url: match[1] })
+      if (v.length < 1024 * 1024 && (v.trim().startsWith('{') || v.trim().startsWith('['))) {
+        try { walk(JSON.parse(v), depth + 1) } catch { /* Tool output may be plain text. */ }
+      }
       return
     }
     if (Array.isArray(v)) {
@@ -39,6 +44,10 @@ export function runtimeOutput(value) {
     if (typeof v !== 'object') return
     if (['IMAGE', 'VIDEO'].includes(v.type) && /^https?:\/\//.test(v.url || ''))
       media.push({ type: v.type, url: v.url })
+    if (['SUCCESS', 'completed'].includes(v.status) && /^https?:\/\//.test(v.videoUrl || ''))
+      media.push({ type: 'VIDEO', url: v.videoUrl })
+    if (v.type === 'resource_link' && /image/i.test(v.name || '') && /^https?:\/\//.test(v.uri || ''))
+      media.push({ type: 'IMAGE', url: v.uri })
     if (v.text) walk(v.text, depth + 1)
     else if (v.content) walk(v.content, depth + 1)
     for (const k of ['message', 'messages', 'result', 'medias', 'structured_output'])

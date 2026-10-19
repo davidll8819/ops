@@ -1,5 +1,6 @@
 import { createZodDto, PaginationDtoSchema } from '@yikart/common'
 import { z } from 'zod'
+import { VideoFormatSchema } from '@yikart/aitoearn-ai-shared'
 import { config } from '../../config'
 
 // 文本内容块
@@ -88,6 +89,7 @@ export const AllowedModelSchema = z.string().refine(model => config.agent.models
 // 创建内容生成任务 DTO
 export const CreateContentGenerationTaskSchema = z.object({
   prompt: PromptSchema.describe('提示词（字符串或内容块数组）'),
+  videoFormat: VideoFormatSchema.nullable().optional().describe('用户选择的视频规格；null 取消之前保存的规格'),
   model: AllowedModelSchema.describe('使用的模型'),
   includePartialMessages: z.boolean().optional().default(false).describe('是否包含部分消息（流式）'),
   taskId: z.string().transform(val => val.trim() === '' ? undefined : val).optional().describe('任务ID（恢复对话时使用）'),

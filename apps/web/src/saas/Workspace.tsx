@@ -13,6 +13,7 @@ import { AgentWorkspace } from './AgentWorkspace'
 import { SecretaryWorkspace } from './secretary/SecretaryWorkspace'
 import { OperationsDialog } from './operations/OperationsDialog'
 import type { OperationsHandoff } from './operations/OperationsWorkspace'
+import type { OperationsBrief } from './operations/models'
 import { Settings } from './Settings'
 import { NavigationIcon } from './NavigationIcon'
 import { OfficeHeaderStats, OfficeRightPanel } from '@/components/OfficeDashboardChrome'
@@ -22,17 +23,21 @@ export function Workspace({ tenant }: { tenant: Tenant }) {
   const [operationsOpen, setOperationsOpen] = useState(false)
   const [operationsVisited, setOperationsVisited] = useState(false)
   const [handoff, setHandoff] = useState<OperationsHandoff>()
-  const openOperations = useCallback((brief?: string, task?: Task) => {
-    if (brief?.trim() || task)
-      setHandoff({
-        id: crypto.randomUUID(),
-        text: brief?.trim() || '',
-        secretaryTaskId: task?.id,
-        runtimeTaskId: task?.runtimeTaskId,
-      })
-    setOperationsVisited(true)
-    setOperationsOpen(true)
-  }, [])
+  const openOperations = useCallback(
+    (brief?: string, task?: Task, savedBrief?: OperationsBrief) => {
+      if (brief?.trim() || task)
+        setHandoff({
+          id: crypto.randomUUID(),
+          text: brief?.trim() || '',
+          secretaryTaskId: task?.id,
+          runtimeTaskId: task?.runtimeTaskId,
+          brief: savedBrief,
+        })
+      setOperationsVisited(true)
+      setOperationsOpen(true)
+    },
+    [],
+  )
   const [skillView, setSkillView] = useState<SkillView>('catalog')
   const [skillRevision, setSkillRevision] = useState(0)
   const skillInstalled = () => {
@@ -54,7 +59,13 @@ export function Workspace({ tenant }: { tenant: Tenant }) {
     [agentId, setAgentId] = useState<string>()
   const [board, setBoard] = useState<Board>(emptyBoard()),
     [status, setStatus] = useState<{
-      departments: { id: string; name: string; ready: boolean; enabled?: boolean; active?: boolean }[]
+      departments: {
+        id: string
+        name: string
+        ready: boolean
+        enabled?: boolean
+        active?: boolean
+      }[]
       memoryMb: number
       uptime: number
     } | null>(null)
@@ -204,7 +215,11 @@ export function Workspace({ tenant }: { tenant: Tenant }) {
       <main
         className={`workspace-content ${tab === 'office' ? 'workspace-office' : tab === 'skills' ? 'workspace-skills' : tab === 'secretary' ? 'workspace-secretary' : ''}`}
       >
-        {tab === 'tasks' && taskError && <p className="error" role="alert">{t(taskError)}</p>}
+        {tab === 'tasks' && taskError && (
+          <p className="error" role="alert">
+            {t(taskError)}
+          </p>
+        )}
         {tab === 'secretary' && (
           <SecretaryWorkspace
             base={base}
@@ -283,6 +298,10 @@ export function Workspace({ tenant }: { tenant: Tenant }) {
             canEdit={tenant.role !== 'member'}
             base={base}
             openSettings={openSettings}
+            openSkills={() => {
+              setSkillView('installed')
+              setTab('skills')
+            }}
             openOperations={openOperations}
           />
         )}

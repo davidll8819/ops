@@ -13,6 +13,7 @@ describe('fourYiVideoService', () => {
   const assetsService = { uploadFromUrl: vi.fn(), uploadFromBuffer: vi.fn() }
   const storageProvider = { parsePathFromUrl: vi.fn((url: string) => url), toPresignedUrl: vi.fn(async (url: string) => url) }
   const aiAvailability = { recordAsyncComplete: vi.fn() }
+  const videoMetadata = { probeVideoMetadata: vi.fn() }
   let service: FourYiVideoService
 
   beforeEach(() => {
@@ -21,7 +22,7 @@ describe('fourYiVideoService', () => {
     vi.clearAllMocks()
     aiLogRepo.create.mockReset()
     vi.stubGlobal('fetch', fetchMock)
-    service = new FourYiVideoService(aiLogRepo as never, assetsService as never, storageProvider as never, aiAvailability as never)
+    service = new FourYiVideoService(aiLogRepo as never, assetsService as never, storageProvider as never, aiAvailability as never, videoMetadata as never)
   })
 
   afterAll(() => {
@@ -78,6 +79,14 @@ describe('fourYiVideoService', () => {
     expect(JSON.parse(fetchMock.mock.calls[0][1].body).mode).toBe('image_to_video')
   })
 
+  it('forwards selected video dimensions to the provider-specific parameters', async () => {
+    fetchMock.mockResolvedValue(new Response(JSON.stringify({ id: 'portrait' })))
+    aiLogRepo.create.mockResolvedValue({ id: 'local-portrait' })
+    await service.createFromRequest({ userId: 'user-1', userType: UserType.User, model: 'wan-2.7', prompt: 'A cup', ratio: '9:16', resolution: '720p', duration: 5 })
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body).extra_body).toEqual({ aspect_ratio: '9:16', resolution: '720p' })
+    expect(aiLogRepo.create.mock.calls[0][0].request).toMatchObject({ aspect_ratio: '9:16', resolution: '720p' })
+  })
+
   it('requires an image for reference-only models', async () => {
     await expect(service.createFromRequest({ userId: 'user-1', userType: UserType.User, model: 'happyhorse-1.1-r2v', prompt: 'A scene' })).rejects.toThrow()
     expect(fetchMock).not.toHaveBeenCalled()
@@ -101,12 +110,36 @@ describe('fourYiVideoService', () => {
 
   const task = () => ({ id: 'local-1', taskId: 'remote-1', userId: 'user-1', model: 'seedance-2.0', status: AiLogStatus.Generating, startedAt: new Date(), channel: AiLogChannel.FourYi })
 
+  it('reuses a saved video after repeated transient probe failures', async () => {
+    fetchMock.mockImplementation(async () => new Response(JSON.stringify({ status: 'completed', video_url: 'https://upstream.example/video.mp4' })))
+    assetsService.uploadFromUrl.mockResolvedValue({ asset: { path: 'saved/portrait.mp4' } })
+    videoMetadata.probeVideoMetadata.mockRejectedValueOnce(new Error('transient')).mockRejectedValueOnce(new Error('transient')).mockResolvedValue({ width: 720, height: 1280 })
+    let persisted = { ...task(), request: { aspect_ratio: '9:16', resolution: '720p' }, response: {} }
+    aiLogRepo.updateByIdAndStatus.mockImplementation(async (_id, _status, update) => { persisted = { ...persisted, ...update.$set }; return persisted })
+    await service.poll(persisted as never)
+    await service.poll(persisted as never)
+    await service.poll(persisted as never)
+    expect(assetsService.uploadFromUrl).toHaveBeenCalledOnce()
+    expect(videoMetadata.probeVideoMetadata).toHaveBeenCalledTimes(3)
+    expect(persisted.status).toBe(AiLogStatus.Success)
+  })
+
+  it.each([[720, 1280, true], [1920, 1080, false]])('persists actual dimensions %s x %s and never passes a mismatched video', async (width, height, matches) => {
+    fetchMock.mockResolvedValue(new Response(JSON.stringify({ status: 'completed', video_url: 'https://upstream.example/video.mp4' })))
+    assetsService.uploadFromUrl.mockResolvedValue({ asset: { path: 'saved/portrait.mp4' } })
+    videoMetadata.probeVideoMetadata.mockResolvedValue({ width, height, duration: 5 })
+    await service.poll({ ...task(), request: { aspect_ratio: '9:16', resolution: '720p' } } as never)
+    const response = aiLogRepo.updateByIdAndStatus.mock.calls.at(-1)![2].$set.response
+    expect(service.getTaskResult(response).specification).toEqual({ requested: { ratio: '9:16', resolution: '720p' }, actual: { width, height }, matches })
+    expect(videoMetadata.probeVideoMetadata).toHaveBeenCalledOnce()
+  })
+
   it('saves successful videos and prefers the persisted asset over expiring upstream URLs', async () => {
     fetchMock.mockResolvedValue(new Response(JSON.stringify({ status: 'completed', video_url: 'https://upstream.example/video.mp4' })))
     assetsService.uploadFromUrl.mockResolvedValue({ asset: { path: 'saved/video.mp4' } })
     aiLogRepo.updateByIdAndStatus.mockResolvedValue({ id: 'local-1' })
     await service.poll(task() as never)
-    const update = aiLogRepo.updateByIdAndStatus.mock.calls[0][2].$set
+    const update = aiLogRepo.updateByIdAndStatus.mock.calls.at(-1)![2].$set
     expect(update.status).toBe(AiLogStatus.Success)
     expect(service.getTaskResult(update.response).videoUrl).toBe('saved/video.mp4')
     expect(aiAvailability.recordAsyncComplete).toHaveBeenCalledOnce()
@@ -129,15 +162,26 @@ describe('fourYiVideoService', () => {
     expect(fetchMock.mock.calls[1][1].headers.Authorization).toBe('Bearer test-key')
     expect(assetsService.uploadFromUrl).not.toHaveBeenCalled()
     expect(assetsService.uploadFromBuffer).toHaveBeenCalledOnce()
-    expect(aiLogRepo.updateByIdAndStatus.mock.calls[0][2].$set.status).toBe(AiLogStatus.Success)
+    expect(aiLogRepo.updateByIdAndStatus.mock.calls.at(-1)![2].$set.status).toBe(AiLogStatus.Success)
   })
 
   it('records failures without downloading an artifact', async () => {
     fetchMock.mockResolvedValue(new Response(JSON.stringify({ status: 'failed', error: { message: 'Provider failed' } })))
     await service.poll(task() as never)
-    expect(aiLogRepo.updateByIdAndStatus.mock.calls[0][2].$set.status).toBe(AiLogStatus.Failed)
+    expect(aiLogRepo.updateByIdAndStatus.mock.calls.at(-1)![2].$set.status).toBe(AiLogStatus.Failed)
     expect(assetsService.uploadFromUrl).not.toHaveBeenCalled()
     expect(service.getTaskResult({ status: 'failed', error: { message: 'Provider failed' } })).toMatchObject({ status: TaskStatus.Failure, error: { message: 'Provider failed' } })
+  })
+
+  it('retrieves provider artifact URLs through the private authenticated gateway', async () => {
+    fetchMock.mockResolvedValueOnce(new Response(JSON.stringify({ status: 'completed', video_url: 'https://app.4yi.ai/api/v1/videos/generations/remote-1/artifact' })))
+      .mockResolvedValueOnce(new Response('video bytes', { headers: { 'content-type': 'video/mp4' } }))
+    assetsService.uploadFromBuffer.mockResolvedValue({ asset: { path: 'saved/artifact.mp4' } })
+    await service.poll(task() as never)
+    expect(fetchMock.mock.calls[1][0]).toMatch(/remote-1\/artifact$/)
+    expect(fetchMock.mock.calls[1][1].headers.Authorization).toBe('Bearer test-key')
+    expect(assetsService.uploadFromUrl).not.toHaveBeenCalled()
+    expect(aiLogRepo.updateByIdAndStatus.mock.calls.at(-1)![2].$set.status).toBe(AiLogStatus.Success)
   })
 
   it('keeps pending and transient polling failures retryable', async () => {

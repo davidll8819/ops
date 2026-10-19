@@ -227,6 +227,7 @@ export class AgentRuntimeService {
         DISABLE_TELEMETRY: 'true',
         DISABLE_COST_WARNINGS: 'true',
         HOME: this.sessionDir,
+        USERPROFILE: this.sessionDir,
       },
       mcpServers,
       allowedTools: this.generateAllowedTools(mcpServers ?? {}),
@@ -744,12 +745,14 @@ export class AgentRuntimeService {
       this.logger.debug({ taskId: task.id }, `Created new task ${task.id} for user ${userId}`)
     }
 
+    if (dto.videoFormat !== undefined)
+      await this.contentGenerateRepository.updateById(task.id, dto.videoFormat ? { videoFormat: dto.videoFormat } : { $unset: { videoFormat: 1 } })
     await this.contentGenerateRepository.updateStatus(task.id, ContentGenerationTaskStatus.Running)
 
     const headers = filterHeaders(req.headers)
     this.logger.debug({ headers }, 'mcp headers')
     const mcpServers: Record<string, McpServerConfig> = {
-      [McpServerName.MediaGeneration]: this.mediaMcp.createServer(userId, userType),
+      [McpServerName.MediaGeneration]: this.mediaMcp.createServer(userId, userType, task.id),
       [McpServerName.Util]: this.utilMcp.server,
       [McpServerName.Aideo]: this.aideoMcp.createServer(userId, userType),
       [McpServerName.VideoEdit]: this.videoEditMcp.createServer(userId, userType),

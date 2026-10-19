@@ -11,11 +11,13 @@ describe('4YI SDK transport', () => {
   let openai: OpenaiService
   let responseBody: unknown
   let streamResponse = false
+  let imageFailure = false
   const availability = { execute: vi.fn(async (_context, run: () => Promise<unknown>) => run()) }
 
   beforeEach(() => {
     requests.length = 0
     streamResponse = false
+    imageFailure = false
     config.ai.fouryi.apiKey = 'company-test-key'
     const settings = structuredClone(config)
     settings.ai.fouryi.baseUrl = 'https://gateway.example'
@@ -25,6 +27,8 @@ describe('4YI SDK transport', () => {
       if (request.url === 'data:,')
         return new Response()
       requests.push(request)
+      if (imageFailure)
+        return Response.json({ error: { message: 'Unknown result' } }, { status: 502 })
       if (streamResponse)
         return new Response('data: {"id":"chat-1","object":"chat.completion.chunk","created":1,"model":"glm-5.2","choices":[{"index":0,"delta":{"content":"hello"},"finish_reason":null}]}\n\ndata: [DONE]\n\n', { headers: { 'content-type': 'text/event-stream' } })
       return new Response(JSON.stringify(responseBody), { headers: { 'content-type': 'application/json' } })
@@ -79,5 +83,11 @@ describe('4YI SDK transport', () => {
     expect(requests[1].url).toBe('https://gateway.example/api/v1/images/generations')
     expect((await requests[1].json()).model).toBe('gemini-3-pro-image')
     expect(images.images[0].imageData.toString()).toBe('image')
+  })
+
+  it('does not automatically resubmit a paid image after an ambiguous HTTP failure', async () => {
+    imageFailure = true
+    await expect(openai.createImageGeneration({ model: 'alibaba/wan2.6-image', prompt: 'Coffee', n: 1 })).rejects.toThrow()
+    expect(requests).toHaveLength(1)
   })
 })

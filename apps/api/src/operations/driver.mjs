@@ -41,6 +41,7 @@ export function createOperationsDriver(env) {
       const info = await request(entry, service, '/office-bridge/status', { signed: true })
       if (info.version !== 4 || info.tenantId !== tenantId || info.publishMode !== 'manual')
         throw fail(503, '运营服务版本或企业配置尚未同步')
+      if (info.draining) throw fail(503, '运营服务正在停止接收新任务，请等待维护完成')
     }
     return entry
   }

@@ -1,13 +1,14 @@
 import type { FourYiVideoAiLog } from '../video-ai-log.interface'
 import type { UserVideoGenerationRequestDto } from '../video.dto'
 import { Injectable, Logger } from '@nestjs/common'
-import { AssetsService, StorageProvider } from '@yikart/assets'
+import { AssetsService, StorageProvider, VideoMetadataService } from '@yikart/assets'
 import { AppException, FileUtil, ResponseCode } from '@yikart/common'
 import { AiLogChannel, AiLogRepository, AiLogStatus, AiLogType, AssetType } from '@yikart/mongodb'
 import { TaskStatus } from '../../../../common'
 import { config } from '../../../../config'
 import { AiAvailabilityService } from '../../../ai-availability/ai-availability.service'
 import { fourYiApiBaseUrl } from '../../libs/fouryi/fouryi.config'
+import { checkVideoSpecification } from './fouryi-video-specification.util'
 
 type FourYiTask = Record<string, unknown>
 
@@ -37,6 +38,7 @@ export class FourYiVideoService {
     private readonly assetsService: AssetsService,
     private readonly storageProvider: StorageProvider,
     private readonly aiAvailability: AiAvailabilityService,
+    private readonly videoMetadata: VideoMetadataService,
   ) {}
 
   private get baseUrl() { return fourYiApiBaseUrl(config.ai.fouryi.baseUrl) }
@@ -84,7 +86,11 @@ export class FourYiVideoService {
       aspect_ratio: request.ratio,
       resolution: request.resolution,
       response_format: 'url',
-      ...(referenceImages.length ? { extra_body: { reference_images: referenceImages } } : {}),
+      extra_body: {
+        aspect_ratio: request.ratio,
+        resolution: request.resolution,
+        ...(referenceImages.length ? { reference_images: referenceImages } : {}),
+      },
     }
     const startedAt = new Date()
     const result = asRecord(unwrap(await (await this.request('/videos/generations', { method: 'POST', body: JSON.stringify(body) })).json())) ?? {}
@@ -100,7 +106,7 @@ export class FourYiVideoService {
       channel: AiLogChannel.FourYi,
       startedAt,
       type: AiLogType.Video,
-      request: { ...body, remoteTaskId, groupId: request.groupId },
+      request: { ...body, remoteTaskId, groupId: request.groupId, officeTaskId: request.metadata?.['officeTaskId'] },
       response: result,
       status: AiLogStatus.Generating,
     })
@@ -114,6 +120,8 @@ export class FourYiVideoService {
       groupId: request.groupId,
       images: (extraBody?.['reference_images'] as string[] | undefined) ?? [],
       duration: request['duration_seconds'] as number | undefined,
+      aspectRatio: request['aspect_ratio'] as string | undefined,
+      resolution: request['resolution'] as string | undefined,
     }
   }
 
@@ -124,6 +132,7 @@ export class FourYiVideoService {
     return {
       status: this.normalizeStatus(getString(result, 'status', 'state')),
       videoUrl: getString(result, 'videoUrl', 'video_url', 'url', 'artifact_url'),
+      specification: result['specification'] as ReturnType<typeof checkVideoSpecification> | undefined,
       error: errorMessage ? { message: errorMessage } : undefined,
     }
   }
@@ -146,11 +155,16 @@ export class FourYiVideoService {
       if (status === TaskStatus.InProgress)
         return
 
-      let videoUrl = getString(remote, 'video_url', 'videoUrl', 'url', 'artifact_url')
-      if (status === TaskStatus.Success) {
+      const savedResponse = asRecord(task.response)
+      let videoUrl = savedResponse?.['artifactSaved'] === true ? getString(savedResponse, 'videoUrl') : undefined
+      if (status === TaskStatus.Success && !videoUrl) {
+        videoUrl = getString(remote, 'video_url', 'videoUrl', 'url', 'artifact_url')
         // Gateway artifact URLs require the company key; never forward it to a CDN.
-        if (videoUrl && new URL(videoUrl, this.baseUrl).origin !== new URL(this.baseUrl).origin) {
-          const uploaded = await this.assetsService.uploadFromUrl(task.userId, { url: videoUrl, type: AssetType.AiVideo }, task.model)
+        const remoteUrl = videoUrl ? new URL(videoUrl, this.baseUrl) : undefined
+        const providerArtifact = remoteUrl?.origin === 'https://app.4yi.ai'
+          && remoteUrl.pathname === `/api/v1/videos/generations/${encodeURIComponent(task.taskId)}/artifact`
+        if (remoteUrl && remoteUrl.origin !== new URL(this.baseUrl).origin && !providerArtifact) {
+          const uploaded = await this.assetsService.uploadFromUrl(task.userId, { url: remoteUrl.href, type: AssetType.AiVideo }, task.model)
           videoUrl = uploaded.asset.path
         }
         else {
@@ -169,9 +183,18 @@ export class FourYiVideoService {
             videoUrl = uploaded.asset.path
           }
         }
+        // Commit the saved path before probing. A probe retry must reuse this artifact.
+        await this.aiLogRepo.updateByIdAndStatus(task.id, AiLogStatus.Generating, {
+          $set: { response: { ...remote, status: 'processing', videoUrl, artifactSaved: true } },
+        })
       }
 
-      const response = { ...remote, status: status === TaskStatus.Success ? 'completed' : 'failed', videoUrl }
+      let specification: ReturnType<typeof checkVideoSpecification> | undefined
+      if (status === TaskStatus.Success && videoUrl && task.request?.['aspect_ratio'] && task.request?.['resolution']) {
+        const metadata = await this.videoMetadata.probeVideoMetadata(await this.toAccessibleUrl(videoUrl))
+        specification = checkVideoSpecification({ ratio: task.request['aspect_ratio'] as string, resolution: task.request['resolution'] as string }, metadata)
+      }
+      const response = { ...remote, status: status === TaskStatus.Success ? 'completed' : 'failed', videoUrl, specification, artifactSaved: status === TaskStatus.Success }
       const elapsedMs = Date.now() - task.startedAt.getTime()
       const updated = await this.aiLogRepo.updateByIdAndStatus(task.id, AiLogStatus.Generating, {
         $set: {

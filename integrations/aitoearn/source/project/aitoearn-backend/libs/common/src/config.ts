@@ -55,6 +55,7 @@ export const loggerConfig = z.object({
 export const baseConfig = z.object({
   globalPrefix: z.string().optional(),
   port: z.number().int().default(3000),
+  host: z.string().default('0.0.0.0'),
   enableConfigLogging: z.boolean().default(false),
   enableBadRequestDetails: z.boolean().default(false),
   openapi: openapiConfig.optional(),

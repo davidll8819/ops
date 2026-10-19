@@ -1,3 +1,4 @@
+import { DEPARTMENT_NAMES } from '../../../../packages/employees/registry.mjs'
 import { useEffect, useState } from 'react'
 import { t } from '@/i18n'
 import { api } from './api'
@@ -10,6 +11,7 @@ type ModelEntry = { id: string; kinds: string[]; source: string; searchVerified?
 type Department = {
   enabled: boolean
   tier?: Tier
+  model?: string
   fallback?: Tier
   skills: string[]
   need_confirm: boolean
@@ -36,17 +38,7 @@ type Configuration = {
   secretNames: { ai: string; relay: string }
   budget: { used: number; reserved: number; available: number; day: string }
 }
-const departments: Record<string, string> = {
-  secretary: '秘书处',
-  content_ops: '运营部',
-  market_research: '市场调研',
-  design: '设计部',
-  dev: '程序部',
-  archive: '资料室',
-  compliance: '合规部',
-  outreach: '拓客部',
-  intern: '实习生',
-}
+const departments = DEPARTMENT_NAMES
 const tiers: Record<Tier, string> = { strong: '强推理', fast: '快速', cheap: '低成本' }
 const slots: Record<ModelSlot, string> = { ...tiers, image: '图片', video: '视频', search: '搜索' }
 export function Settings({ base, canEdit }: { base: string; canEdit: boolean }) {
@@ -284,7 +276,10 @@ export function Settings({ base, canEdit }: { base: string; canEdit: boolean }) 
               </p>
             </fieldset>
             <fieldset disabled={busy}>
-              <legend>{t('第三层 · 部门配置')}</legend>
+              <legend>{t('第三层 · 按部门选择模型')}</legend>
+              <p className="muted">
+                {t('公司模型作为默认值；需要专用模型的部门可单独覆盖。市场调研和拓客可在搜索能力中选择联网搜索模型。')}
+              </p>
               <div className="ops-department-list">
                 {Object.entries(departments).map(([id, name]) => {
                   const d = policy.departments[id]
@@ -308,9 +303,9 @@ export function Settings({ base, canEdit }: { base: string; canEdit: boolean }) 
                       </div>
                       <div className="ops-tier-grid">
                         <label>
-                          {t('文字处理模型')}
+                          {t('文字模型档位')}
                           <select
-                            aria-label={`${t(name)} ${t('文字处理模型')}`}
+                            aria-label={`${t(name)} ${t('文字模型档位')}`}
                             value={d.tier || ''}
                             onChange={(e) => department(id, { tier: e.target.value as Tier })}
                             disabled={!d.enabled}
@@ -322,6 +317,23 @@ export function Settings({ base, canEdit }: { base: string; canEdit: boolean }) 
                               <option key={key} value={key}>
                                 {key} · {t(tiers[key])}
                               </option>
+                            ))}
+                          </select>
+                        </label>
+                        <label>
+                          {t('文字模型（可选覆盖）')}
+                          <select
+                            aria-label={`${t(name)} ${t('文字模型')}`}
+                            value={d.model || ''}
+                            onChange={(e) => department(id, { model: e.target.value })}
+                            disabled={!d.enabled}
+                          >
+                            <option value="">{t('继承公司档位')} · {policy.tiers[d.tier || 'fast'] || t('待配置')}</option>
+                            {d.model && !models.some((m) => m.id === d.model) && (
+                              <option value={d.model}>{d.model} · {t('已保存，待核对')}</option>
+                            )}
+                            {models.filter((m) => m.kinds.includes('text') || m.kinds.includes('unknown')).map((m) => (
+                              <option key={m.id} value={m.id}>{m.id}</option>
                             ))}
                           </select>
                         </label>
@@ -378,7 +390,7 @@ export function Settings({ base, canEdit }: { base: string; canEdit: boolean }) 
                             kind === 'search' ? m.searchVerified : m.kinds.includes(kind),
                           )
                           return (
-                            <div key={kind}>
+                            <div key={kind} className={kind === 'search' && ['market_research', 'outreach'].includes(id) ? 'ops-priority-capability' : undefined}>
                               <label className="ops-toggle">
                                 <input
                                   type="checkbox"
@@ -386,7 +398,7 @@ export function Settings({ base, canEdit }: { base: string; canEdit: boolean }) 
                                   disabled={!d.enabled}
                                   onChange={(e) => patch({ enabled: e.target.checked })}
                                 />
-                                {t(slots[kind])}
+                                {t(kind === 'search' && ['market_research', 'outreach'].includes(id) ? '联网搜索（建议启用）' : slots[kind])}
                               </label>
                               <select
                                 aria-label={`${t(name)} ${t(slots[kind])}`}

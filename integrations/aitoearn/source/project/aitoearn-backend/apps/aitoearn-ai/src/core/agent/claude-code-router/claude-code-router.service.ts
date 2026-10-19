@@ -98,6 +98,7 @@ export class ClaudeCodeRouterService implements OnApplicationBootstrap, OnModule
   private buildConfigFile(routerConfig: typeof config.agent): ClaudeCodeRouterConfig {
     return {
       PORT: 3456,
+      HOST: config.host,
       APIKEY: 'ccr',
       NON_INTERACTIVE_MODE: true,
       Providers: [
@@ -126,10 +127,12 @@ export class ClaudeCodeRouterService implements OnApplicationBootstrap, OnModule
 
     this.childProcess = spawn('node', [cliPath, 'start'], {
       cwd: this.sessionDir,
+      windowsHide: true,
       stdio: ['ignore', 'pipe', 'pipe'],
       env: {
         ...process.env,
         HOME: this.sessionDir,
+        USERPROFILE: this.sessionDir,
       },
     })
 

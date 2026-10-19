@@ -1,0 +1,81 @@
+.archive-tool-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+  flex-wrap: wrap;
+}
+.archive-tool-tabs button[aria-pressed='true'] {
+  color: var(--archive-accent);
+  background: var(--archive-soft);
+  border-color: var(--archive-accent);
+}
+.archive-filing {
+  border: 1px solid var(--archive-border);
+  border-radius: 10px;
+  padding: 12px;
+  background: #fff;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.archive-filing h3,
+.archive-filing h4 {
+  margin: 0 0 10px;
+}
+.archive-filing-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.archive-filing-card {
+  margin-top: 14px;
+  padding: 12px;
+  border: 1px solid var(--archive-border);
+  border-radius: 8px;
+}
+.archive-filing-card dl {
+  margin: 10px 0;
+}
+.archive-filing-card dl > div {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr);
+  gap: 8px;
+  margin: 8px 0;
+}
+.archive-filing-card dd {
+  margin: 0;
+  word-break: break-word;
+}
+.archive-filing-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.archive-filing-tags span {
+  border-radius: 12px;
+  padding: 3px 9px;
+  background: var(--archive-soft);
+  color: var(--archive-accent);
+}
+.archive-filing-review {
+  color: #735c25;
+}
+.archive-filing-directory {
+  margin-top: 16px;
+  border-top: 1px solid var(--archive-border);
+  padding-top: 12px;
+}
+.archive-filing-directory pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  font-size: 12px;
+  max-height: 200px;
+  overflow: auto;
+}
+.archive-filing details {
+  margin: 10px 0;
+}
+.archive-tool-tabs,
+.archive-filing {
+  --archive-soft: color-mix(in srgb, var(--archive-accent, #805ba5) 9%, white);
+}

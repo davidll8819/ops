@@ -1,14 +1,5 @@
 // Local planning only: this module never invokes a model, worker, or publication channel.
-export const departments = [
-  { id: 'app-agent', name: '内容运营部', en: 'Content operations', person: '叶凡' },
-  { id: 'review-agent', name: '市场调研部', en: 'Market research', person: '刘市' },
-  { id: 'new-agent-7', name: '设计部', en: 'Design', person: '林幼薇' },
-  { id: 'code-agent', name: '开发部', en: 'Development', person: '龙傲天' },
-  { id: 'file-agent', name: '资料部', en: 'Records', person: '赵雅梦' },
-  { id: 'data-agent', name: '合规部', en: 'Compliance', person: '派阿奇' },
-  { id: 'new-agent-8', name: '拓客部', en: 'Outreach', person: '西罗' },
-  { id: 'new-agent-9', name: '实习生', en: 'Intern', person: '实习生' },
-]
+export { TASK_DEPARTMENTS as departments } from '../employees/registry.mjs'
 export const emptyBoard = () => ({ messages: [], tasks: [], batches: [] })
 const error = (message) => {
   throw Object.assign(new Error(message), { statusCode: 409, expose: true })

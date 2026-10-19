@@ -21,10 +21,13 @@ describe('mediaMcp', () => {
   let mockAiAvailability: vi.Mocked<Pick<AiAvailabilityService, 'execute'>>
   let mockGrokVideoService: vi.Mocked<GrokVideoService>
 
+  let taskRepository: { updateMediaRequestByIdAndUserId: ReturnType<typeof vi.fn>, getByUserIdAndId: ReturnType<typeof vi.fn> }
   const userId = 'test-user-id'
   const userType = UserType.User
 
   beforeEach(() => {
+    const unresolved = new Set<string>()
+    taskRepository = { getByUserIdAndId: vi.fn().mockResolvedValue({}), updateMediaRequestByIdAndUserId: vi.fn(async (task, user, kind, pending) => { const key = task + user + kind; if (pending && unresolved.has(key)) return false; if (pending) unresolved.add(key); else unresolved.delete(key); return true }) }
     FileUtil.init({ endpoint: 'https://cdn.example.com' })
     mockLogger = {
       debug: vi.fn(),
@@ -55,9 +58,19 @@ describe('mediaMcp', () => {
       mockAiAvailability as unknown as AiAvailabilityService,
       mockGrokVideoService,
       {} as never,
+      taskRepository as never,
     )
     // Override the logger for testing
     Object.defineProperty(mediaMcp, 'logger', { value: mockLogger })
+  })
+
+  it('enforces the saved user format even when the agent requests another size', async () => {
+    taskRepository.getByUserIdAndId.mockResolvedValue({ videoFormat: { ratio: '9:16', resolution: '720p' } })
+    const videos = { userVideoGeneration: vi.fn().mockResolvedValue({ id: 'video-1' }) }
+    const company = new MediaMcp(mockOpenaiVideoService, mockImageService, mockAiAvailability as never, mockGrokVideoService, videos as never, taskRepository as never)
+    await company.createFourYiVideoTool(userId, userType, 'task-1').handler({ model: 'fixture', prompt: 'Coffee', ratio: '16:9', resolution: '1080p' }, {})
+    expect(videos.userVideoGeneration).toHaveBeenCalledWith(expect.objectContaining({ ratio: '9:16', resolution: '720p' }))
+    expect(taskRepository.getByUserIdAndId).toHaveBeenCalledWith(userId, 'task-1')
   })
 
   describe('createGenerateImageTool', () => {
@@ -488,12 +501,12 @@ describe('mediaMcp', () => {
 
   describe('createServer', () => {
     it('should create server with correct name', () => {
-      const server = mediaMcp.createServer(userId, userType)
+      const server = mediaMcp.createServer(userId, userType, 'task-1')
       expect(server.name).toBe('mediaGeneration')
     })
 
     it('should include expected tools', () => {
-      const server = mediaMcp.createServer(userId, userType) as { tools?: Array<{ name: string }> }
+      const server = mediaMcp.createServer(userId, userType, 'task-1') as { tools?: Array<{ name: string }> }
       const toolNames = server.tools?.map(t => t.name)
 
       expect(toolNames).toContain(MediaToolName.GenerateImage)
@@ -508,22 +521,40 @@ describe('mediaMcp', () => {
     const imageService = { userGeneration: vi.fn().mockResolvedValue({ list: [{ url: 'company/image.png' }] }), userEdit: vi.fn().mockResolvedValue({ list: [{ url: 'company/edit.png' }] }) }
     config.ai.fouryi.apiKey = 'test-company-key'
     try {
-      const companyMedia = new MediaMcp(mockOpenaiVideoService, imageService as never, mockAiAvailability as never, mockGrokVideoService, videoService as never)
-      const videoTool = companyMedia.createFourYiVideoTool(userId, userType)
+      const companyMedia = new MediaMcp(mockOpenaiVideoService, imageService as never, mockAiAvailability as never, mockGrokVideoService, videoService as never, taskRepository as never)
+      const videoTool = companyMedia.createFourYiVideoTool(userId, userType, 'task-1')
       await videoTool.handler({ model: 'seedance-2.0', prompt: 'A scene', duration: 6 } as never, {})
-      expect(videoService.userVideoGeneration).toHaveBeenCalledWith({ userId, userType, model: 'seedance-2.0', prompt: 'A scene', duration: 6 })
+      expect(videoService.userVideoGeneration).toHaveBeenCalledWith({ userId, userType, model: 'seedance-2.0', prompt: 'A scene', duration: 6, metadata: { officeTaskId: 'task-1' } })
       await companyMedia.createFourYiVideoStatusTool(userId, userType).handler({ taskId: 'company-task' }, {})
       expect(videoService.getVideoTaskStatus).toHaveBeenCalledWith({ userId, userType, taskId: 'company-task' })
-      await companyMedia.createFourYiImageTool(userId, userType).handler({ model: 'gpt-image-2', prompt: 'A square', size: '1024x1024' }, {})
-      await companyMedia.createFourYiImageTool(userId, userType).handler({ model: 'gpt-image-2', prompt: 'Edit', size: '1024x1024', imageUrls: ['https://cdn.example/reference.png'] }, {})
+      await companyMedia.createFourYiImageTool(userId, userType, 'task-1').handler({ model: 'gpt-image-2', prompt: 'A square', size: '1024x1024' }, {})
+      await companyMedia.createFourYiImageTool(userId, userType, 'task-1').handler({ model: 'gpt-image-2', prompt: 'Edit', size: '1024x1024', imageUrls: ['https://cdn.example/reference.png'] }, {})
       expect(imageService.userGeneration).toHaveBeenCalledOnce()
       expect(imageService.userEdit).toHaveBeenCalledOnce()
-      const server = companyMedia.createServer(userId, userType) as unknown as { tools: Array<{ name: string }> }
+      const server = companyMedia.createServer(userId, userType, 'task-1') as unknown as { tools: Array<{ name: string }> }
       expect(server.tools.map(tool => tool.name)).toEqual([MediaToolName.GenerateImage, MediaToolName.GenerateVideo, MediaToolName.GetVideoStatus])
       expect(mockOpenaiVideoService.createVideo).not.toHaveBeenCalled()
     }
     finally {
       config.ai.fouryi.apiKey = originalKey
     }
+  })
+
+  it('blocks repeated paid media submissions after a tool failure while status reads remain available', async () => {
+    const images = { userGeneration: vi.fn().mockRejectedValue(new Error('Unknown generation result')) }
+    const videos = { userVideoGeneration: vi.fn().mockRejectedValue(new Error('Unknown generation result')), getVideoTaskStatus: vi.fn().mockResolvedValue({ status: 'InProgress' }) }
+    const company = new MediaMcp(mockOpenaiVideoService, images as never, mockAiAvailability as never, mockGrokVideoService, videos as never, taskRepository as never)
+    for (const tool of [company.createFourYiImageTool(userId, userType, 'task-1'), company.createFourYiVideoTool(userId, userType, 'task-1')]) {
+      await tool.handler({ model: 'fixture', prompt: 'Coffee', size: '1024x1024' } as never, {})
+      const result = await tool.handler({ model: 'fixture', prompt: 'Different coffee', size: '1024x1024' } as never, {})
+      expect(result.isError).toBe(true)
+    }
+    const recreated = new MediaMcp(mockOpenaiVideoService, images as never, mockAiAvailability as never, mockGrokVideoService, videos as never, taskRepository as never)
+    await recreated.createFourYiImageTool(userId, userType, 'task-1').handler({ model: 'fixture', prompt: 'Still unresolved', size: '1024x1024' }, {})
+    await recreated.createFourYiVideoTool(userId, userType, 'task-1').handler({ model: 'fixture', prompt: 'Still unresolved' }, {})
+    expect(images.userGeneration).toHaveBeenCalledOnce()
+    expect(videos.userVideoGeneration).toHaveBeenCalledOnce()
+    await company.createFourYiVideoStatusTool(userId, userType).handler({ taskId: 'existing' }, {})
+    expect(videos.getVideoTaskStatus).toHaveBeenCalledOnce()
   })
 })

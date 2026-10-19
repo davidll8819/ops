@@ -1,0 +1,295 @@
+.archive-documents,
+.archive-sources,
+.archive-message-files {
+  --archive-accent: var(--employee-color, #805ba5);
+  --archive-border: color-mix(in srgb, var(--archive-accent) 22%, #e1dfe7);
+}
+.archive-documents {
+  flex-shrink: 0;
+  border: 1px solid var(--archive-border);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: color-mix(in srgb, var(--archive-accent) 5%, white);
+  font-size: 13px;
+}
+.archive-toolbar,
+.archive-file-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.archive-toolbar > strong {
+  margin-right: auto;
+}
+.archive-panel-heading > strong {
+  margin-right: 0;
+}
+.archive-panel-heading > button {
+  margin-left: auto;
+  color: color-mix(in srgb, var(--archive-accent) 78%, #282332);
+}
+.archive-panel-count,
+.archive-panel-state {
+  font-size: 12px;
+  color: color-mix(in srgb, var(--archive-accent) 48%, #666);
+}
+.archive-document-body[hidden] {
+  display: none;
+}
+.archive-document-controls {
+  margin-top: 10px;
+}
+.archive-toolbar button,
+.archive-file-actions button {
+  padding: 5px 9px;
+  font-size: 12px;
+}
+.archive-upload {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.archive-upload input {
+  width: 180px;
+  max-width: 100%;
+  font-size: 12px;
+}
+.archive-document-body > p {
+  margin: 8px 0;
+}
+.archive-file-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+  max-height: 155px;
+  overflow-y: auto;
+}
+.archive-file-list > li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px 12px;
+  border-top: 1px solid var(--archive-border);
+  padding: 8px 0;
+}
+.archive-file-list > li > label {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  min-width: 140px;
+  overflow-wrap: anywhere;
+}
+.archive-file-list input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  margin: 0;
+  accent-color: var(--archive-accent);
+}
+.archive-file-list small {
+  display: block;
+  color: #6c6475;
+  font-weight: normal;
+  margin-top: 3px;
+}
+.archive-file-list .error {
+  flex-basis: 100%;
+  margin: 0;
+}
+.archive-selection {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.archive-preview {
+  border-top: 1px solid var(--archive-border);
+  padding-top: 10px;
+  margin-top: 10px;
+}
+.archive-document-text {
+  max-height: 240px;
+  overflow: auto;
+  margin-top: 10px;
+  background: white;
+  border-radius: 8px;
+  padding: 12px;
+}
+.archive-document-text section + section {
+  margin-top: 14px;
+}
+.archive-document-text pre,
+.archive-source-block pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: inherit;
+  margin: 6px 0;
+  line-height: 1.65;
+}
+.archive-warnings {
+  padding-left: 20px;
+  color: #735c25;
+}
+.archive-sources {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.archive-citation {
+  border-top: 1px solid var(--archive-border);
+  margin-top: 8px;
+  padding-top: 8px;
+}
+.archive-citation summary {
+  cursor: pointer;
+  color: color-mix(in srgb, var(--archive-accent) 78%, #282332);
+}
+.archive-citation blockquote {
+  border-left: 3px solid color-mix(in srgb, var(--archive-accent) 45%, white);
+  margin: 8px 0;
+  padding: 6px 12px;
+  white-space: pre-wrap;
+  background: color-mix(in srgb, var(--archive-accent) 5%, white);
+}
+.archive-source-block {
+  max-height: 240px;
+  overflow: auto;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid var(--archive-border);
+  border-radius: 8px;
+}
+.archive-original-image {
+  display: block;
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  margin: 8px 0;
+}
+.archive-coverage {
+  color: #735c25;
+}
+.archive-message-files {
+  font-size: 12px;
+  color: color-mix(in srgb, var(--archive-accent) 60%, #45404d);
+  overflow-wrap: anywhere;
+}
+
+/* Zhao alone uses a document workspace beside a full-height conversation. */
+.employee-dialog-archive .employee-dialog-body {
+  padding: 8px 12px 10px;
+}
+.employee-dialog-archive
+  .employee-dialog-body:has(> .employee-chat-view:not([hidden]) > .archive-document-chat) {
+  overflow: hidden;
+}
+.employee-dialog-archive .employee-responsibility {
+  display: none;
+}
+.employee-dialog .department-chat.archive-document-chat {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+  gap: 14px;
+}
+.archive-workspace {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.archive-workspace > .archive-documents {
+  margin: 0;
+  padding: 10px;
+}
+.archive-chat-pane {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.employee-dialog .archive-chat-pane > .heading-row {
+  margin: 0;
+  flex-shrink: 0;
+  min-height: 30px;
+}
+.employee-dialog .archive-chat-pane > .heading-row h2 {
+  margin: 0;
+}
+.employee-dialog .archive-chat-pane > .heading-row button {
+  padding: 5px 9px;
+  font-size: 12px;
+}
+.employee-dialog .archive-chat-pane > .department-messages {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 12px;
+  overflow-y: auto;
+  align-content: start;
+}
+.employee-dialog .department-chat .archive-chat-pane > form {
+  margin: 0;
+  padding-top: 0;
+}
+.employee-dialog .archive-chat-pane > form > label {
+  margin: 0;
+  gap: 4px;
+}
+.employee-dialog .archive-chat-pane > form textarea {
+  min-height: 130px;
+  height: 130px;
+  padding: 8px 10px;
+  resize: vertical;
+  max-height: 200px;
+}
+.employee-dialog .archive-chat-pane > form > .department-chat-actions {
+  margin-top: 6px;
+}
+.employee-dialog .archive-chat-pane > form > .department-chat-actions > .primary {
+  padding: 6px 12px;
+  font-size: 13px;
+}
+.archive-chat-pane > .error {
+  flex-shrink: 0;
+  margin: 0;
+  max-height: 70px;
+  overflow-y: auto;
+  font-size: 12px;
+}
+@media (min-width: 1000px) and (min-height: 800px) {
+  .employee-dialog .archive-chat-pane > form textarea {
+    min-height: 150px;
+    height: 150px;
+  }
+}
+@media (max-width: 759px) {
+  .employee-dialog .department-chat.archive-document-chat {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .archive-workspace {
+    flex: 0 1 auto;
+    max-height: 26dvh;
+  }
+  .archive-chat-pane {
+    flex: 1;
+  }
+  .employee-dialog .archive-chat-pane > form textarea {
+    min-height: 110px;
+    height: 110px;
+    max-height: 140px;
+  }
+  .archive-file-list {
+    max-height: 125px;
+  }
+  .archive-upload {
+    flex-wrap: wrap;
+  }
+  .archive-toolbar {
+    gap: 6px;
+  }
+}

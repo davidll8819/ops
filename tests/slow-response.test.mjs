@@ -19,14 +19,14 @@ const deferred = () => {
   })
   return { promise, resolve, reject }
 }
-async function fixture(t, handler, authorize = async () => {}) {
+async function fixture(t, handler, authorize = async () => {}, registeredRoute = route) {
   const app = Fastify({ logger: false })
   app.setErrorHandler((error, req, reply) => {
     const { status, data } = responseError(error, req, app)
     reply.code(status).send(data)
   })
   registerSlowResponses(app, { authorize, heartbeatMs: 15 })
-  app.post(route, handler)
+  app.post(registeredRoute, handler)
   app.post('/ordinary', handler)
   await app.listen({ host: '127.0.0.1', port: 0 })
   t.after(() => app.close())
@@ -34,6 +34,35 @@ async function fixture(t, handler, authorize = async () => {}) {
 }
 const options = { method: 'POST', headers: { accept: SLOW_RESPONSE_TYPE } }
 const frames = (text) => text.trim().split('\n').map(JSON.parse)
+
+for (const action of ['parse', 'filing'])
+  test(`archive ${action} heartbeat keeps the awaited JSON result until persistence`, async (t) => {
+    const work = deferred()
+    const { url } = await fixture(
+      t,
+      () => work.promise,
+      undefined,
+      `/api/tenants/:tenantId/archive/documents/:fileId/${action}`,
+    )
+    const response = await fetch(
+      url + `/api/tenants/example/archive/documents/file/${action}`,
+      options,
+    )
+    const reader = response.body.getReader()
+    assert.equal(frames(new TextDecoder().decode((await reader.read()).value))[0].type, 'heartbeat')
+    work.resolve({ document: { state: 'ready', ocr: true } })
+    let text = ''
+    while (true) {
+      const next = await reader.read()
+      if (next.done) break
+      text += new TextDecoder().decode(next.value)
+    }
+    assert.deepEqual(frames(text).at(-1), {
+      type: 'result',
+      status: 200,
+      data: { document: { state: 'ready', ocr: true } },
+    })
+  })
 
 test(
   'slow response sends heartbeat before work completes and returns the persisted result once',
@@ -175,6 +204,7 @@ test('all synchronous browser model entry points are covered without wrapping up
     'departments/:department/messages',
     'agent-builder',
     'agents/:agentId/messages',
+    'archive/documents/:fileId/parse',
   ])
     assert.ok(slowResponseRoutes.has(`/api/tenants/:tenantId/${suffix}`), suffix)
   assert.equal(slowResponseRoutes.has('/api/tenants/:tenantId/operations/tasks'), false)

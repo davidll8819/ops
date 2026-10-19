@@ -1,5 +1,9 @@
 import { createOperationsTasks } from './task-service.mjs'
+import { readBrief, saveBrief } from './briefs.mjs'
+import { ownRuntimeIds, assertRuntimeAccess } from './task-access.mjs'
+import { readSubmission, listSubmissions } from './submissions.mjs'
 import { randomUUID } from 'node:crypto'
+import { videoFormatSchema } from './video-format.mjs'
 import { Readable } from 'node:stream'
 import { z } from 'zod'
 import { transaction, fail } from '../db.mjs'
@@ -54,9 +58,44 @@ const proposalSchema = z
   .strict()
 export function registerOperations(
   app,
-  { scoped, pool, env, driver = createOperationsDriver(env), tasks = createOperationsTasks({ pool, env, driver }) },
+  {
+    scoped,
+    pool,
+    env,
+    driver = createOperationsDriver(env),
+    tasks = createOperationsTasks({ pool, env, driver }),
+  },
 ) {
   const root = '/api/tenants/:tenantId/operations'
+  app.get(`${root}/submissions`, (req) =>
+    scoped(req, async (db, tenant, ctx) => ({ items: await listSubmissions(db, ctx) })),
+  )
+  app.post(`${root}/briefs`, (req) =>
+    scoped(
+      req,
+      async (db, tenant, ctx) => ({
+        brief: await saveBrief(
+          db,
+          ctx,
+          z
+            .object({ messageId: z.string().uuid(), revision: z.number().int().nonnegative() })
+            .strict()
+            .parse(req.body),
+        ),
+      }),
+      admin,
+    ),
+  )
+  app.get(`${root}/briefs/:id`, (req) =>
+    scoped(req, async (db, tenant, ctx) => ({
+      brief: await readBrief(db, ctx, z.string().uuid().parse(req.params.id)),
+    })),
+  )
+  app.get(`${root}/submissions/:id`, (req) =>
+    scoped(req, async (db, tenant, ctx) => ({
+      submission: await readSubmission(db, ctx, z.string().uuid().parse(req.params.id)),
+    })),
+  )
   async function settings(db, ctx) {
     return (
       await db.query(
@@ -157,9 +196,15 @@ export function registerOperations(
       return { ready: false, reason: e.expose ? e.message : '企业运行服务尚未部署或无法连接' }
     }
   })
-  app.get(`${root}/tasks`, async (req) =>
-    driver.request(await runtime(req), 'ai', '/agent/tasks?page=1&pageSize=30'),
-  )
+  app.get(`${root}/tasks`, async (req) => {
+    const owned = await scoped(req, (db, tenant, ctx) => ownRuntimeIds(db, ctx))
+    if (!owned.size) return { list: [], total: 0 }
+    const data = await driver.request(await runtime(req), 'ai', '/agent/tasks?page=1&pageSize=30')
+    const list = (Array.isArray(data) ? data : data.list || data.items || []).filter((t) =>
+      owned.has(t.id),
+    )
+    return { list, total: list.length }
+  })
   app.get(`${root}/tasks/:id`, async (req) => {
     const id = z
       .string()
@@ -175,6 +220,7 @@ export function registerOperations(
       .string()
       .regex(/^[a-f0-9]{24}$/)
       .parse(req.params.id)
+    await scoped(req, (db, tenant, ctx) => assertRuntimeAccess(db, ctx, id), admin)
     await driver.request(await runtime(req), 'ai', `/agent/tasks/${id}/abort`, {
       method: 'POST',
       body: {},
@@ -244,7 +290,10 @@ export function registerOperations(
     const input = z
       .object({
         prompt: z.string().trim().min(1).max(20000),
+        videoFormat: videoFormatSchema.nullable().optional(),
         secretaryTaskId: z.string().min(1).max(80).optional(),
+        briefId: z.string().uuid().optional(),
+        requestId: z.string().uuid().optional(),
         taskId: z
           .string()
           .regex(/^[a-f0-9]{24}$/)
@@ -353,8 +402,8 @@ export function registerOperations(
     )
   })
   app.post(`${root}/publications/:id/resume`, async (req) => {
-    await scoped(req,async()=>null,admin)
-    throw fail(409,'请先查看发布内容并点击通过发布')
+    await scoped(req, async () => null, admin)
+    throw fail(409, '请先查看发布内容并点击通过发布')
   })
   // Private runtime can propose publication; only a signed-in owner/admin can authorize it.
   app.post('/integrations/aitoearn/:tenantId/publications', async (req) => {

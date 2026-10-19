@@ -134,6 +134,47 @@ await test('authenticated multi-tenant API and PostgreSQL isolation', async (t) 
     },
   }
   const modelCalls = []
+  const modelMessages = []
+  const executionCalls = []
+  let executionAvailable = true
+  let executionOutcome, duringExecution
+  const versionTestCalls=[]
+  let versionTestOutcome, duringVersionTest
+  const passingVersionTest=()=>({counts:{tests:1,passed:1,failed:0,cancelled:0,skipped:0,todo:0},cases:[{name:'saved-version assertion',status:'passed',detail:''}],summaryComplete:true,success:true,exitCode:0,stdout:'real transport test fixture',stderr:'',timedOut:false,truncated:false})
+  const executionDriver = {
+    status: async () => ({
+      available: executionAvailable,
+      reason: executionAvailable ? '' : '执行镜像尚未准备',
+      environment: 'Node.js 24 / Python 3',
+    }),
+    test: async (input) => {
+      versionTestCalls.push(input)
+      if(duringVersionTest){const hook=duringVersionTest;duringVersionTest=undefined;await hook(input)}
+      if(versionTestOutcome){const outcome=versionTestOutcome;versionTestOutcome=undefined;return outcome(input)}
+      return passingVersionTest()
+    },
+    execute: async (input) => {
+      executionCalls.push(input)
+      if (duringExecution) {
+        const hook = duringExecution
+        duringExecution = undefined
+        await hook()
+      }
+      if (executionOutcome) {
+        const result = executionOutcome
+        executionOutcome = undefined
+        return result(input)
+      }
+      return {
+        files: input.files,
+        exitCode: 0,
+        stdout: 'tests: 1 passed',
+        stderr: '',
+        timedOut: false,
+        truncated: false,
+      }
+    },
+  }
   let modelFailure = false,
     streamModel = false,
     modelReply = 'fixture'
@@ -179,17 +220,31 @@ await test('authenticated multi-tenant API and PostgreSQL isolation', async (t) 
       await hook()
     }
     return Response.json({
-      choices: [{ message: { content: modelReply } }],
+      choices: [{ message: modelMessages.shift() || { content: modelReply } }],
       usage: { prompt_tokens: 100, completion_tokens: 20 },
     })
   }
   async function finishDepartment(tenantId, userId, taskId) {
     // Place this fixture first; unrelated test fixtures keep their existing queue entries.
-    await query("UPDATE task_jobs SET updated_at='2000-01-01' WHERE tenant_id=$1 AND user_id=$2 AND task_id=$3", [tenantId, userId, taskId])
-    await createDepartmentEngine({ pool, env, fetcher: modelFetch, operations: createOperationsTasks({ pool, env, driver: operationsDriver }) }).tick()
-    return (await query('SELECT board FROM secretary_workspaces WHERE tenant_id=$1 AND user_id=$2', [tenantId, userId])).rows[0].board.tasks.find(t => t.id === taskId)
+    await query(
+      "UPDATE task_jobs SET updated_at='2000-01-01' WHERE tenant_id=$1 AND user_id=$2 AND task_id=$3",
+      [tenantId, userId, taskId],
+    )
+    await createDepartmentEngine({
+      pool,
+      env,
+      fetcher: modelFetch,
+      operations: createOperationsTasks({ pool, env, driver: operationsDriver }),
+    }).tick()
+    return (
+      await query('SELECT board FROM secretary_workspaces WHERE tenant_id=$1 AND user_id=$2', [
+        tenantId,
+        userId,
+      ])
+    ).rows[0].board.tasks.find((t) => t.id === taskId)
   }
   const app = await buildApp({
+    executionDriver,
     modelFetch,
     operationsDriver,
     pool,
@@ -274,6 +329,36 @@ await test('authenticated multi-tenant API and PostgreSQL isolation', async (t) 
     assert.ok(a && b)
     assert.equal((await request(alice, 'GET', '/api/me')).json().tenants.length, 2)
   })
+  await t.test(
+    'employee profiles preserve office identity and work before model configuration',
+    async () => {
+      const response = await request(alice, 'GET', `/api/tenants/${a}/employees`)
+      assert.equal(response.statusCode, 200, response.body)
+      const employees = response.json().employees
+      assert.equal(employees.length, 9)
+      assert.deepEqual(
+        employees.map((e) => [e.id, e.rosterNo]),
+        [
+          ['marvis', 1],
+          ['code-agent', 2],
+          ['file-agent', 3],
+          ['app-agent', 4],
+          ['review-agent', 5],
+          ['data-agent', 6],
+          ['new-agent-7', 7],
+          ['new-agent-8', 8],
+          ['new-agent-9', 9],
+        ],
+      )
+      const dragon = employees.find((e) => e.id === 'code-agent')
+      assert.equal(dragon.name, '龙傲天')
+      assert.equal(dragon.departmentKey, 'dev')
+      assert.equal(dragon.color, 0x4a90d9)
+      assert.equal(dragon.models.text.configured, false)
+      assert.deepEqual(dragon.skills, [])
+      assert.equal((await request(outsider, 'GET', `/api/tenants/${a}/employees`)).statusCode, 403)
+    },
+  )
   await t.test(
     'slow-response negotiation cannot bypass authentication, CSRF or tenant access',
     async () => {
@@ -881,7 +966,11 @@ await test('authenticated multi-tenant API and PostgreSQL isolation', async (t) 
       assert.equal(snap.board.tasks.at(-2).title, '"一人公司"调研')
       assert.equal(snap.board.tasks.at(-2).status, 'draft')
       assert.equal(snap.board.tasks.at(-1).dept, 'file-agent')
-      assert.equal((await query('SELECT * FROM task_jobs WHERE task_id=$1', [snap.board.tasks.at(-2).id])).rows.length, 0)
+      assert.equal(
+        (await query('SELECT * FROM task_jobs WHERE task_id=$1', [snap.board.tasks.at(-2).id])).rows
+          .length,
+        0,
+      )
       modelReply = 'fixture'
     },
   )
@@ -1196,6 +1285,129 @@ await test('authenticated multi-tenant API and PostgreSQL isolation', async (t) 
   })
   await cache.del(`api-rate:${alice}`) // Separate the extended feature suite from the preceding minute's requests.
   await t.test(
+    'employee skill editor enforces tenant, role, revision and preserves other employees',
+    async () => {
+      const root = `/api/tenants/${a}`
+      const path = `${root}/employees/code-agent/skills`
+      const skill = (await request(alice, 'GET', `${root}/skills/installed`))
+        .json()
+        .items.find((s) => s.name === 'tenant-upload')
+      let r = await request(alice, 'GET', path)
+      assert.equal(r.statusCode, 200, r.body)
+      const original = r.json()
+      assert.ok(original.items.some((s) => s.id === skill.id))
+      assert.equal((await request(outsider, 'GET', path)).statusCode, 403)
+      assert.equal(
+        (await request(bob, 'PUT', path, { revision: original.revision, skillIds: [skill.id] }))
+          .statusCode,
+        403,
+      )
+      assert.equal(
+        (
+          await request(alice, 'PUT', `/api/tenants/${b}/employees/code-agent/skills`, {
+            revision: original.revision,
+            skillIds: [skill.id],
+          })
+        ).statusCode,
+        404,
+      )
+      assert.equal(
+        (await request(alice, 'GET', `${root}/employees/unknown/skills`)).statusCode,
+        404,
+      )
+      r = await request(alice, 'PUT', path, { revision: original.revision, skillIds: [skill.id] })
+      assert.equal(r.statusCode, 200, r.body)
+      assert.deepEqual(r.json().skillIds, [skill.id])
+      assert.equal(
+        (await request(alice, 'PUT', path, { revision: original.revision, skillIds: [] }))
+          .statusCode,
+        409,
+      )
+      assert.equal(
+        (
+          await request(alice, 'PUT', path, {
+            revision: r.json().revision,
+            skillIds: Array.from({ length: 9 }, () => randomUUID()),
+          })
+        ).statusCode,
+        400,
+      )
+      const otherBefore = (
+        await request(alice, 'GET', `${root}/employees/file-agent/skills`)
+      ).json()
+      const install = `${path}/superpowers`
+      assert.equal((await request(bob, 'POST', install, {})).statusCode, 403)
+      r = await request(alice, 'POST', install, {})
+      assert.equal(r.statusCode, 200, r.body)
+      const installed = r.json()
+      assert.equal(installed.skill.name, 'superpowers')
+      assert.equal(installed.skill.provenance.commit.length, 40)
+      assert.ok(installed.skillIds.includes(skill.id))
+      assert.ok(installed.skillIds.includes(installed.skill.id))
+      const again = await request(alice, 'POST', install, {})
+      assert.equal(again.statusCode, 200, again.body)
+      assert.equal(again.json().skill.id, installed.skill.id)
+      assert.equal(again.json().skillIds.length, 2)
+      const otherAfter = (await request(alice, 'GET', `${root}/employees/file-agent/skills`)).json()
+      assert.deepEqual(otherAfter.skillIds, otherBefore.skillIds)
+      assert.equal(otherAfter.revision, otherBefore.revision)
+      assert.ok(
+        !(await request(alice, 'GET', `/api/tenants/${b}/skills/installed`))
+          .json()
+          .items.some((s) => s.name === 'superpowers'),
+      )
+      const doc = `${installed.skill.id}/skills/systematic-debugging/SKILL.md`
+      const priorPolicy = (await request(alice, 'GET', `${root}/operations/settings`)).json().policy
+      const chatPolicy = structuredClone(priorPolicy)
+      chatPolicy.departments.dev.model = 'test-agent'
+      assert.equal(
+        (await request(alice, 'PUT', `${root}/operations/settings`, chatPolicy)).statusCode,
+        200,
+      )
+      modelMessages.push(
+        {
+          role: 'assistant',
+          content: null,
+          tool_calls: [
+            {
+              id: 'read-debug',
+              type: 'function',
+              function: { name: 'read_skill', arguments: JSON.stringify({ path: doc }) },
+            },
+          ],
+        },
+        { content: '先复现问题并查明根因。' },
+      )
+      const chat = await request(alice, 'POST', `${root}/departments/dev/chat`, {
+        revision: 0,
+        text: '帮我排查程序闪退，使用调试技能。',
+      })
+      assert.equal(chat.statusCode, 200, chat.body)
+      assert.ok(
+        chat
+          .json()
+          .messages.at(-1)
+          .skillReads.some((r) => r.path === doc),
+      )
+      assert.equal(modelCalls.at(-1).body.messages.at(-1).role, 'tool')
+      assert.match(modelCalls.at(-1).body.messages.at(-1).content, /Root Cause/)
+      // Restore the original bindings so later existing department tests stay independent.
+      r = await request(alice, 'PUT', path, {
+        revision: again.json().revision,
+        skillIds: original.skillIds,
+      })
+      assert.equal(r.statusCode, 200, r.body)
+      const ordinary = await request(alice, 'POST', `${root}/departments/dev/chat`, {
+        revision: 1,
+        text: '你好',
+      })
+      assert.equal(ordinary.statusCode, 200, ordinary.body)
+      assert.equal(modelCalls.at(-1).body.tools, undefined)
+      assert.ok(!modelCalls.at(-1).body.messages[0].content.includes('superpowers'))
+      await request(alice, 'PUT', `${root}/operations/settings`, priorPolicy)
+    },
+  )
+  await t.test(
     'department chats use assigned skills and retain private, versioned history',
     async () => {
       const root = `/api/tenants/${a}`,
@@ -1233,6 +1445,19 @@ await test('authenticated multi-tenant API and PostgreSQL isolation', async (t) 
       assert.equal(r.json().revision, 1)
       assert.equal(r.json().messages.at(-1).text, modelReply)
       assert.match(modelCalls.at(-1).body.messages[0].content, /tenant-upload/)
+      assert.match(modelCalls.at(-1).body.messages[0].content, /赵雅梦/)
+      const employeeResponse = await request(bob, 'GET', `${root}/employees`)
+      assert.equal(employeeResponse.statusCode, 200, employeeResponse.body)
+      const employee = employeeResponse.json().employees.find((e) => e.id === 'file-agent')
+      assert.equal(employee.models.text.model, modelCalls.at(-1).body.model)
+      assert.equal(employee.models.text.configured, true)
+      assert.ok(modelCalls.at(-1).body.messages[0].content.startsWith(employee.chatInstructions))
+      assert.match(employee.chatInstructions, /赵雅梦/)
+      assert.ok(employee.skills.some((s) => s.id === skill.id && s.name === 'tenant-upload'))
+      assert.ok(!employeeResponse.body.includes('rotated-company-a-key'))
+      assert.ok(!employeeResponse.body.includes('gateway'))
+      const otherEmployees = (await request(alice, 'GET', `${other}/employees`)).json().employees
+      assert.ok(otherEmployees.every((e) => e.skills.length === 0))
       const before = modelCalls.length
       assert.equal(
         (await request(alice, 'POST', `${path}/chat`, { revision: 0, text: '重复' })).statusCode,
@@ -1256,6 +1481,880 @@ await test('authenticated multi-tenant API and PostgreSQL isolation', async (t) 
       modelReply = 'fixture'
     },
   )
+  await cache.del(`api-rate:${alice}`)
+  await t.test(
+    'Dragon execution persists files and real tool evidence with private role-scoped workspace',
+    async () => {
+      const root = `/api/tenants/${a}`
+      const path = `${root}/employees/code-agent/workspace`
+      let r = await request(alice, 'GET', path)
+      assert.equal(r.statusCode, 200, r.body)
+      assert.equal(r.json().workspace, null)
+      assert.equal((await request(bob, 'POST', path, {})).statusCode, 403)
+      assert.equal((await request(outsider, 'GET', path)).statusCode, 403)
+      r = await request(alice, 'POST', path, {})
+      assert.equal(r.statusCode, 200, r.body)
+      const workspaceId = r.json().workspace.id
+      assert.equal((await request(alice, 'POST', path, {})).json().workspace.id, workspaceId)
+      assert.equal(
+        (await request(alice, 'GET', `/api/tenants/${b}/employees/code-agent/workspace`)).json()
+          .workspace,
+        null,
+      )
+      assert.equal((await request(bob, 'GET', path)).json().workspace, null)
+      const priorPolicy = (await request(alice, 'GET', `${root}/operations/settings`)).json().policy
+      const policy = structuredClone(priorPolicy)
+    policy.departments.dev.model = 'gpt-5.6-luna'
+      await request(alice, 'PUT', `${root}/operations/settings`, policy)
+      const chatPath = `${root}/departments/dev/chat`
+      const old = (await request(alice, 'GET', `${root}/departments/dev/conversation`)).json()
+      const toolCall = (id, name, args) => ({
+        id,
+        type: 'function',
+        function: { name, arguments: JSON.stringify(args) },
+      })
+      modelMessages.push(
+        {
+          content: null,
+          tool_calls: [
+            toolCall('write', 'workspace_write_file', {
+              path: 'answer.mjs',
+              content: 'export const answer = 42\n',
+            }),
+          ],
+        },
+        {
+          content: null,
+          tool_calls: [
+            toolCall('test', 'workspace_run_command', { command: 'node --test', timeoutMs: 30000 }),
+          ],
+        },
+        { content: '文件已创建，测试已通过。' },
+      )
+      duringModel = async () => {
+        const duplicate = await request(alice, 'POST', chatPath, {
+          execute: true,
+          revision: old.revision,
+          text: '重复执行',
+        })
+        assert.equal(duplicate.statusCode, 409, duplicate.body)
+        const ordinary = await request(alice, 'POST', chatPath, {
+          revision: old.revision + 1,
+          text: '并发普通聊天',
+        })
+        assert.equal(ordinary.statusCode, 409, ordinary.body)
+      }
+      const beforeCalls = executionCalls.length
+      r = await request(alice, 'POST', chatPath, {
+        execute: true,
+        revision: old.revision,
+        text: '创建答案文件并运行测试',
+      })
+      assert.equal(r.statusCode, 200, r.body)
+      assert.equal(executionCalls.length, beforeCalls + 1)
+      const runId = r.json().messages.at(-1).runId
+      assert.ok(runId)
+      assert.equal(
+        (await request(alice, 'GET', `${path}/file?path=answer.mjs`)).json().content,
+        'export const answer = 42\n',
+      )
+      assert.equal((await request(alice, 'GET', `${path}/file?path=..%2F.env`)).statusCode, 400)
+      const snapshot = (await request(alice, 'GET', path)).json()
+      assert.equal(snapshot.workspace.activeRunId, null)
+      const run = snapshot.runs.find((run) => run.id === runId)
+      assert.equal(run.state, 'completed')
+      assert.equal(
+        run.steps.find((s) => s.tool === 'workspace_run_command').result.stdout,
+        'tests: 1 passed',
+      )
+      assert.equal(modelCalls.at(-1).body.messages.at(-1).role, 'tool')
+      assert.match(modelCalls.at(-1).body.messages.at(-1).content, /tests: 1 passed/)
+    assert.equal(modelCalls.at(-1).body.reasoning_effort, 'none')
+      const download = await request(alice, 'GET', `${path}/download`)
+      assert.equal(download.statusCode, 200, download.body)
+      const { zipFiles } = await import('../apps/api/src/skill-upload.mjs')
+      assert.equal(
+        (await zipFiles(download.rawPayload)).files.get('answer.mjs').toString(),
+        'export const answer = 42\n',
+      )
+      assert.equal((await request(bob, 'GET', `${path}/file?path=answer.mjs`)).statusCode, 404)
+      assert.equal(
+        (await request(bob, 'POST', chatPath, { execute: true, revision: 0, text: '修改' }))
+          .statusCode,
+        403,
+      )
+      assert.equal(
+        (
+          await request(alice, 'POST', `${root}/departments/archive/chat`, {
+            execute: true,
+            revision: 0,
+            text: '修改',
+          })
+        ).statusCode,
+        400,
+      )
+      // A failed final model response must not discard earlier file modifications or the journal.
+      modelMessages.push(
+        {
+          content: null,
+          tool_calls: [
+            toolCall('saved', 'workspace_write_file', {
+              path: 'kept.txt',
+              content: 'saved before failure',
+            }),
+          ],
+        },
+        { content: null },
+      )
+      const revision = r.json().revision
+      r = await request(alice, 'POST', chatPath, {
+        execute: true,
+        revision,
+        text: '写入后模拟模型中断',
+      })
+      assert.equal(r.statusCode, 200, r.body)
+      assert.match(r.json().messages.at(-1).text, /未完成|失败/)
+      assert.equal(
+        (await request(alice, 'GET', `${path}/file?path=kept.txt`)).json().content,
+        'saved before failure',
+      )
+      assert.equal((await request(alice, 'GET', path)).json().runs[0].state, 'failed')
+      // A failed file write must not be labelled completed just because the model says so.
+      modelMessages.push(
+        {
+          content: null,
+          tool_calls: [
+            toolCall('conflict', 'workspace_write_file', {
+              path: 'README.md/child.txt',
+              content: 'cannot exist below a file',
+            }),
+          ],
+        },
+        { content: '文件已创建。' },
+      )
+      r = await request(alice, 'POST', chatPath, {
+        execute: true,
+        revision: r.json().revision,
+        text: '模拟文件冲突',
+      })
+      assert.equal(r.statusCode, 200, r.body)
+      assert.equal((await request(alice, 'GET', path)).json().runs[0].state, 'failed')
+      assert.match(r.json().messages.at(-1).text, /最近一次操作未成功/)
+      // A nonzero command cannot be labelled completed even if the model says it passed.
+      executionOutcome = (input) => ({
+        files: input.files,
+        exitCode: 7,
+        stdout: '',
+        stderr: 'test failure',
+        timedOut: false,
+        truncated: false,
+      })
+      modelMessages.push(
+        {
+          content: null,
+          tool_calls: [toolCall('bad-test', 'workspace_run_command', { command: 'exit 7' })],
+        },
+        { content: '测试通过。' },
+      )
+      r = await request(alice, 'POST', chatPath, {
+        execute: true,
+        revision: r.json().revision,
+        text: '模拟测试失败',
+      })
+      assert.equal(r.statusCode, 200, r.body)
+      assert.match(r.json().messages.at(-1).text, /最近一次命令未成功/)
+      assert.equal((await request(alice, 'GET', path)).json().runs[0].state, 'failed')
+      // An invalid output snapshot must never replace the last valid project.
+      executionOutcome = () => ({
+        exitCode: 0,
+        stdout: '',
+        stderr: '',
+        timedOut: false,
+        truncated: false,
+        snapshotError: 'Unsupported symlink',
+      })
+      const callsBeforeUncertain = executionCalls.length
+      modelMessages.push({
+        content: null,
+        tool_calls: [
+          toolCall('bad-snapshot', 'workspace_run_command', { command: 'ln -s /tmp bad' }),
+          toolCall('unsafe-retry', 'workspace_run_command', { command: 'echo must not replay' }),
+        ],
+      })
+      r = await request(alice, 'POST', chatPath, {
+        execute: true,
+        revision: r.json().revision,
+        text: '模拟快照失败',
+      })
+      assert.equal(r.statusCode, 200, r.body)
+      assert.equal(
+        (await request(alice, 'GET', `${path}/file?path=kept.txt`)).json().content,
+        'saved before failure',
+      )
+      const badSnapshot = (await request(alice, 'GET', path)).json().runs[0]
+      assert.equal(executionCalls.length, callsBeforeUncertain + 1)
+      assert.match(r.json().messages.at(-1).text, /不会自动重试/)
+      assert.equal(badSnapshot.state, 'failed')
+      assert.equal(badSnapshot.steps[0].result.saved, false)
+      // Record an already accepted operation, then stop further tools on role revocation.
+      duringExecution = () =>
+        query("UPDATE memberships SET role='member' WHERE tenant_id=$1 AND user_id=$2", [a, alice])
+      executionOutcome = (input) => ({
+        files: [
+          ...input.files,
+          { path: 'accepted.txt', contentBase64: Buffer.from('accepted').toString('base64') },
+        ],
+        exitCode: 0,
+        stdout: 'accepted',
+        stderr: '',
+        timedOut: false,
+        truncated: false,
+      })
+      modelMessages.push({
+        content: null,
+        tool_calls: [
+          toolCall('accepted', 'workspace_run_command', { command: 'echo accepted' }),
+          toolCall('revoked', 'workspace_write_file', {
+            path: 'forbidden.txt',
+            content: 'must not be saved',
+          }),
+        ],
+      })
+      r = await request(alice, 'POST', chatPath, {
+        execute: true,
+        revision: r.json().revision,
+        text: '模拟执行中撤销权限',
+      })
+      assert.equal(r.statusCode, 200, r.body)
+      assert.equal(
+        (await request(alice, 'GET', `${path}/file?path=accepted.txt`)).json().content,
+        'accepted',
+      )
+      assert.equal((await request(alice, 'GET', `${path}/file?path=forbidden.txt`)).statusCode, 404)
+      const revoked = (await request(alice, 'GET', path)).json().runs[0]
+      assert.equal(revoked.state, 'failed')
+      assert.equal(revoked.steps.length, 1)
+      assert.equal(revoked.steps[0].status, 'completed')
+      await query("UPDATE memberships SET role='owner' WHERE tenant_id=$1 AND user_id=$2", [
+        a,
+        alice,
+      ])
+      // Recover an abandoned claim without replaying its command or discarding files.
+      const callsBeforeRecovery = executionCalls.length
+      duringModel = async () => {
+        await query(
+          "UPDATE employee_workspaces SET lease_until=now()-interval '1 second' WHERE id=$1",
+          [workspaceId],
+        )
+        const recovered = (await request(alice, 'GET', path)).json()
+        assert.equal(recovered.workspace.activeRunId, null)
+        assert.equal(recovered.runs[0].state, 'interrupted')
+      }
+      modelMessages.push({
+        content: null,
+        tool_calls: [toolCall('stale', 'workspace_run_command', { command: 'echo must not run' })],
+      })
+      const expired = await request(alice, 'POST', chatPath, {
+        execute: true,
+        revision: r.json().revision,
+        text: '模拟执行中断恢复',
+      })
+      assert.equal(expired.statusCode, 409, expired.body)
+      assert.equal(executionCalls.length, callsBeforeRecovery)
+      r = await request(alice, 'GET', `${root}/departments/dev/conversation`)
+      assert.match(r.json().messages.at(-1).text, /上次执行已中断/)
+      executionAvailable = false
+      const countBeforeUnavailable = modelCalls.length
+      const unavailable = await request(alice, 'POST', chatPath, {
+        execute: true,
+        revision: r.json().revision,
+        text: '不应运行',
+      })
+      assert.equal(unavailable.statusCode, 409, unavailable.body)
+      assert.equal(modelCalls.length, countBeforeUnavailable)
+      executionAvailable = true
+      await request(alice, 'PUT', `${root}/operations/settings`, priorPolicy)
+    },
+  )
+  await cache.del(`api-rate:${alice}`)
+  await t.test('web deliverables provide private frozen previews and finished ZIPs without exposing the office', async () => {
+    const base = `/api/tenants/${a}/employees/code-agent/workspace/deliverables`
+    const saved = (await query('SELECT * FROM employee_workspaces WHERE tenant_id=$1 AND user_id=$2', [a, alice])).rows[0]
+    const file = (path, content) => ({path, contentBase64: Buffer.from(content).toString('base64')})
+    const html = '<!doctype html><title>五子棋</title><script type="module" src="./游戏/main.mjs"></script><link rel="stylesheet" href="./style.css"><img src="./piece.png">'
+    const fixture = [file('index.html', html), file('游戏/main.mjs', 'document.body.dataset.loaded="yes"'), file('style.css', 'body{color:green}'), file('piece.png', Buffer.from([0,1,127,128,255])), file('.env', 'not in delivery'), file('test/add.test.mjs', 'developer test')]
+    try {
+      await query('UPDATE employee_workspaces SET files=$3,revision=revision+1 WHERE tenant_id=$1 AND user_id=$2', [a,alice,JSON.stringify(fixture)])
+      const metadata = await request(alice,'GET',base)
+      assert.equal(metadata.statusCode,200,metadata.body)
+      const revision = metadata.json().workspace.revision
+      assert.deepEqual(metadata.json().entries.map(e=>[e.path,e.title]), [['index.html','五子棋']])
+      assert.equal((await app.inject(base)).statusCode,401)
+      assert.equal((await request(outsider,'GET',base)).statusCode,403)
+      assert.equal((await request(bob,'GET',base)).json().workspace,null)
+      assert.equal((await request(alice,'GET',base.replace(a,b))).json().workspace,null)
+      assert.equal((await request(bob,'POST',`${base}/preview`,{entry:'index.html',revision})).statusCode,404)
+      assert.equal((await app.inject({method:'POST',url:`${base}/preview`,headers:{cookie:`office_session=${alice}`},payload:{entry:'index.html',revision}})).statusCode,403)
+      assert.equal((await request(alice,'POST',`${base}/preview`,{entry:'index.html',revision:revision-1})).statusCode,409)
+      assert.equal((await request(alice,'POST',`${base}/preview`,{entry:'../.env',revision})).statusCode,400)
+      const started = await request(alice,'POST',`${base}/preview`,{entry:'index.html',revision})
+      assert.equal(started.statusCode,200,started.body)
+      const url = started.json().url
+      assert.match(url,/^\/project-preview\/[A-Za-z0-9_-]{43}\/index\.html$/)
+      const page = await app.inject(url)
+      assert.equal(page.statusCode,200,page.body)
+      assert.equal(page.body,html)
+      assert.match(page.headers['content-type'],/text\/html/)
+      assert.match(page.headers['content-security-policy'],/sandbox allow-scripts(?:;|$)/)
+      assert.doesNotMatch(page.headers['content-security-policy'],/allow-same-origin/)
+      assert.match(page.headers['content-security-policy'],/connect-src 'none'/)
+      assert.equal(page.headers['access-control-allow-origin'],'*')
+      assert.equal(page.headers['access-control-allow-credentials'],undefined)
+      assert.equal(page.headers['cache-control'],'no-store')
+      assert.equal(page.headers['referrer-policy'],'no-referrer')
+      const prefix = url.slice(0,-'index.html'.length)
+      const module = await app.inject(`${prefix}%E6%B8%B8%E6%88%8F/main.mjs`)
+      assert.equal(module.statusCode,200,module.body)
+      assert.match(module.headers['content-type'],/javascript/)
+      assert.equal(module.body,'document.body.dataset.loaded="yes"')
+      assert.deepEqual((await app.inject(`${prefix}piece.png`)).rawPayload,Buffer.from([0,1,127,128,255]))
+      assert.equal((await app.inject(`${prefix}.env`)).statusCode,404)
+      assert.equal((await app.inject(`${prefix}%2e%2e%2f.env`)).statusCode,404)
+      assert.equal((await app.inject('/project-preview/unknown/index.html')).statusCode,404)
+      // Existing preview continues to serve its version after the workspace changes.
+      await query('UPDATE employee_workspaces SET files=$3,revision=revision+1 WHERE tenant_id=$1 AND user_id=$2', [a,alice,JSON.stringify([file('index.html','<title>new version</title>')])])
+      assert.equal((await app.inject(url)).body,html)
+      assert.equal((await request(alice,'GET',`${base}/download?entry=index.html&revision=${revision}`)).statusCode,409)
+      await query('UPDATE employee_workspaces SET files=$3,revision=$4 WHERE tenant_id=$1 AND user_id=$2', [a,alice,JSON.stringify(fixture),revision])
+      const download = await request(alice,'GET',`${base}/download?entry=index.html&revision=${revision}`)
+      assert.equal(download.statusCode,200,download.body)
+      const {zipFiles} = await import('../apps/api/src/skill-upload.mjs')
+      const packed = (await zipFiles(download.rawPayload)).files
+      assert.equal(packed.get('website/index.html').toString(),html)
+      assert.deepEqual(packed.get('website/piece.png'),Buffer.from([0,1,127,128,255]))
+      assert.match(packed.get('打开作品.html').toString(),/website\/index\.html/)
+      assert.ok(packed.get('使用说明.txt').length>0)
+      assert.equal(packed.has('website/.env'),false)
+      assert.equal(packed.has('website/test/add.test.mjs'),false)
+      assert.equal((await request(bob,'GET',`${base}/download?entry=index.html&revision=${revision}`)).statusCode,404)
+      await query('UPDATE employee_workspaces SET active_run_id=$3 WHERE tenant_id=$1 AND user_id=$2',[a,alice,randomUUID()])
+      assert.equal((await request(alice,'POST',`${base}/preview`,{entry:'index.html',revision})).statusCode,409)
+      assert.equal((await request(alice,'GET',`${base}/download?entry=index.html&revision=${revision}`)).statusCode,409)
+      // A copied capability never outlives the issuing user's membership.
+      await query('DELETE FROM memberships WHERE tenant_id=$1 AND user_id=$2',[a,alice])
+      assert.equal((await app.inject(url)).statusCode,403)
+      await query("INSERT INTO memberships(tenant_id,user_id,role) VALUES($1,$2,'owner')",[a,alice])
+      const main = await request(alice,'GET','/api/me')
+      assert.doesNotMatch(main.headers['content-security-policy'],/script-src[^;]*unsafe-inline/)
+    } finally {
+      await query('UPDATE employee_workspaces SET files=$3,revision=$4,active_run_id=$5,lease_until=$6 WHERE tenant_id=$1 AND user_id=$2',[a,alice,JSON.stringify(saved.files),saved.revision,saved.active_run_id,saved.lease_until])
+      await query("INSERT INTO memberships(tenant_id,user_id,role) VALUES($1,$2,'owner') ON CONFLICT DO NOTHING",[a,alice])
+    }
+  })
+  await cache.del(`api-rate:${alice}`)
+  await t.test('Dragon projects isolate conversations, files and runs, and restore immutable versions with a recoverable backup', async () => {
+    await cache.del(`api-rate:${alice}`)
+    const root = `/api/tenants/${a}`
+    const projects = `${root}/employees/code-agent/projects`
+    const original = (await request(alice, 'GET', `${root}/employees/code-agent/workspace`)).json()
+    const originalPolicy = (await request(alice,'GET',`${root}/operations/settings`)).json().policy
+    const projectPolicy = structuredClone(originalPolicy)
+    projectPolicy.departments.dev.model = 'test-agent'
+    const priorBobRequests = new Set((await query('SELECT id FROM model_requests WHERE tenant_id=$1 AND user_id=$2',[a,bob])).rows.map(row=>row.id))
+    const created = []
+    const get = async (path, user = alice) => request(user, 'GET', path)
+    const post = async (path, body, user = alice) => request(user, 'POST', path, body)
+    const conversation = async id => (await get(`${root}/departments/dev/conversation?projectId=${id}`)).json()
+    const projectFile = (path, text) => ({path, contentBase64: Buffer.from(text).toString('base64')})
+    const toolCall = (id, name, args) => ({id, type:'function', function:{name, arguments:JSON.stringify(args)}})
+    try {
+      assert.equal((await request(alice,'PUT',`${root}/operations/settings`,projectPolicy)).statusCode,200)
+      const listed = await get(projects)
+      assert.equal(listed.statusCode, 200, listed.body)
+      assert.equal(listed.json().defaultProjectId, original.workspace.id)
+      assert.equal((await post(projects, {name:'member forbidden'}, bob)).statusCode,403)
+      assert.equal((await get(projects,outsider)).statusCode,403)
+      assert.equal((await post(projects,{name:'   '})).statusCode,400)
+      for (const name of ['五子棋项目 A','独立项目 B']) {
+        const response = await post(projects,{name})
+        assert.equal(response.statusCode,200,response.body)
+        created.push(response.json().project.id)
+      }
+      const [alpha,beta] = created
+      const pa = `${projects}/${alpha}`, pb = `${projects}/${beta}`
+      assert.equal((await get(`${pa}/workspace`,bob)).statusCode,404)
+      assert.equal((await get(pa.replace(a,b)+'/workspace')).statusCode,404)
+      assert.equal((await get(`${projects}/${randomUUID()}/workspace`)).statusCode,404)
+      assert.equal((await get(`${root}/employees/code-agent/workspace`)).json().workspace.id,original.workspace.id)
+      assert.equal((await post(`${pa}/rename`,{name:'  五子棋 A 已命名  '})).json().project.name,'五子棋 A 已命名')
+      assert.equal((await conversation(alpha)).messages.length,0)
+      assert.equal((await conversation(beta)).messages.length,0)
+      modelMessages.push({content:'只属于项目 A 的回复'})
+      let reply = await post(`${root}/departments/dev/chat`,{projectId:alpha,revision:0,text:'只讨论项目 A'})
+      assert.equal(reply.statusCode,200,reply.body)
+      assert.equal(reply.json().projectId,alpha)
+      assert.equal((await conversation(beta)).messages.length,0)
+      const currentA = reply.json()
+      modelMessages.push(
+        {content:null,tool_calls:[toolCall('project-write','workspace_write_file',{path:'index.html',content:'<title>A v1</title><p>first version</p>'})]},
+        {content:'项目 A 文件已保存'},
+      )
+      duringModel = async () => {
+        assert.equal((await get(`${pb}/workspace`)).json().workspace.id,beta)
+        assert.equal((await post(`${pa}/versions`,{label:'执行中禁止保存',revision:0})).statusCode,409)
+      }
+      reply = await post(`${root}/departments/dev/chat`,{projectId:alpha,revision:currentA.revision,text:'给项目 A 写网页',execute:true})
+      assert.equal(reply.statusCode,200,reply.body)
+      const runId = reply.json().messages.at(-1).runId
+      const stateA = (await get(`${pa}/workspace`)).json()
+      assert.ok(stateA.runs.some(run=>run.id===runId))
+      assert.equal((await get(`${pb}/workspace`)).json().runs.length,0)
+      assert.equal((await get(`${pb}/workspace/file?path=index.html`)).statusCode,404)
+      assert.equal((await get(`${pa}/workspace/file?path=index.html`)).json().content,'<title>A v1</title><p>first version</p>')
+      assert.equal((await get(`${pb}/workspace/deliverables`)).json().entries.length,0)
+      assert.equal((await get(`${pa}/workspace/deliverables`)).json().entries[0].title,'A v1')
+      const save = await post(`${pa}/versions`,{label:'可交付 v1',revision:stateA.workspace.revision})
+      assert.equal(save.statusCode,200,save.body)
+      const v1 = save.json().version.id
+      const historyRoot = `${pa}/versions/${v1}/deliverables`
+      const firstPreview = await post(`${historyRoot}/preview`,{entry:'index.html',revision:stateA.workspace.revision})
+      assert.equal(firstPreview.statusCode,200,firstPreview.body)
+      assert.equal((await app.inject(firstPreview.json().url)).body,'<title>A v1</title><p>first version</p>')
+      const secondFiles = [projectFile('index.html','<title>A v2</title><p>second version</p>'),projectFile('test/kept.test.mjs','export const testMarker=2')]
+      await query('UPDATE employee_workspaces SET files=$2,revision=revision+1 WHERE id=$1',[alpha,JSON.stringify(secondFiles)])
+      const beforeRestore = (await get(`${pa}/workspace`)).json().workspace
+      assert.equal((await get(historyRoot)).json().entries[0].title,'A v1')
+      const historicalZip = await get(`${historyRoot}/download?entry=index.html&revision=${stateA.workspace.revision}`)
+      assert.equal(historicalZip.statusCode,200,historicalZip.body)
+      const {zipFiles} = await import('../apps/api/src/skill-upload.mjs')
+      assert.equal((await zipFiles(historicalZip.rawPayload)).files.get('website/index.html').toString(),'<title>A v1</title><p>first version</p>')
+      assert.equal((await post(`${pb}/versions/${v1}/restore`,{revision:0})).statusCode,404)
+      assert.equal((await get(`${pa}/versions`,bob)).statusCode,404)
+      assert.equal((await post(`${pa}/versions/${v1}/restore`,{revision:beforeRestore.revision-1})).statusCode,409)
+      await query("UPDATE employee_workspaces SET active_run_id=$2,lease_until=now()+interval '1 minute' WHERE id=$1",[alpha,randomUUID()])
+      assert.equal((await post(`${pa}/versions/${v1}/restore`,{revision:beforeRestore.revision})).statusCode,409)
+      assert.equal((await post(`${pa}/versions`,{label:'busy',revision:beforeRestore.revision})).statusCode,409)
+      await query('UPDATE employee_workspaces SET active_run_id=NULL,lease_until=NULL WHERE id=$1',[alpha])
+      const restored = await post(`${pa}/versions/${v1}/restore`,{revision:beforeRestore.revision})
+      assert.equal(restored.statusCode,200,restored.body)
+      assert.equal(restored.json().revision,beforeRestore.revision+1)
+      assert.ok(restored.json().backupVersionId)
+      assert.equal((await get(`${pa}/workspace/file?path=index.html`)).json().content,'<title>A v1</title><p>first version</p>')
+      const savedChat = await conversation(alpha)
+      assert.ok(savedChat.messages.some(m=>m.text==='只讨论项目 A'))
+      assert.match(savedChat.messages.at(-1).text,/恢复/)
+      assert.ok((await get(`${pa}/workspace`)).json().runs.some(run=>run.id===runId))
+      const undo = await post(`${pa}/versions/${restored.json().backupVersionId}/restore`,{revision:restored.json().revision})
+      assert.equal(undo.statusCode,200,undo.body)
+      assert.equal((await get(`${pa}/workspace/file?path=test%2Fkept.test.mjs`)).json().content,'export const testMarker=2')
+      assert.equal((await get(`${pa}/workspace/file?path=index.html`)).json().content,'<title>A v2</title><p>second version</p>')
+      // A model reply prepared before a restore must never commit into the changed conversation.
+      const preChat = await conversation(alpha)
+      duringModel = async () => {
+        const result = await post(`${pa}/versions/${v1}/restore`,{revision:undo.json().revision})
+        assert.equal(result.statusCode,200,result.body)
+      }
+      modelMessages.push({content:'此回复基于已过期文件'})
+      const staleChat = await post(`${root}/departments/dev/chat`,{projectId:alpha,revision:preChat.revision,text:'恢复时仍在处理的旧请求'})
+      assert.equal(staleChat.statusCode,409,staleChat.body)
+      assert.equal((await conversation(alpha)).messages.some(m=>m.text==='此回复基于已过期文件'),false)
+      modelMessages.push({content:'项目 B 独立回答'})
+      reply = await post(`${root}/departments/dev/chat`,{projectId:beta,revision:0,text:'只讨论项目 B'})
+      assert.equal(reply.statusCode,200,reply.body)
+      assert.equal(modelCalls.at(-1).body.messages.some(m=>typeof m.content==='string'&&m.content.includes('只讨论项目 A')),false)
+      assert.equal((await conversation(alpha)).messages.some(m=>m.text==='只讨论项目 B'),false)
+      assert.equal((await post(`${root}/departments/archive/chat`,{projectId:alpha,revision:0,text:'wrong department'})).statusCode,400)
+      // First-project adoption cannot silently strand an already pending legacy reply.
+      let legacyBob=(await get(`${root}/departments/dev/conversation`,bob)).json()
+      modelMessages.push({content:'成员仍可进行原有普通对话'})
+      const memberLegacy=await post(`${root}/departments/dev/chat`,{revision:legacyBob.revision,text:'成员普通讨论，不创建项目'},bob)
+      assert.equal(memberLegacy.statusCode,200,memberLegacy.body)
+      legacyBob=memberLegacy.json()
+      await query("UPDATE memberships SET role='admin' WHERE tenant_id=$1 AND user_id=$2",[a,bob])
+      duringModel=async()=>{
+        const first=await post(projects,{name:'迁移竞态样本'},bob)
+        assert.equal(first.statusCode,200,first.body)
+        created.push(first.json().project.id)
+      }
+      modelMessages.push({content:'旧的无项目回复'})
+      const adopted=await post(`${root}/departments/dev/chat`,{revision:legacyBob.revision,text:'创建项目时仍在等待的旧对话'},bob)
+      assert.equal(adopted.statusCode,409,adopted.body)
+      const imported=(await get(`${root}/departments/dev/conversation?projectId=${created.at(-1)}`,bob)).json()
+      assert.deepEqual(imported.messages,legacyBob.messages)
+      await query("UPDATE memberships SET role='member' WHERE tenant_id=$1 AND user_id=$2",[a,bob])
+      const beforeLimit = (await get(`${pa}/workspace`)).json().workspace
+      const versionRow = (await query('SELECT * FROM employee_project_versions WHERE id=$1',[v1])).rows[0]
+      const versionCount = (await query('SELECT count(*) FROM employee_project_versions WHERE workspace_id=$1',[alpha])).rows[0].count
+      for(let i=Number(versionCount);i<100;i++) await query('INSERT INTO employee_project_versions(id,workspace_id,tenant_id,user_id,label,kind,source_revision,files) VALUES($1,$2,$3,$4,$5,$6,$7,$8)',[randomUUID(),alpha,a,alice,`quota fixture ${i}`,'manual',versionRow.source_revision,JSON.stringify(versionRow.files)])
+      assert.equal((await post(`${pa}/versions/${v1}/restore`,{revision:beforeLimit.revision})).statusCode,409)
+      assert.equal((await get(`${pa}/workspace`)).json().workspace.revision,beforeLimit.revision)
+      const untouched = (await get(`${root}/employees/code-agent/workspace`)).json()
+      assert.deepEqual(untouched.workspace.files,original.workspace.files)
+      assert.equal(untouched.workspace.revision,original.workspace.revision)
+    } finally {
+      duringModel=undefined
+      modelMessages.length=0
+      await query("UPDATE memberships SET role='member' WHERE tenant_id=$1 AND user_id=$2",[a,bob])
+      for(const row of (await query('SELECT id FROM model_requests WHERE tenant_id=$1 AND user_id=$2',[a,bob])).rows) {
+        if(!priorBobRequests.has(row.id)) await query('DELETE FROM model_requests WHERE id=$1',[row.id])
+      }
+      for (const id of created) {
+        await query('DELETE FROM employee_project_versions WHERE workspace_id=$1',[id])
+        await query('DELETE FROM employee_runs WHERE workspace_id=$1',[id])
+        await query('DELETE FROM employee_workspaces WHERE id=$1',[id])
+      }
+      await cache.del(`api-rate:${alice}`)
+      await request(alice,'PUT',`${root}/operations/settings`,originalPolicy)
+    }
+  })
+  await t.test('Dragon acceptance binds human and system evidence to an immutable formal delivery', async () => {
+    await cache.del(`api-rate:${alice}`)
+    const root = `/api/tenants/${a}/employees/code-agent/projects`
+    const created = []
+    const get = (path, user = alice) => request(user, 'GET', path)
+    const post = (path, data, user = alice) => request(user, 'POST', path, data)
+    const put = (path, data, user = alice) => request(user, 'PUT', path, data)
+    const file = (path, content) => ({path,contentBase64:Buffer.from(content).toString('base64')})
+    const oldHtml = '<!doctype html><title>已验收示例</title><h1>version one</h1>'
+    const originalFiles = [file('index.html',oldHtml),file('other.html','<title>other entry</title>'),file('test/example.test.mjs',"import test from 'node:test'; test('example',()=>{});")]
+    const saveBody = draft => ({revision:draft.revision,entry:draft.entry,items:draft.items,instructions:draft.instructions,limitations:draft.limitations})
+    try {
+      for (const name of ['交付验收项目','隔离交付项目']) {
+        const response = await post(root,{name})
+        assert.equal(response.statusCode,200,response.body)
+        created.push(response.json().project.id)
+      }
+      const [projectId,otherId] = created
+      const project = `${root}/${projectId}`, other = `${root}/${otherId}`
+      await query('UPDATE employee_workspaces SET files=$2,revision=1,messages=$3 WHERE id=$1',[projectId,JSON.stringify(originalFiles),JSON.stringify([{role:'assistant',text:'模型声称全部测试通过',time:new Date().toISOString()}])])
+      const version = (await post(`${project}/versions`,{label:'待验收 v1',revision:1})).json().version
+      const acceptancePath = `${project}/versions/${version.id}/acceptance`
+      const initial = await get(acceptancePath)
+      assert.equal(initial.statusCode,200,initial.body)
+      let draft = initial.json().acceptance
+      assert.equal(draft.versionId,version.id)
+      assert.equal(draft.revision,0)
+      assert.ok(draft.items.length>0)
+      assert.ok(draft.items.every(item=>item.status==='unchecked'))
+      assert.equal(draft.systemCheck,null)
+      assert.equal(draft.delivery,null)
+      assert.equal((await query('SELECT count(*) FROM employee_project_acceptance WHERE version_id=$1',[version.id])).rows[0].count,0)
+      assert.equal((await get(acceptancePath,bob)).statusCode,404)
+      assert.equal((await get(acceptancePath,outsider)).statusCode,403)
+      assert.equal((await get(acceptancePath.replace(a,b))).statusCode,404)
+      assert.equal((await get(`${other}/versions/${version.id}/acceptance`)).statusCode,404)
+      assert.equal((await put(acceptancePath,saveBody(draft),bob)).statusCode,403)
+      assert.equal((await put(acceptancePath,{...saveBody(draft),systemCheck:{status:'passed'}})).statusCode,400)
+      assert.equal((await put(acceptancePath,{...saveBody(draft),items:[]})).statusCode,400)
+      assert.equal((await put(acceptancePath,{...saveBody(draft),items:[{...draft.items[0],status:'passed',note:''}]})).statusCode,400)
+      draft.instructions='解压后双击打开作品.html；标题为 version one。'
+      draft.limitations='仅静态演示，不含服务器。<script>never execute</script>'
+      const saved = await put(acceptancePath,saveBody(draft))
+      assert.equal(saved.statusCode,200,saved.body)
+      draft=saved.json().acceptance
+      assert.equal(draft.revision,1)
+      assert.equal((await put(acceptancePath,{...saveBody(draft),revision:0})).statusCode,409)
+      let formalTestId=randomUUID()
+      const confirm = rev => post(`${project}/deliveries`,{versionId:version.id,acceptanceRevision:rev,label:'正式示例交付',testRunId:formalTestId})
+      assert.equal((await confirm(draft.revision)).statusCode,409)
+      // Inject an archive-library write failure; keep the real route, draft and DB transaction.
+      const {default:yazl}=await import('yazl')
+      const addBuffer=yazl.ZipFile.prototype.addBuffer
+      try {
+        yazl.ZipFile.prototype.addBuffer=function(){throw new Error('Injected archive output failure')}
+        const failedCheck=await post(`${acceptancePath}/check`,{revision:draft.revision})
+        assert.equal(failedCheck.statusCode,200,failedCheck.body)
+        draft=failedCheck.json().acceptance
+        assert.equal(draft.systemCheck.status,'failed')
+        assert.equal(draft.systemCheck.packageBytes,0)
+        assert.ok(draft.items.every(item=>item.status==='unchecked'))
+        assert.equal((await get(acceptancePath)).json().acceptance.systemCheck.status,'failed')
+        assert.equal((await confirm(draft.revision)).statusCode,409)
+      } finally {yazl.ZipFile.prototype.addBuffer=addBuffer}
+      const check = await post(`${acceptancePath}/check`,{revision:draft.revision})
+      assert.equal(check.statusCode,200,check.body)
+      draft=check.json().acceptance
+      assert.equal(draft.systemCheck.status,'passed')
+      assert.equal(draft.systemCheck.entry,'index.html')
+      assert.match(draft.systemCheck.snapshotSha256,/^[a-f0-9]{64}$/)
+      assert.ok(draft.systemCheck.fileCount>=1)
+      assert.ok(draft.systemCheck.packageBytes>Buffer.byteLength(oldHtml))
+      assert.ok(draft.systemCheck.checkedAt)
+      assert.ok(draft.items.every(item=>item.status==='unchecked'))
+      assert.equal((await confirm(draft.revision)).statusCode,409)
+      const checkedHash = draft.systemCheck.snapshotSha256
+      draft.entry='other.html'
+      draft=(await put(acceptancePath,saveBody(draft))).json().acceptance
+      assert.equal(draft.systemCheck,null)
+      draft.entry='index.html'
+      draft.items=draft.items.map((item,i)=>({...item,status:i===0?'failed':'passed',note:i===0?'标题不符合期望':'已实际查看页面和说明'}))
+      draft=(await put(acceptancePath,saveBody(draft))).json().acceptance
+      draft=(await post(`${acceptancePath}/check`,{revision:draft.revision})).json().acceptance
+      assert.equal(draft.systemCheck.snapshotSha256,checkedHash)
+      assert.equal((await confirm(draft.revision)).statusCode,409)
+      draft.items=draft.items.map(item=>({...item,status:'passed',note:'已实际打开固定版本，核对标题和说明一致'}))
+      draft=(await put(acceptancePath,saveBody(draft))).json().acceptance
+      const instructions=draft.instructions, limitations=draft.limitations
+      draft.instructions=''
+      draft=(await put(acceptancePath,saveBody(draft))).json().acceptance
+      assert.equal((await confirm(draft.revision)).statusCode,409)
+      draft.instructions=instructions
+      draft=(await put(acceptancePath,saveBody(draft))).json().acceptance
+      assert.equal((await confirm(draft.revision-1)).statusCode,409)
+      assert.equal((await post(`${project}/deliveries`,{versionId:version.id,acceptanceRevision:draft.revision,label:'member'},bob)).statusCode,403)
+      assert.equal((await confirm(draft.revision)).statusCode,409,'package and manual acceptance alone do not satisfy automatic testing')
+      const automatic=await post(`${acceptancePath}/tests`,{requestId:randomUUID()})
+      assert.equal(automatic.statusCode,200,automatic.body)
+      assert.equal(automatic.json().testRun.state,'passed')
+      formalTestId=automatic.json().testRun.id
+      versionTestOutcome=()=>({...passingVersionTest(),success:false,exitCode:1,counts:{tests:1,passed:0,failed:1,cancelled:0,skipped:0,todo:0},cases:[{name:'latest failure',status:'failed',detail:'failed assertion'}]})
+      assert.equal((await post(`${acceptancePath}/tests`,{requestId:randomUUID()})).json().testRun.state,'failed')
+      assert.equal((await confirm(draft.revision)).statusCode,409,'older passing run cannot hide a newer failure')
+      const newest=await post(`${acceptancePath}/tests`,{requestId:randomUUID()})
+      assert.equal(newest.json().testRun.state,'passed')
+      assert.equal((await confirm(draft.revision)).statusCode,409,'must confirm the exact latest test record shown')
+      formalTestId=newest.json().testRun.id
+      const confirmed = await confirm(draft.revision)
+      assert.equal(confirmed.statusCode,200,confirmed.body)
+      const delivery=confirmed.json().delivery
+      assert.equal(delivery.versionId,version.id)
+      assert.equal(delivery.entry,'index.html')
+      assert.equal(delivery.instructions,instructions)
+      assert.equal(delivery.limitations,limitations)
+      assert.equal(delivery.systemCheck.snapshotSha256,checkedHash)
+      assert.equal(delivery.automatedTest.id,formalTestId)
+      assert.equal(delivery.automatedTest.snapshotSha256,checkedHash)
+      assert.ok(delivery.items.every(item=>item.status==='passed'))
+      assert.equal((await confirm(draft.revision)).statusCode,409)
+      assert.equal((await put(acceptancePath,{...saveBody(draft),instructions:'silently changed'})).statusCode,409)
+      assert.equal((await post(`${acceptancePath}/check`,{revision:draft.revision})).statusCode,409)
+      assert.equal((await post(`${acceptancePath}/tests`,{requestId:randomUUID()})).statusCode,409)
+      assert.equal((await get(acceptancePath)).json().acceptance.delivery.id,delivery.id)
+      assert.equal((await get(`${project}/deliveries`)).json().deliveries[0].id,delivery.id)
+      assert.deepEqual((await get(`${other}/deliveries`)).json().deliveries,[])
+      const deliveryRoot=`${project}/deliveries/${delivery.id}`
+      for (const path of [deliveryRoot,`${deliveryRoot}/download`]) {
+        assert.equal((await get(path,bob)).statusCode,404)
+        assert.equal((await get(path.replace(a,b))).statusCode,404)
+        assert.equal((await get(path.replace(projectId,otherId))).statusCode,404)
+      }
+      // Changing live files or running another task cannot change a delivered version.
+      await query("UPDATE employee_workspaces SET files=$2,revision=2,active_run_id=$3,lease_until=now()+interval '1 minute' WHERE id=$1",[projectId,JSON.stringify([file('index.html','<title>UNACCEPTED NEW VERSION</title>')]),randomUUID()])
+      const preview=await post(`${deliveryRoot}/preview`,{})
+      assert.equal(preview.statusCode,200,preview.body)
+      const page=await app.inject(preview.json().url)
+      assert.equal(page.body,oldHtml)
+      assert.match(page.headers['content-security-policy'],/sandbox allow-scripts/)
+      const download=await get(`${deliveryRoot}/download`)
+      assert.equal(download.statusCode,200,download.body)
+      const {zipFiles}=await import('../apps/api/src/skill-upload.mjs')
+      const packed=(await zipFiles(download.rawPayload)).files
+      assert.equal(packed.get('website/index.html').toString(),oldHtml)
+      assert.ok(packed.has('打开作品.html'))
+      assert.match(packed.get('交付说明.txt').toString(),/正式示例交付/)
+      assert.ok(packed.get('交付说明.txt').toString().includes(instructions))
+      assert.ok(packed.get('交付说明.txt').toString().includes(limitations))
+      const record=JSON.parse(packed.get('验收记录.json').toString())
+      assert.equal(record.versionId,version.id)
+      assert.equal(record.systemCheck.snapshotSha256,checkedHash)
+      assert.equal(record.automatedTest.id,formalTestId)
+      assert.deepEqual((await get(deliveryRoot)).json().delivery,delivery)
+      await assert.rejects(query('UPDATE employee_project_deliveries SET label=$2 WHERE id=$1',[delivery.id,'tampered']),/immutable/i)
+      // Source-only version cannot acquire passed package evidence or be delivered.
+      const sourceVersion=(await post(`${other}/versions`,{label:'source only',revision:0})).json().version
+      // Database ownership constraints also reject a version attached to another project.
+      await assert.rejects(query('INSERT INTO employee_project_acceptance(version_id,workspace_id,tenant_id,user_id,revision,items) VALUES($1,$2,$3,$4,1,$5)',[sourceVersion.id,projectId,a,alice,JSON.stringify(draft.items)]),/foreign key/i)
+      await assert.rejects(query('INSERT INTO employee_project_deliveries(id,version_id,workspace_id,tenant_id,user_id,version_label,source_revision,label,entry,items,system_check,instructions,limitations) SELECT $1,$2,workspace_id,tenant_id,user_id,version_label,source_revision,label,entry,items,system_check,instructions,limitations FROM employee_project_deliveries WHERE id=$3',[randomUUID(),sourceVersion.id,delivery.id]),/foreign key/i)
+      const sourcePath=`${other}/versions/${sourceVersion.id}/acceptance`
+      let sourceDraft=(await get(sourcePath)).json().acceptance
+      sourceDraft.items=sourceDraft.items.map(item=>({...item,status:'passed',note:'手动检查'}))
+      sourceDraft.instructions='使用源代码';sourceDraft.limitations='尚无网页成品'
+      sourceDraft=(await put(sourcePath,saveBody(sourceDraft))).json().acceptance
+      const sourceCheck=await post(`${sourcePath}/check`,{revision:sourceDraft.revision})
+      if(sourceCheck.statusCode===200) assert.notEqual(sourceCheck.json().acceptance.systemCheck?.status,'passed')
+      else assert.ok([400,404,409].includes(sourceCheck.statusCode),sourceCheck.body)
+      assert.equal((await post(`${other}/deliveries`,{versionId:sourceVersion.id,acceptanceRevision:sourceDraft.revision,label:'不能交付',testRunId:formalTestId})).statusCode,409)
+      await query('CREATE ROLE acceptance_reader')
+      await query('GRANT SELECT ON employee_project_acceptance,employee_project_deliveries TO acceptance_reader')
+      try {
+        await query('SET ROLE acceptance_reader')
+        for(const table of ['employee_project_acceptance','employee_project_deliveries']) assert.equal((await query(`SELECT * FROM ${table}`)).rows.length,0)
+        await query('BEGIN')
+        await query("SELECT set_config('app.tenant_id',$1,true),set_config('app.user_id',$2,true)",[a,alice])
+        assert.equal((await query('SELECT id FROM employee_project_deliveries')).rows[0].id,delivery.id)
+        assert.equal((await query('SELECT version_id FROM employee_project_acceptance')).rows.length,2)
+        await query("SELECT set_config('app.user_id',$1,true)",[bob])
+        for(const table of ['employee_project_acceptance','employee_project_deliveries']) assert.equal((await query(`SELECT * FROM ${table}`)).rows.length,0)
+        await query("SELECT set_config('app.tenant_id',$1,true),set_config('app.user_id',$2,true)",[b,alice])
+        for(const table of ['employee_project_acceptance','employee_project_deliveries']) assert.equal((await query(`SELECT * FROM ${table}`)).rows.length,0)
+      } finally {
+        await query('ROLLBACK')
+        await query('RESET ROLE')
+      }
+    } finally {
+      for(const id of created) {
+        for(const table of ['employee_project_deliveries','employee_project_acceptance']) {
+          if((await query('SELECT to_regclass($1) name',[table])).rows[0].name) await query(`DELETE FROM ${table} WHERE workspace_id=$1`,[id])
+        }
+        if((await query("SELECT to_regclass('employee_project_test_runs') name")).rows[0].name) await query('DELETE FROM employee_project_test_runs WHERE workspace_id=$1',[id])
+        await query('DELETE FROM employee_project_versions WHERE workspace_id=$1',[id])
+        await query('DELETE FROM employee_runs WHERE workspace_id=$1',[id])
+        await query('DELETE FROM employee_workspaces WHERE id=$1',[id])
+      }
+      await cache.del(`api-rate:${alice}`)
+    }
+  })
+  await t.test('saved-version automatic tests isolate evidence, reject fabricated success, recover and deduplicate execution', async () => {
+    await cache.del(`api-rate:${alice}`)
+    const root=`/api/tenants/${a}/employees/code-agent/projects`
+    const created=await request(alice,'POST',root,{name:'版本测试项目'})
+    assert.equal(created.statusCode,200,created.body)
+    const id=created.json().project.id
+    const project=`${root}/${id}`
+    const get=(path,user=alice)=>request(user,'GET',path)
+    const post=(path,body,user=alice)=>request(user,'POST',path,body)
+    const file=(path,content)=>({path,contentBase64:Buffer.from(content).toString('base64')})
+    let otherId
+    try {
+      const saved=await post(`${project}/versions`,{label:'无测试版本',revision:0})
+      assert.equal(saved.statusCode,200,saved.body)
+      const emptyVersion=saved.json().version.id
+      const emptyPath=`${project}/versions/${emptyVersion}/acceptance/tests`
+      const response=await get(emptyPath)
+      assert.equal(response.statusCode,200,response.body)
+      assert.deepEqual(response.json(),{testRuns:[],latestTest:null})
+      assert.equal((await query('SELECT count(*) FROM employee_project_test_runs WHERE workspace_id=$1',[id])).rows[0].count,0)
+      const callsBeforeEmpty=versionTestCalls.length
+      const empty=await post(emptyPath,{requestId:randomUUID()})
+      assert.equal(empty.statusCode,200,empty.body)
+      assert.equal(empty.json().testRun.state,'no_tests')
+      assert.equal(versionTestCalls.length,callsBeforeEmpty)
+
+      const files=[file('index.html','<title>immutable v1</title>'),file('test/game.test.mjs',"import test from 'node:test'; test('game',()=>{})")]
+      await query('UPDATE employee_workspaces SET files=$2,revision=1 WHERE id=$1',[id,JSON.stringify(files)])
+      const version=(await post(`${project}/versions`,{label:'有测试 v1',revision:1})).json().version
+      const path=`${project}/versions/${version.id}/acceptance/tests`
+      const start=(requestId=randomUUID())=>post(path,{requestId})
+      assert.equal((await get(path,bob)).statusCode,404)
+      assert.equal((await get(path,outsider)).statusCode,403)
+      assert.equal((await get(path.replace(a,b))).statusCode,404)
+      assert.equal((await post(path,{requestId:randomUUID()},bob)).statusCode,403)
+      assert.equal((await post(path,{requestId:randomUUID(),state:'passed',command:'echo passed'})).statusCode,400)
+      assert.equal((await post(path,{requestId:'invalid'})).statusCode,400)
+      otherId=(await post(root,{name:'其他测试项目'})).json().project.id
+      assert.equal((await get(path.replace(id,otherId))).statusCode,404)
+      assert.equal((await post(path.replace(id,otherId),{requestId:randomUUID()})).statusCode,404)
+
+      // A running request is durably visible before the executor returns; duplicates cannot spawn again.
+      let releaseTest,enteredTest
+      const entered=new Promise(resolve=>{enteredTest=resolve})
+      const held=new Promise(resolve=>{releaseTest=resolve})
+      duringVersionTest=async()=>{enteredTest();await held}
+      const requestId=randomUUID(),beforeCalls=versionTestCalls.length
+      const pending=start(requestId)
+      await entered
+      try {
+        const running=(await get(path)).json().latestTest
+        assert.equal(running.state,'running')
+        const same=await start(requestId)
+        assert.equal(same.statusCode,200,same.body);assert.equal(same.json().testRun.id,running.id)
+        assert.equal(versionTestCalls.length,beforeCalls+1)
+        assert.equal((await start()).statusCode,409)
+        assert.equal((await post(emptyPath,{requestId:randomUUID()})).statusCode,409,'only one version test per project')
+        await query('UPDATE employee_workspaces SET files=$2,revision=2 WHERE id=$1',[id,JSON.stringify([file('index.html','<title>UNTESTED CURRENT FILES</title>')])])
+      } finally {releaseTest()}
+      const finished=await pending
+      assert.equal(finished.statusCode,200,finished.body)
+      const first=finished.json().testRun
+      assert.equal(first.state,'passed');assert.equal(first.versionId,version.id)
+      assert.match(first.snapshotSha256,/^[a-f0-9]{64}$/)
+      assert.deepEqual(versionTestCalls.at(-1).files,files)
+      assert.deepEqual(first.testFiles,['test/game.test.mjs'])
+      assert.equal((await start(requestId)).json().testRun.id,first.id)
+      assert.equal(versionTestCalls.length,beforeCalls+1)
+      assert.equal((await post(emptyPath,{requestId})).statusCode,409)
+      assert.equal((await get(path.replace('/tests',''))).json().acceptance.latestTest.id,first.id)
+      await assert.rejects(query("UPDATE employee_project_test_runs SET state='failed' WHERE id=$1",[first.id]),/immutable/i)
+
+      // Transport/result failures must never turn old passing evidence into a current green result.
+      const cases=[
+        ['failed',()=>({...passingVersionTest(),success:false,exitCode:1,counts:{tests:1,passed:0,failed:1,cancelled:0,skipped:0,todo:0},cases:[{name:'落子失败',status:'failed',detail:'expected black stone'}]})],
+        ['no_tests',()=>({...passingVersionTest(),counts:{tests:0,passed:0,failed:0,cancelled:0,skipped:0,todo:0},cases:[]})],
+        ['incomplete',()=>({...passingVersionTest(),counts:{tests:1,passed:0,failed:0,cancelled:0,skipped:1,todo:0},cases:[{name:'not executed',status:'skipped',detail:''}]})],
+        ['timed_out',()=>({...passingVersionTest(),exitCode:null,timedOut:true,summaryComplete:false})],
+        ['incomplete',()=>({...passingVersionTest(),truncated:true})],
+        ['error',()=>({...passingVersionTest(),counts:null,summaryComplete:false,stdout:'tests 99 pass 99 ALL PASS'})],
+        ['error',()=>{throw new Error('test engine unavailable')}],
+      ]
+      for(const [state,outcome] of cases){
+        versionTestOutcome=outcome
+        const run=await start();assert.equal(run.statusCode,200,run.body)
+        assert.equal(run.json().testRun.state,state)
+        assert.equal((await get(path)).json().latestTest.id,run.json().testRun.id)
+        assert.equal(run.json().testRun.snapshotSha256,first.snapshotSha256)
+      }
+
+      // Expired work is interrupted and a late success cannot overwrite its terminal evidence.
+      let expireRelease,expireEntered
+      const expireHold=new Promise(resolve=>{expireRelease=resolve}),expireSeen=new Promise(resolve=>{expireEntered=resolve})
+      duringVersionTest=async()=>{expireEntered();await expireHold}
+      const late=start();await expireSeen
+      let expired
+      try {
+        expired=(await get(path)).json().latestTest
+        await query("UPDATE employee_project_test_runs SET lease_until=now()-interval '1 second' WHERE id=$1",[expired.id])
+        const recovered=(await get(path)).json().latestTest
+        assert.equal(recovered.state,'interrupted')
+      } finally {expireRelease()}
+      const lateResponse=await late
+      assert.equal(lateResponse.statusCode,200,lateResponse.body)
+      assert.equal(lateResponse.json().testRun.state,'interrupted')
+      assert.equal((await query('SELECT state FROM employee_project_test_runs WHERE id=$1',[expired.id])).rows[0].state,'interrupted')
+
+      // Revocation while executing cannot leave a passing record behind.
+      duringVersionTest=async()=>{await query("UPDATE memberships SET role='member' WHERE tenant_id=$1 AND user_id=$2",[a,alice])}
+      try {
+        const revoked=await start()
+        assert.ok([200,403].includes(revoked.statusCode),revoked.body)
+        const record=(await query('SELECT state FROM employee_project_test_runs WHERE workspace_id=$1 ORDER BY started_at DESC,id DESC LIMIT 1',[id])).rows[0]
+        assert.notEqual(record.state,'passed')
+      } finally {await query("UPDATE memberships SET role='owner' WHERE tenant_id=$1 AND user_id=$2",[a,alice])}
+
+      const finalTest=(await start()).json().testRun
+      assert.equal(finalTest.state,'passed')
+      const v2=(await post(`${project}/versions`,{label:'当前无测试 v2',revision:2})).json().version
+      const v2Path=`${project}/versions/${v2.id}/acceptance/tests`
+      assert.equal((await get(v2Path)).json().latestTest,null)
+      assert.equal((await post(v2Path,{requestId:randomUUID()})).json().testRun.state,'no_tests')
+      assert.notEqual((await get(v2Path)).json().latestTest.snapshotSha256,finalTest.snapshotSha256)
+      const workspace=(await query('SELECT files,revision FROM employee_workspaces WHERE id=$1',[id])).rows[0]
+      assert.equal(workspace.revision,2)
+      assert.equal(Buffer.from(workspace.files[0].contentBase64,'base64').toString(),'<title>UNTESTED CURRENT FILES</title>')
+
+      await query('CREATE ROLE version_test_reader')
+      await query('GRANT SELECT ON employee_project_test_runs TO version_test_reader')
+      try {
+        await query('SET ROLE version_test_reader')
+        assert.equal((await query('SELECT * FROM employee_project_test_runs')).rows.length,0)
+        await query('BEGIN')
+        await query("SELECT set_config('app.tenant_id',$1,true),set_config('app.user_id',$2,true)",[a,alice])
+        assert.ok((await query('SELECT id FROM employee_project_test_runs WHERE workspace_id=$1',[id])).rows.length>0)
+        await query("SELECT set_config('app.user_id',$1,true)",[bob])
+        assert.equal((await query('SELECT * FROM employee_project_test_runs')).rows.length,0)
+        await query("SELECT set_config('app.tenant_id',$1,true),set_config('app.user_id',$2,true)",[b,alice])
+        assert.equal((await query('SELECT * FROM employee_project_test_runs')).rows.length,0)
+      } finally {await query('ROLLBACK');await query('RESET ROLE')}
+      await assert.rejects(query('UPDATE employee_project_test_runs SET workspace_id=$1 WHERE id=$2',[otherId,first.id]),/immutable|foreign key/i)
+    } finally {
+      versionTestOutcome=undefined;duringVersionTest=undefined
+      for(const projectId of [id,otherId].filter(Boolean)){
+        if((await query("SELECT to_regclass('employee_project_test_runs') name")).rows[0].name)await query('DELETE FROM employee_project_test_runs WHERE workspace_id=$1',[projectId])
+        await query('DELETE FROM employee_project_versions WHERE workspace_id=$1',[projectId])
+        await query('DELETE FROM employee_workspaces WHERE id=$1',[projectId])
+      }
+      await cache.del(`api-rate:${alice}`)
+    }
+  })
   await t.test('private files persist exact bytes and deny another member or tenant', async () => {
     const root = `/api/tenants/${a}/files`
     const r = await request(alice, 'POST', root, {
@@ -1612,7 +2711,10 @@ await test('authenticated multi-tenant API and PostgreSQL isolation', async (t) 
       const research = snapshot.board.tasks.at(-2),
         archive = snapshot.board.tasks.at(-1)
       assert.deepEqual(archive.dependsOn, [research.id])
-      assert.equal((await query('SELECT * FROM task_jobs WHERE task_id=$1', [research.id])).rows.length, 0)
+      assert.equal(
+        (await query('SELECT * FROM task_jobs WHERE task_id=$1', [research.id])).rows.length,
+        0,
+      )
       assert.equal(
         (await request(alice, 'POST', `${root}/secretary/tasks/${research.id}/run`, {})).statusCode,
         409,
@@ -2067,7 +3169,7 @@ await test('authenticated multi-tenant API and PostgreSQL isolation', async (t) 
       await query('CREATE ROLE rls_test NOSUPERUSER NOBYPASSRLS')
       await query('GRANT USAGE ON SCHEMA public TO rls_test')
       await query(
-        'GRANT SELECT ON agents,installed_skills,secretary_workspaces,operations_settings,operations_publications,model_daily_usage,model_requests,workspace_files,department_conversations,skill_assignments,secretary_reminders,task_jobs,research_settings TO rls_test',
+        'GRANT SELECT ON agents,installed_skills,secretary_workspaces,operations_settings,operations_publications,model_daily_usage,model_requests,workspace_files,department_conversations,skill_assignments,secretary_reminders,task_jobs,research_settings,employee_workspaces,employee_runs TO rls_test',
       )
       await query('SET ROLE rls_test')
       for (const name of [
@@ -2077,6 +3179,8 @@ await test('authenticated multi-tenant API and PostgreSQL isolation', async (t) 
         'department_conversations',
         'skill_assignments',
         'secretary_reminders',
+        'employee_workspaces',
+        'employee_runs',
       ])
         assert.equal((await query(`SELECT * FROM ${name}`)).rows.length, 0)
       assert.equal((await query('SELECT * FROM agents')).rows.length, 0)
@@ -2104,6 +3208,8 @@ await test('authenticated multi-tenant API and PostgreSQL isolation', async (t) 
       assert.equal((await query('SELECT * FROM secretary_workspaces')).rows.length, 0)
       await query("SELECT set_config('app.user_id',$1,true)", [alice])
       assert.equal((await query('SELECT * FROM secretary_workspaces')).rows.length, 1)
+      assert.equal((await query('SELECT * FROM employee_workspaces')).rows.length, 1)
+      assert.ok((await query('SELECT * FROM employee_runs')).rows.length > 0)
       await query('ROLLBACK')
       assert.equal(
         (await query('SELECT * FROM model_requests WHERE tenant_id=$1', [b])).rows.length,

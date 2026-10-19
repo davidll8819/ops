@@ -8,9 +8,22 @@ import { registerSearchSettings } from './research/settings.mjs'
 import { registerReminders } from './reminders.mjs'
 import { registerSecretaryExecution } from './secretary-execution.mjs'
 import { registerWorkspaceServices } from './workspace-services.mjs'
+import { registerArchiveRoutes } from './archive/routes.mjs'
+import { registerComparisonRoutes } from './archive/comparison-routes.mjs'
+import { registerFilingRoutes } from './archive/filing-routes.mjs'
+import { registerArchiveRecordRoutes } from './archive/record-routes.mjs'
+import { registerEmployeeProfiles } from './employee-profiles.mjs'
+import { registerEmployeeSkills } from './employee-skills.mjs'
+import { createDockerExecution } from './execution/docker.mjs'
+import { createExecutionService } from './execution/service.mjs'
+import { registerExecutionRoutes } from './execution/routes.mjs'
+import { registerDeliveryRoutes } from './execution/delivery-routes.mjs'
+import { registerAcceptanceRoutes } from './execution/acceptance-routes.mjs'
+import { registerVersionTestRoutes } from './execution/version-test-routes.mjs'
 import Fastify from 'fastify'
 import { registerModelGateway } from './operations/gateway.mjs'
 import { registerOperations } from './operations/routes.mjs'
+import { loadMediaOrigins } from './operations/media-origins.mjs'
 import { registerSecretary } from './secretary.mjs'
 import cookie from '@fastify/cookie'
 import helmet from '@fastify/helmet'
@@ -41,6 +54,8 @@ export async function buildApp({
   catalogInstaller = prepareCatalogSkill,
   operationsDriver,
   modelFetch,
+  executionDriver,
+  documentParser,
   env = process.env,
   staticRoot = fileURLToPath(new URL('../../web/dist/', import.meta.url)),
 }) {
@@ -60,13 +75,15 @@ export async function buildApp({
     trustProxy: false,
   })
   await app.register(cookie)
+  const productionMediaOrigins = await loadMediaOrigins(env)
   await app.register(helmet, {
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'", 'data:', 'blob:'],
+        imgSrc: ["'self'", 'data:', 'blob:', ...productionMediaOrigins],
+        mediaSrc: ["'self'", ...productionMediaOrigins],
         connectSrc: ["'self'"],
         workerSrc: ["'self'", 'blob:'],
         objectSrc: ["'none'"],
@@ -159,7 +176,24 @@ export async function buildApp({
     )
   }
   registerSlowResponses(app, { authorize: (req) => scoped(req, async () => {}) })
-  registerWorkspaceServices(app, { scoped, pool, env, fetcher: modelFetch })
+  const executionRuntime = executionDriver || createDockerExecution({ env })
+  const execution = createExecutionService({
+    pool,
+    env,
+    driver: executionRuntime,
+    fetcher: modelFetch,
+  })
+  registerExecutionRoutes(app, { scoped, service: execution })
+  const previews = registerDeliveryRoutes(app, { scoped, service: execution, pool, env })
+  registerAcceptanceRoutes(app, { scoped, previews })
+  registerVersionTestRoutes(app, { scoped, pool, driver: executionRuntime })
+  registerWorkspaceServices(app, { scoped, pool, env, fetcher: modelFetch, execution })
+  registerArchiveRoutes(app, { scoped, documentParser })
+  registerComparisonRoutes(app, { scoped })
+  registerFilingRoutes(app, { scoped, pool, env, fetcher: modelFetch })
+  registerArchiveRecordRoutes(app, { scoped })
+  registerEmployeeProfiles(app, { scoped, env })
+  registerEmployeeSkills(app, { scoped })
   registerSecretaryExecution(app, { scoped, pool, env, fetcher: modelFetch })
   registerReminders(app, { scoped, pool, env })
   registerSearchSettings(app, { scoped, env })
@@ -602,7 +636,10 @@ export async function buildApp({
       },
     })
     app.setNotFoundHandler((req, reply) => {
-      if (req.method !== 'GET' || /^\/(api|auth|health|assets)\//.test(req.url))
+      if (
+        req.method !== 'GET' ||
+        /^\/(api|auth|health|assets|project-preview)(?:\/|$)/.test(req.url)
+      )
         return reply.code(404).send({ error: '不存在' })
       return reply.sendFile('index.html')
     })

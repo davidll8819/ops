@@ -14,6 +14,7 @@ import {
 } from '@yikart/common'
 import {
   ContentGenerationTaskRepository,
+  AiLogRepository,
   ContentGenerationTaskStatus,
   Transactional,
 } from '@yikart/mongodb'
@@ -33,6 +34,7 @@ import {
   ContentGenerationTaskChunkVo,
 } from './agent.vo'
 import { AgentRuntimeService } from './services/agent-runtime.service'
+import { VideoService } from '../ai/video'
 
 @Injectable()
 export class AgentService implements OnModuleInit, OnModuleDestroy {
@@ -42,6 +44,8 @@ export class AgentService implements OnModuleInit, OnModuleDestroy {
     private readonly contentGenerateRepository: ContentGenerationTaskRepository,
     private readonly agentRuntimeService: AgentRuntimeService,
     private readonly redisPubSubService: RedisPubSubService,
+    private readonly aiLogRepository: AiLogRepository,
+    private readonly videoService: VideoService,
   ) { }
 
   /**
@@ -110,9 +114,13 @@ export class AgentService implements OnModuleInit, OnModuleDestroy {
     if (!task) {
       throw new AppException(ResponseCode.AgentTaskNotFound)
     }
+    const logs = await this.aiLogRepository.listByUserIdAndRequestOfficeTaskId(userId, taskId)
+    const videos = await Promise.allSettled(logs.map(log => this.videoService.getVideoTaskStatus({ userId, userType: UserType.User, taskId: log.id })))
     return {
       ...task,
       messages: task.messages as Array<AgentMessageVo>,
+      savedVideos: videos.flatMap(video => video.status === 'fulfilled' ? [video.value] : []),
+      videoStatusUnavailable: videos.some(video => video.status === 'rejected'),
     }
   }
 
