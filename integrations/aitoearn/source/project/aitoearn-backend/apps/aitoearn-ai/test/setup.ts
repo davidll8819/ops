@@ -9,7 +9,8 @@ vi.mock('@yikart/common', async (importOriginal) => {
   return {
     ...original,
     selectConfig: (dto: { schema: { parse: (input: unknown) => unknown } }) => {
-      const fixture = parse(readFileSync(fileURLToPath(new URL('../config/config.yaml', import.meta.url)), 'utf8'))
+      const fixture = parse(readFileSync(fileURLToPath(new URL('../config/config.yaml.example', import.meta.url)), 'utf8'))
+      fixture.auth = { secret: 'unit-test-jwt', internalToken: 'unit-test-internal' }
       fixture.ai.fouryi = { baseUrl: 'https://fouryi.example', apiKey: '', timeout: 300000 }
       return dto.schema.parse(fixture)
     },

@@ -104,7 +104,13 @@ async function setup() {
   await run('docker', [...compose, 'up', '-d', '--wait'], env)
   await run(process.execPath, ['scripts/bootstrap-local.mjs'], env)
   // POSIX mode 0600 does not protect secrets on Windows; restrict these local files explicitly.
-  const identity = execFileSync('whoami', [], { encoding: 'utf8', windowsHide: true }).trim()
+  const identityOutput = execFileSync('whoami', ['/user', '/fo', 'csv', '/nh'], {
+    encoding: 'utf8',
+    windowsHide: true,
+  })
+  const identitySid = identityOutput.match(/S-\d+(?:-\d+)+/)?.[0]
+  if (!identitySid) throw new Error('无法识别当前 Windows 账号的安全标识。')
+  const identity = `*${identitySid}`
   await run('icacls', ['.env', '/inheritance:r', '/grant:r', `${identity}:F`])
   await run('icacls', ['.local', '/inheritance:r', '/grant:r', `${identity}:(OI)(CI)F`])
   await npm('run', 'build')

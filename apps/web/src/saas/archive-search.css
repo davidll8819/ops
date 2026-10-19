@@ -1,0 +1,23 @@
+.employee-dialog .archive-chat-pane > .heading-row .archive-chat-search,
+.archive-chat-pane > .heading-row .archive-chat-search {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.archive-chat-search input {
+  margin: 0;
+  width: 14px;
+  height: 14px;
+  accent-color: var(--employee-color, #805ba5);
+}
+.archive-comparison-scope {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}

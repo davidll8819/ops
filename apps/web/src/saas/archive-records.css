@@ -1,0 +1,72 @@
+.archive-registration {
+  margin-top: 14px;
+  border-top: 1px solid var(--archive-border);
+  padding-top: 12px;
+}
+.archive-record-editor {
+  margin-top: 12px;
+}
+.archive-record-editor fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.archive-record-editor label,
+.archive-registry-filters label {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 13px;
+}
+.archive-record-editor input,
+.archive-record-editor select,
+.archive-record-editor textarea,
+.archive-registry-filters input,
+.archive-registry-filters select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.archive-record-editor textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+.archive-record-editor > button {
+  margin-top: 10px;
+}
+.archive-record-path {
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.archive-registry {
+  border: 1px solid var(--archive-border);
+  border-radius: 10px;
+  padding: 12px;
+  background: white;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+.archive-registry-filters {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0;
+}
+.archive-registry-card,
+.archive-record-detail {
+  border: 1px solid var(--archive-border);
+  border-radius: 8px;
+  margin: 12px 0;
+  padding: 12px;
+}
+.archive-registry h3,
+.archive-registry h4 {
+  margin: 0 0 10px;
+}
+.archive-registry .archive-filing-tags button {
+  font-size: 12px;
+  padding: 3px 8px;
+  color: var(--archive-accent);
+}

@@ -1,7 +1,7 @@
 import { createSdkMcpServer, McpSdkServerConfigWithInstance } from '@anthropic-ai/claude-agent-sdk'
 import { Injectable, Logger } from '@nestjs/common'
 import { FileUtil, UserType } from '@yikart/common'
-import { AiLogStatus } from '@yikart/mongodb'
+import { AiLogStatus, AiLogType, ContentGenerationTaskRepository } from '@yikart/mongodb'
 import dayjs from 'dayjs'
 import { z } from 'zod'
 import { config } from '../../../config'
@@ -75,24 +75,28 @@ export class MediaMcp {
     private readonly aiAvailability: AiAvailabilityService,
     private readonly grokVideoService: GrokVideoService,
     private readonly videoService: VideoService,
+    private readonly taskRepository: ContentGenerationTaskRepository,
   ) { }
 
-  createFourYiImageTool(userId: string, userType: UserType) {
+  createFourYiImageTool(userId: string, userType: UserType, taskId: string) {
     return wrapTool(this.logger, MediaToolName.GenerateImage, 'Generate or edit an image using the company 4YI gateway. Choose an enabled model. Reference images are sent to the image editing endpoint.', {
       model: z.enum(config.ai.models.image.generation.map(model => model.name)),
       prompt: z.string().min(1),
       imageUrls: z.array(z.string()).optional(),
       size: z.string().default('1024x1024'),
     }, async ({ model, prompt, imageUrls, size }) => {
+      if (!await this.taskRepository.updateMediaRequestByIdAndUserId(taskId, userId, AiLogType.Image, true))
+        return errorResult('The previous image request is unresolved. Do not resubmit; ask the user to review it first.')
       const params = { userId, userType, model, prompt, size, n: 1 }
       const result = imageUrls?.length
         ? await this.imageService.userEdit({ ...params, image: imageUrls })
         : await this.imageService.userGeneration(params)
+      await this.taskRepository.updateMediaRequestByIdAndUserId(taskId, userId, AiLogType.Image, false)
       return successResult(result.list.flatMap(image => image.url ? [{ type: 'resource_link', uri: FileUtil.buildUrl(image.url), name: 'Generated image' }] : []))
     }, this.aiAvailability)
   }
 
-  createFourYiVideoTool(userId: string, userType: UserType) {
+  createFourYiVideoTool(userId: string, userType: UserType, taskId: string) {
     return wrapTool(this.logger, MediaToolName.GenerateVideo, 'Generate a video using the company 4YI gateway. Choose an enabled model and supply its supported duration, resolution and aspect ratio. Use getVideoStatus with the returned task id.', {
       model: z.enum(config.ai.models.video.generation.map(model => model.name)),
       prompt: z.string().min(1),
@@ -101,7 +105,16 @@ export class MediaMcp {
       resolution: z.string().optional(),
       ratio: z.string().optional(),
       mode: z.enum(['text2video', 'image2video', 'multi-image2video']).optional(),
-    }, async params => successResult(await this.videoService.userVideoGeneration({ userId, userType, ...params })), this.aiAvailability)
+    }, async (params) => {
+      const task = await this.taskRepository.getByUserIdAndId(userId, taskId)
+      if (!task)
+        return errorResult('The production task is unavailable. Do not submit a video.')
+      if (!await this.taskRepository.updateMediaRequestByIdAndUserId(taskId, userId, AiLogType.Video, true))
+        return errorResult('The previous video request is unresolved. Query its status or ask the user to review it; do not resubmit.')
+      const result = await this.videoService.userVideoGeneration({ userId, userType, ...params, ...task.videoFormat, metadata: { officeTaskId: taskId } })
+      await this.taskRepository.updateMediaRequestByIdAndUserId(taskId, userId, AiLogType.Video, false)
+      return successResult(result)
+    }, this.aiAvailability)
   }
 
   createFourYiVideoStatusTool(userId: string, userType: UserType) {
@@ -391,14 +404,14 @@ Returns task ID for status tracking.`,
     )
   }
 
-  createServer(userId: string, userType: UserType): McpSdkServerConfigWithInstance {
+  createServer(userId: string, userType: UserType, taskId: string): McpSdkServerConfigWithInstance {
     if (config.ai.fouryi.apiKey) {
       return createSdkMcpServer({
         name: McpServerName.MediaGeneration,
         version: '1.0.0',
         tools: [
-          ...(config.ai.models.image.generation.length ? [this.createFourYiImageTool(userId, userType)] : []),
-          ...(config.ai.models.video.generation.length ? [this.createFourYiVideoTool(userId, userType)] : []),
+          ...(config.ai.models.image.generation.length ? [this.createFourYiImageTool(userId, userType, taskId)] : []),
+          ...(config.ai.models.video.generation.length ? [this.createFourYiVideoTool(userId, userType, taskId)] : []),
           this.createFourYiVideoStatusTool(userId, userType),
         ],
       })

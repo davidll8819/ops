@@ -24,6 +24,7 @@ const department = z
   .object({
     enabled: z.boolean().default(true),
     tier: tier.optional(),
+    model: z.string().trim().max(150).default(''),
     fallback: tier.optional(),
     skills: z.array(z.string().regex(/^[a-z][a-z0-9_-]{0,79}$/)).max(50),
     need_confirm: z.boolean().default(false),
@@ -91,7 +92,7 @@ export const policySchema = z
   .strict()
   .superRefine((v, ctx) => {
     for (const [id, d] of Object.entries(v.departments)) {
-      if (d.enabled && !d.tier)
+      if (d.enabled && !d.tier && !d.model)
         ctx.addIssue({
           code: 'custom',
           path: ['departments', id, 'tier'],
@@ -174,7 +175,7 @@ export function tenantSecrets(env, tenantId) {
 export function resolveDepartment(policy, id) {
   const d = policy.departments[id]
   if (!d?.enabled) throw fail(409, '该部门的模型服务尚未启用')
-  const model = policy.tiers[d.tier]
+  const model = d.model || policy.tiers[d.tier]
   if (!model) throw fail(409, '请先配置该部门使用的模型档位')
   return { model, fallback: d.fallback ? policy.tiers[d.fallback] : '', tier: d.tier }
 }

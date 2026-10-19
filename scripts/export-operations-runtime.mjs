@@ -41,7 +41,9 @@ try {
     if (service === 'server') {
       config.aiClient = { baseUrl: entry.privateAiUrl || entry.aiUrl, token: '${OFFICE_INTERNAL_TOKEN}' }
       if (!infra.channelDb) throw new Error('Missing dedicated channelDb')
-      config.channel.channelDb = infra.channelDb
+      // Example platform credentials are not configured accounts. Account binding
+      // uses the explicitly prepared Relay below; keep native adapters disabled.
+      config.channel = { channelDb: infra.channelDb, shortLink: { baseUrl: '' } }
       if (secrets.relay && !entry.relayCallbackUrl) throw new Error('Prepare a verified Relay callback before enabling account binding')
       if (entry.relayCallbackUrl) {
         config.relay = { serverUrl: value.aitoearn.region === 'china' ? 'https://aitoearn.cn/api' : 'https://aitoearn.ai/api', apiKey: '', callbackUrl: entry.relayCallbackUrl }

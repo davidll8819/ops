@@ -1,0 +1,26 @@
+{
+  "name": "superpowers",
+  "version": "7.0.0",
+  "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+  "sourceUrl": "https://github.com/obra/superpowers/tree/bb92a77741419a4ab5f06e711a283343f1ada0c3",
+  "license": "MIT",
+  "sha256": "ee837c8a72b06f513c498d37fbe1f45c7c40f36502d8983df41a742d216468f3",
+  "sourceSha256": "72a39d13f59ec4a85898a0ece969230032678501e396ba08d9dadab7116a6574",
+  "modules": [
+    "brainstorming",
+    "diagnosing-superpowers",
+    "dispatching-parallel-agents",
+    "executing-plans",
+    "finishing-a-development-branch",
+    "receiving-code-review",
+    "requesting-code-review",
+    "subagent-driven-development",
+    "systematic-debugging",
+    "test-driven-development",
+    "using-git-worktrees",
+    "using-superpowers",
+    "verification-before-completion",
+    "writing-plans",
+    "writing-skills"
+  ]
+}

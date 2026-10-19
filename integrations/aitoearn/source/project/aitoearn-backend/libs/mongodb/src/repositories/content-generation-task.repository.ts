@@ -1,7 +1,7 @@
 import { InjectModel } from '@nestjs/mongoose'
 import { Pagination } from '@yikart/common'
 import { FilterQuery, Model } from 'mongoose'
-import { ContentGenerationTaskStatus } from '../enums'
+import { AiLogType, ContentGenerationTaskStatus } from '../enums'
 import { ContentGenerationTask, TaskAnalysis } from '../schemas'
 import { BaseRepository, LeanDoc } from './base.repository'
 
@@ -37,6 +37,15 @@ export class ContentGenerationTaskRepository extends BaseRepository<ContentGener
 
   async getByUserIdAndId(userId: string, taskId: string) {
     return await this.getUserTask(userId, taskId)
+  }
+
+  async updateMediaRequestByIdAndUserId(taskId: string, userId: string, kind: AiLogType.Image | AiLogType.Video, pending: boolean) {
+    const field = kind === AiLogType.Image ? 'unresolvedImageGeneration' : 'unresolvedVideoGeneration'
+    const result = await this.model.updateOne(
+      { _id: taskId, userId, deletedAt: null, [field]: pending ? { $ne: true } : true },
+      { $set: { [field]: pending } },
+    ).exec()
+    return result.modifiedCount === 1
   }
 
   async updateMessage(taskId: string, message: Record<string, unknown>) {

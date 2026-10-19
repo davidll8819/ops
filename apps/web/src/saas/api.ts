@@ -8,7 +8,7 @@ const interrupted = () =>
 function checked<T>(status: number, data: T & { error?: string }): T {
   if (status < 200 || status >= 300) {
     if (status === 401) window.dispatchEvent(new Event('office:unauthorized'))
-    throw new Error(data?.error || '请求失败')
+    throw Object.assign(new Error(data?.error || '请求失败'), { status })
   }
   return data
 }

@@ -5,6 +5,11 @@ const volcengineToolSchema = z.object({
   type: z.literal('web_search'),
 })
 
+export const VideoFormatSchema = z.object({
+  ratio: z.enum(['9:16', '16:9', '1:1']).describe('用户选择的视频比例'),
+  resolution: z.enum(['720p', '1080p']).describe('用户选择的视频分辨率'),
+})
+
 // 通用视频生成请求
 const videoGenerationRequestSchema = z.object({
   model: z.string().min(1).describe('模型名称'),

@@ -7,6 +7,16 @@ import { toPolicy, resolveDepartment, resolveCapability, validGatewayToken } fro
 import { reserveTokens, settleTokens } from './budget.mjs'
 import { loadSecrets } from './credentials.mjs'
 import { createOperationsDriver } from './driver.mjs'
+export function runtimeModelCatalog(catalog,policy){
+  const items=[{id:'office-content-ops',object:'model',owned_by:'Office',type:'chat'}]
+  for(const kind of ['image','video']){
+    let selection
+    try{selection=resolveCapability(policy,'content_ops',kind)}catch(e){if(e.statusCode===409)continue;throw e}
+    const model=catalog.find(m=>m.id===selection.model)
+    if(model)items.push({...model,type:kind})
+  }
+  return items
+}
 export async function loadPolicy(db, tenantId, env) {
   const row = (await db.query('SELECT encrypted_config,revision FROM operations_settings WHERE tenant_id=$1',[tenantId])).rows[0]
   if (!row) throw fail(409,'请先保存企业模型配置')
@@ -42,6 +52,13 @@ export function streamUsage(anthropic) {
       }
     }, result() { return complete && !invalid ? usage : undefined },
   }
+}
+export function toolCompatibleRequest(body) {
+  // This relay's Chat Completions route explicitly rejects Luna function tools
+  // with its default reasoning mode. Apply per request, without mutating fallback input.
+  return body.model === 'gpt-5.6-luna' && body.tools?.some(tool => tool.type === 'function')
+    ? { ...body, reasoning_effort: 'none' }
+    : body
 }
 export function createModelGateway({ pool, env, fetcher = fetch }) {
   return async function call({ ctx, policy, department, path, body, reply, allowFallback = true, capability = 'text' }) {
@@ -79,7 +96,7 @@ export function createModelGateway({ pool, env, fetcher = fetch }) {
     }
     let response
     try {
-      response = await fetcher(`https://app.4yi.ai${path}`, { method:'POST',headers,body:JSON.stringify(requestBody),redirect:'error',signal:AbortSignal.timeout(300000) })
+      response = await fetcher(`https://app.4yi.ai${path}`, { method:'POST',headers,body:JSON.stringify(anthropic ? requestBody : toolCompatibleRequest(requestBody)),redirect:'error',signal:AbortSignal.timeout(300000) })
       // A fallback is a new request only after an explicit pre-output rejection. Never retry a timeout or an accepted media job.
       if (allowFallback && textCall && [429,502,503,504].includes(response.status) && selection.fallback && selection.fallback !== selection.model) {
         await response.body?.cancel()
@@ -88,7 +105,7 @@ export function createModelGateway({ pool, env, fetcher = fetch }) {
         requestBody.model = selection.fallback
         const tokens = Buffer.byteLength(JSON.stringify(requestBody))*2+4096+outputLimit
         reservation = await reserveTokens(pool,ctx,{department,model:selection.fallback,limit:policy.budget.daily_token_limit,tokens})
-        response = await fetcher(`https://app.4yi.ai${path}`,{method:'POST',headers,body:JSON.stringify(requestBody),redirect:'error',signal:AbortSignal.timeout(300000)})
+        response = await fetcher(`https://app.4yi.ai${path}`,{method:'POST',headers,body:JSON.stringify(anthropic ? requestBody : toolCompatibleRequest(requestBody)),redirect:'error',signal:AbortSignal.timeout(300000)})
       }
     } catch (error) {
       if (reservation) await settleTokens(pool,ctx,reservation,'unknown')
@@ -180,6 +197,11 @@ export function registerModelGateway(app,{ scoped,pool,env,driver = createOperat
     if (!key) throw fail(409,'请先在设置中填写并保存企业 API Key')
     const response = await fetcher(`https://app.4yi.ai${path}`,{headers:{authorization:`Bearer ${key}`},redirect:'error',signal:AbortSignal.timeout(300000)})
     if (!response.ok) { await response.body?.cancel(); throw fail(502,'模型服务未完成请求，请检查模型档位、密钥或服务状态') }
+    if(path==='/api/v1/models'){
+      const catalog=await response.json()
+      if(!Array.isArray(catalog.data))throw fail(502,'模型目录格式不正确')
+      return {object:'list',data:runtimeModelCatalog(catalog.data,policy)}
+    }
     return reply.header('content-type',response.headers.get('content-type') || 'application/octet-stream').send(Readable.fromWeb(response.body))
   })
 }

@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { transaction, tenantAccess, fail } from './db.mjs'
 import { createModelGateway, loadPolicy } from './operations/gateway.mjs'
-import { assignedInstructions } from './workspace-services.mjs'
+import { loadAssignedSkills } from './skill-runtime.mjs'
 import { resolveTaskInputs, taskDependencyState } from './task-dependencies.mjs'
 import { needsDesignImage } from './design-images.mjs'
 import {
@@ -187,9 +187,9 @@ export function createDepartmentEngine({ pool, env, fetcher, operations }) {
         })
       } else {
         const department = departmentMap[claim.task.dept]
-        const { policy, instructions } = await scoped(ctx, async (db) => ({
+        const { policy, skills } = await scoped(ctx, async (db) => ({
           ...(await loadPolicy(db, ctx.tenantId, env)),
-          instructions: await assignedInstructions(db, ctx.tenantId, department),
+          skills: await loadAssignedSkills(db, ctx.tenantId, department),
         }))
         const call = async (request) => {
           await update(ctx, claim, async () => {})
@@ -200,7 +200,7 @@ export function createDepartmentEngine({ pool, env, fetcher, operations }) {
           ctx,
           policy,
           task: claim.task,
-          instructions,
+          skills,
           inputs: claim.inputs,
         })
         await update(ctx, claim, async (db, task) => {

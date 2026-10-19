@@ -5,6 +5,7 @@ import { AppException, getErrorMessage, getExtByMimeType, ImageType, ResponseCod
 import { AiLogChannel, AiLogImageResult, AiLogRepository, AiLogStatus, AiLogType, AssetType, ImageAiLogResponse, Transactional } from '@yikart/mongodb'
 import parseDataUri from 'data-urls'
 import OpenAI from 'openai'
+import { FOURYI_NEUTRAL_REFERENCE } from './fouryi-image.constants'
 import { config } from '../../../config'
 
 import { runWithAiGenerationRetry } from '../ai-generation-retry.util'
@@ -123,6 +124,10 @@ export class ImageService {
 
     if (!user) {
       throw new BadRequestException('userId is required')
+    }
+
+    if (config.ai.fouryi.apiKey && runtimeModel === 'alibaba/wan2.6-image') {
+      return this.edit({ ...request, image: FOURYI_NEUTRAL_REFERENCE })
     }
 
     if (runtimeModel === 'gpt-image-1') {

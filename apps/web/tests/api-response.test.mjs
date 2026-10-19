@@ -30,6 +30,18 @@ test('JSON responses remain compatible and JSON errors still reject', async () =
   )
 })
 
+test('definitive HTTP and protocol rejections preserve status for safe recovery decisions', async () => {
+  for (const rejected of [
+    Response.json({ error: '版本测试次数已满，请保存新版本' }, { status: 409 }),
+    response([{ type: 'result', status: 409, data: { error: '版本已交付' } }]),
+  ])
+    await assert.rejects(readApiResponse(rejected), (error) => {
+      assert.ok(error instanceof Error)
+      assert.equal(error.status, 409)
+      return true
+    })
+})
+
 test('heartbeats are ignored, UTF-8 split across chunks survives, final data is returned', async () => {
   const encoded = new TextEncoder().encode(
     JSON.stringify({ type: 'heartbeat' }) +

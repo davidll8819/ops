@@ -101,13 +101,13 @@ export class OpenaiService {
   async createImageGeneration(options: Omit<OpenAI.Images.ImageGenerateParams, 'user' | 'stream' | 'size'> & { size?: string | null }): Promise<OpenAI.Images.ImagesResponse> {
     return this.withAvailability('createImageGeneration', async () => {
       const resolvedOptions = await this.resolveRelayJson(options)
-      return this.openAI.images.generate(resolvedOptions as OpenAI.Images.ImageGenerateParamsNonStreaming)
+      return this.openAI.images.generate(resolvedOptions as OpenAI.Images.ImageGenerateParamsNonStreaming, { maxRetries: 0 })
     }, options.model ?? undefined)
   }
 
   async createImageEdit(options: Omit<OpenAI.Images.ImageEditParams, 'user' | 'stream' | 'size'> & { size?: string | null }): Promise<OpenAI.Images.ImagesResponse> {
     return this.withAvailability('createImageEdit', async () => {
-      return this.openAI.images.edit(options as OpenAI.Images.ImageEditParamsNonStreaming)
+      return this.openAI.images.edit(options as OpenAI.Images.ImageEditParamsNonStreaming, { maxRetries: 0 })
     }, options.model ?? undefined)
   }
 

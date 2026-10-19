@@ -69,8 +69,25 @@ test('MCP publication returns pending approval status through the authenticated 
 test('runtime handshake is tenant-bound and signed; native login is disabled', async () => {
   assert.equal((await run({method:'GET',path:'/office-bridge/status'})).status,403)
   const result=await run({method:'GET',path:'/office-bridge/status',headers:signBridge(config.secret,'GET','/office-bridge/status',null)})
-  assert.deepEqual(result.body,{version:4,tenantId:config.tenantId,revision:3,publishMode:'manual'})
+  assert.deepEqual(result.body,{version:4,tenantId:config.tenantId,revision:3,publishMode:'manual',draining:false})
   assert.equal((await run({method:'POST',path:'/user/register',body:{}})).status,403)
+})
+
+test('signed runtime drain blocks new tasks while existing status reads stay available',async()=>{
+ const middleware=officeBridge(config,jwtSecret)
+ async function invoke(method,path,body,signed=false){
+  let status=200,result,next=false
+  const req={method,path,body,headers:signed?bridgeHeaders(config.secret,method,path,body??null):{}}
+  await middleware(req,{status(n){status=n;return this},json(v){result=v;return this}},()=>{next=true})
+  return {status,result,next}
+ }
+ assert.equal((await invoke('POST','/office-bridge/drain',{draining:true})).status,403)
+ await invoke('POST','/office-bridge/drain',{draining:true},true)
+ assert.equal((await invoke('GET','/office-bridge/status',undefined,true)).result.draining,true)
+ assert.equal((await invoke('POST','/agent/tasks',{prompt:'new'})).status,503)
+ assert.equal((await invoke('GET','/agent/tasks/old')).next,true)
+ await invoke('POST','/office-bridge/drain',{draining:false},true)
+ assert.equal((await invoke('POST','/agent/tasks',{prompt:'new'})).next,true)
 })
 
 test('deployed runtime retrieves rotated Relay credentials with tenant-bound signatures',async () => {

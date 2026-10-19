@@ -48,12 +48,21 @@ function isOfficeUser(req: Request, tenantId: string, jwtSecret: string): boolea
 
 // Installed before Nest controllers. Applies to legacy, REST, Relay and MCP publishing entry points.
 export function officeBridge(config: OfficeBridgeConfig | undefined, jwtSecret: string) {
+  let draining = false
   return async (req: Request, res: Response, next: NextFunction) => {
     if (!config) return next()
     if (req.path === '/office-bridge/status') {
       if (!signed(config, req)) return res.status(403).json({ error: 'Office signature required' })
-      return res.json({ version: 4, tenantId: config.tenantId, revision: config.revision, publishMode: 'manual' })
+      return res.json({ version: 4, tenantId: config.tenantId, revision: config.revision, publishMode: 'manual', draining })
     }
+    if (req.path === '/office-bridge/drain') {
+      if (req.method !== 'POST' || !signed(config, req)) return res.status(403).json({ error: 'Office signature required' })
+      if (typeof req.body?.draining !== 'boolean') return res.status(400).json({ error: 'Expected a draining flag' })
+      draining = req.body.draining
+      return res.json({ draining })
+    }
+    if (draining && req.method === 'POST' && ['/agent/tasks', '/ai/image/generate', '/ai/image/edit', '/ai/image/generate/async', '/ai/image/edit/async'].includes(req.path.replace(/\/$/, '')))
+      return res.status(503).json({ error: 'Runtime is draining; new production requests are paused' })
     if (/config[-/]?manager|config[-/]?editor|public-share|(?:register|signup|login|auto-login)(?:\/|$)/i.test(req.path))
       return res.status(403).json({ error: 'Use the Office workspace' })
     const publishing = /publish|engagement/i.test(req.path)

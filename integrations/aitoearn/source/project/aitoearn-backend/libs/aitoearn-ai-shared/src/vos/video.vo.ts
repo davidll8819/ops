@@ -34,6 +34,11 @@ const videoTaskStatusResponseSchema = z.object({
   status: z.string().describe('任务状态'),
   input: videoTaskInputSchema.describe('输入参数'),
   videoUrl: FileUtil.zodBuildUrl().nullable().optional().describe('生成的视频 URL'),
+  specification: z.object({
+    requested: z.object({ ratio: z.string().describe('要求比例'), resolution: z.string().describe('要求分辨率') }).describe('提交规格'),
+    actual: z.object({ width: z.number().describe('实际宽度'), height: z.number().describe('实际高度') }).describe('成品尺寸'),
+    matches: z.boolean().describe('成品尺寸是否符合提交规格'),
+  }).optional().describe('实际视频尺寸验收结果'),
   coverUrl: FileUtil.zodBuildUrl().nullable().optional().describe('生成视频的封面 URL'),
   mediaId: z.string().optional().describe('保存后的素材 ID'),
   groupId: z.string().optional().describe('保存到的素材组 ID'),

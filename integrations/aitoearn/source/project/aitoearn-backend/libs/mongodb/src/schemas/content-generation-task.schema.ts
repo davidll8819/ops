@@ -25,6 +25,9 @@ export interface TaskAnalysis {
 export class ContentGenerationTask extends WithTimestampSchema {
   id: string
 
+  @Prop({ type: SchemaTypes.Mixed, required: false })
+  videoFormat?: { ratio: string, resolution: string }
+
   @Prop({
     required: true,
   })
@@ -60,6 +63,12 @@ export class ContentGenerationTask extends WithTimestampSchema {
     default: ContentGenerationTaskStatus.Running,
   })
   status: ContentGenerationTaskStatus
+
+  @Prop({ type: Boolean, default: false })
+  unresolvedImageGeneration?: boolean
+
+  @Prop({ type: Boolean, default: false })
+  unresolvedVideoGeneration?: boolean
 
   @Prop({
     required: false,

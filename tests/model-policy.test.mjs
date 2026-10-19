@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import { stripTypeScriptTypes } from 'node:module'
-import { defaultPolicy, policySchema, tenantSecrets, secretNames, normalizeGateway, validGatewayToken, gatewayToken } from '../apps/api/src/operations/policy.mjs'
+import { defaultPolicy, policySchema, tenantSecrets, secretNames, normalizeGateway, validGatewayToken, gatewayToken, resolveDepartment, resolveCapability } from '../apps/api/src/operations/policy.mjs'
 import { streamUsage, readUsage } from '../apps/api/src/operations/gateway.mjs'
 import { budgetDay } from '../apps/api/src/operations/budget.mjs'
 
@@ -14,6 +14,19 @@ test('policy normalizes discovery URLs, preserves department tiers, keeps secret
   assert.throws(() => policySchema.parse({...p,gateway:{...p.gateway,api_key:'raw-secret'}}))
   assert.equal(policySchema.parse({...p,departments:{...p.departments,content_ops:{...p.departments.content_ops,need_confirm:false}}}).departments.content_ops.need_confirm,true)
   for (const url of ['http://localhost:3000','https://app.4yi.ai.evil.test','https://app.4yi.ai/api/v1?key=x','bad']) assert.throws(() => normalizeGateway(url))
+})
+test('department-specific text and search choices override company defaults while old tier policies still inherit', () => {
+  const p = defaultPolicy()
+  p.tiers.fast = 'company-fast'
+  p.tiers.search = 'company-search'
+  p.departments.market_research.model = 'research-text'
+  p.departments.market_research.capabilities.search.model = 'research-search'
+  p.departments.outreach.enabled = true
+  p.departments.outreach.tier = 'fast'
+  assert.equal(resolveDepartment(p, 'market_research').model, 'research-text')
+  assert.equal(resolveCapability(p, 'market_research', 'search').model, 'research-search')
+  assert.equal(resolveDepartment(p, 'content_ops').model, 'company-fast')
+  assert.equal(resolveCapability(p, 'outreach', 'search').model, 'company-search')
 })
 test('unbound common environment keys never bleed between companies', () => {
   const a = '11111111-1111-4111-8111-111111111111', b = '22222222-2222-4222-8222-222222222222'

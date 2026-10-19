@@ -359,6 +359,9 @@ export const AgentMessageVoHelper = {
 }
 
 export const ContentGenerationTaskVoSchema = z.object({
+  savedVideos: z.array(z.unknown()).optional().describe('直接从当前用户及任务的媒体记录读取的结果'),
+  videoStatusUnavailable: z.boolean().optional().describe('部分媒体状态暂时无法核对'),
+  videoFormat: z.object({ ratio: z.string().describe('保存的比例'), resolution: z.string().describe('保存的分辨率') }).optional().describe('保存的视频规格'),
   id: z.string(),
   userId: z.string(),
   createdAt: z.coerce.date(),

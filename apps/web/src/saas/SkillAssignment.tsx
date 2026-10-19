@@ -1,17 +1,8 @@
+import { DEPARTMENT_NAMES } from '../../../../packages/employees/registry.mjs'
 import { useEffect, useState } from 'react'
 import { t } from '@/i18n'
 import { api } from './api'
-const departments: Record<string, string> = {
-  secretary: '秘书处',
-  content_ops: '运营部',
-  market_research: '市场调研',
-  design: '设计部',
-  dev: '程序部',
-  archive: '资料室',
-  compliance: '合规部',
-  outreach: '拓客部',
-  intern: '实习生',
-}
+const departments = DEPARTMENT_NAMES
 export function SkillAssignment({
   base,
   id,
